@@ -1,0 +1,30 @@
+{
+  "downloaded_at": "2026-06-11",
+  "source": "https://www.iffrc.com/ffkj/user/ble.php",
+  "method": "network-only firmware download; no BLE update commands sent",
+  "module": {
+    "id": "535C62E239E339E31475FB10",
+    "vin": "5YJ3E1ET7RF889921",
+    "mac": "5C:53:10:FB:75:14",
+    "observed_boot_version": "V1.2.00",
+    "observed_runtime_version": "V1.0.00"
+  },
+  "artifacts": [
+    {
+      "kind": "boot",
+      "path": "boot/boot.bin",
+      "manifest": "boot/boot.manifest.json",
+      "sha256": "af8d613097164f0be2f37ca3aaf7f79d5eaa81dbf6996b0890827bd004914db7",
+      "bytes": 12312,
+      "pages": 12
+    },
+    {
+      "kind": "runtime",
+      "path": "runtime/runtime.bin",
+      "manifest": "runtime/runtime.manifest.json",
+      "sha256": "b1b2a3aa5e71d88336719bccb5da822faffc05acf50b5b482e570f1981dabbd5",
+      "bytes": 73872,
+      "pages": 72
+    }
+  ]
+}

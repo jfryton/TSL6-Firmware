@@ -1,0 +1,10 @@
+{
+  "kind": "boot",
+  "isapp": 0,
+  "device_id": "535C62E239E339E31475FB10",
+  "vin_present": true,
+  "page_count": 12,
+  "page_size": 1026,
+  "byte_count": 12312,
+  "sha256": "af8d613097164f0be2f37ca3aaf7f79d5eaa81dbf6996b0890827bd004914db7"
+}

@@ -1,0 +1,10 @@
+{
+  "kind": "runtime",
+  "isapp": 1,
+  "device_id": "535C62E239E339E31475FB10",
+  "vin_present": true,
+  "page_count": 72,
+  "page_size": 1026,
+  "byte_count": 73872,
+  "sha256": "b1b2a3aa5e71d88336719bccb5da822faffc05acf50b5b482e570f1981dabbd5"
+}
