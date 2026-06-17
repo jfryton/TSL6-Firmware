@@ -226,7 +226,12 @@ def main():
             "target=table_base + s32(table_base+index*4)"),
         "shared_workers": {
             "0x33e2": "keycode/button primitive (validates 1..18, stores RAM "
-                      "state byte); used by media/AP/steering actions",
+                      "state byte 0x20003f2c); used by media/AP/steering actions",
+            "0x3a30": "action 139 latch: writes 0x0C to countdown byte "
+                      "0x20003f2d; decremented by periodic handler at 0x3ce0, "
+                      "which sets a state bit when it expires (timed "
+                      "steering-wheel hold/release)",
+            "0xf296": "one-hot bitfield control worker (actions 1-8)",
         },
         "entries": rows,
         "groups": grouped,
@@ -238,6 +243,26 @@ def main():
         "unknown_command_path": "0xbcba",
         "update_dispatcher": hex(UPDATE_DISPATCH),
         "a2_handler": hex(A2_HANDLER),
+        "shared_helpers": {
+            "0x110a": "async BLE TX framer/enqueue; 15-slot, 12-byte queue at "
+                      "RAM 0x20003e28; dispatches via resident notify pointer "
+                      "0x40000050",
+            "0xb76c": "command reply builder; allocates via resident pointer "
+                      "0x40000070, then enqueues through 0x110a",
+            "0xb7c6": "module status reply builder",
+            "0xb86e": "dashboard telemetry producer (35-byte 0xB0 packet, "
+                      "rate-limited via gp+0x178 timestamp)",
+            "0xbdb8": "command-reply tail used by 0xA2/0xBB handlers",
+        },
+        "ble_stack_vtable": {
+            "base": "0x40000000",
+            "note": "Resident BLE-stack function pointers loaded via lui 0x40 "
+                    "+ offset and called indirectly (jr/jalr). Not in image.",
+            "known_slots": {
+                "0x40000050": "BLE notify/send entry (used by TX framer 0x110a)",
+                "0x40000070": "buffer allocator (used by reply builder 0xb76c)",
+            },
+        },
         "handlers": map_dispatch(data),
     }
 

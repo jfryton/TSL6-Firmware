@@ -25,6 +25,7 @@ python tools/extract_payload.py $B/boot/boot.bin       work/boot.payload.bin
 
 # 2. Regenerate machine-readable analysis artifacts
 python tools/gen_analysis.py work/runtime.payload.bin analysis/
+python tools/functions.py    work/runtime.payload.bin json analysis/functions.json
 ```
 
 Expected stripped-payload SHA-256:
@@ -43,6 +44,7 @@ Expected stripped-payload SHA-256:
 | `analyze.py` | Linker-constant (`gp`/`sp`) recovery, strings, jump-table decode, command-compare scan, word xrefs. |
 | `classify_actions.py` | Decode every action stub: arguments and shared worker, grouped by reuse. |
 | `map_dispatch.py` | Decode a command comparison ladder into command -> handler targets. |
+| `functions.py` | Recover a function inventory and call graph (function starts, extents, callees, callers). |
 | `gen_analysis.py` | Emit the committed JSON artifacts under `analysis/`. |
 
 ## Important: branch operand convention

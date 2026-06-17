@@ -4,7 +4,9 @@
   "entry_count": 253,
   "dispatch_algorithm": "index=(action_id-1)&0xFF; reject if index>0xFC; target=table_base + s32(table_base+index*4)",
   "shared_workers": {
-    "0x33e2": "keycode/button primitive (validates 1..18, stores RAM state byte); used by media/AP/steering actions"
+    "0x33e2": "keycode/button primitive (validates 1..18, stores RAM state byte 0x20003f2c); used by media/AP/steering actions",
+    "0x3a30": "action 139 latch: writes 0x0C to countdown byte 0x20003f2d; decremented by periodic handler at 0x3ce0, which sets a state bit when it expires (timed steering-wheel hold/release)",
+    "0xf296": "one-hot bitfield control worker (actions 1-8)"
   },
   "entries": [
     {

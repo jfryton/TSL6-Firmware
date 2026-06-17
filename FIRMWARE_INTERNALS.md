@@ -14,9 +14,12 @@ analyzer used here.
 Machine-readable companions to this document live in [analysis/](analysis/):
 
 - `memory_map.json` - linker constants and region model
-- `command_dispatch.json` - every BLE command and its handler offset
+- `command_dispatch.json` - every BLE command and its handler offset, plus the
+  shared reply/TX helpers and the resident BLE-stack vtable slots
 - `action_table.json` - all 253 action stubs, workers, arguments, labels
 - `rule_engine.json` - shortcut/rule table structure
+- `functions.json` - recovered function inventory and call graph (419 runtime
+  functions) from `tools/functions.py`
 
 ## Confidence Labels
 
@@ -146,6 +149,31 @@ primitive is reused by most of the media/AP/steering action handlers (section
 6), which is why those actions are parameterized tail-calls rather than distinct
 code.
 
+## 5a. BLE Transmit Path and Resident Stack Vtable
+
+Outbound BLE frames are built and queued by a small set of shared helpers
+(Confirmed):
+
+| Helper | Role |
+|---:|---|
+| `0x110a` | Async TX framer/enqueue. Manages a 15-slot ring (12 bytes/slot) at RAM `0x20003e28`, then dispatches via a resident notify pointer. 33 call sites - the core send routine. |
+| `0xb76c` | Generic command reply builder. Allocates a buffer via a resident pointer, fills `command`/`length`/`payload`, and enqueues through `0x110a`. |
+| `0xb7c6` | Module status reply builder (used by `0xA0`, `0xB0`). |
+| `0xb86e` | Dashboard telemetry producer; emits the 35-byte `0xB0` packet, rate-limited using a timestamp at `gp+0x178`. |
+| `0xbdb8` | Reply tail shared by the `0xA2`/`0xBB` handlers. |
+
+These helpers reach hardware through a **resident BLE-stack vtable** at
+peripheral base `0x40000000`. The firmware loads a function pointer with
+`lui 0x40` + offset and calls it indirectly (`jr`/`jalr`). Confirmed slots:
+
+| Slot | Use |
+|---|---|
+| `0x40000050` | BLE notify/send entry (used by the TX framer `0x110a`). |
+| `0x40000070` | Buffer allocator (used by the reply builder `0xb76c`). |
+
+This is direct evidence that hardware and the BLE controller live in a resident
+region outside the downloadable application image (see section 2).
+
 ## 6. Action Dispatcher and Table
 
 Entry: `0xd16e`. Algorithm (Confirmed):
@@ -189,9 +217,14 @@ that restores the dispatcher frame, loads 0-3 small immediate arguments into
   | 149 | Following distance -1 | 10 |
 
 - Action **139** is special: its stub tail-calls `0x3a30` (not the keycode
-  primitive), which writes `0x0C` to a RAM state byte. This latches a
-  steering-wheel hold operation; the downstream consumer/timing is still
-  Unknown.
+  primitive), which writes `0x0C` (12) to a countdown byte at RAM
+  `0x20003f2d`. A **periodic handler** decrements that byte at `0x3ce0`; when it
+  expires the handler sets a state bit (`|= 0x40`) in an adjacent structure.
+  This is a timed steering-wheel hold/release: action 139 latches a 12-tick
+  hold and the periodic task releases it. The exact tick period and the final
+  vehicle-side effect are still Inferred (need live correlation), but the
+  scheduling mechanism is now identified - it is the same periodic-task model a
+  rewrite would reuse for non-blocking macros.
 
 Trigger IDs and action IDs are **separate namespaces**. Trigger 139 means
 "speed 5-10"; action 139 means "left scroll hold". Tools must not share one
@@ -244,13 +277,36 @@ The runtime string table contains BLE peripheral names: `KRemote`,
 recognizes specific remotes/keyboards and maps their input into the action
 system. (Correlated; exact binding logic not yet traced.)
 
-## 11. Open Items for a Full Rewrite
+## 11. Recovered Function Inventory
 
-- Recover the resident BLE-stack/bootloader region (physical flash dump).
-- Confirm action 139's RAM state byte consumer and timing.
-- Identify the non-blocking timer/work-queue primitive (needed for safe macros).
+`tools/functions.py` recovers a call graph from direct-call (`jal`) evidence and
+prologue detection: **419** candidate functions in the runtime image, **84** in
+boot. `analysis/functions.json` records each function's start, estimated extent,
+direct callees, and caller count. The hottest utilities (by caller count) are:
+
+| Function | Callers | Likely role |
+|---:|---:|---|
+| `0x110a` | 33 | Async BLE TX framer/enqueue (section 5a) |
+| `0x1096` | 20 | Reply/format helper |
+| `0xe310` | 11 | Shortcut rule engine (section 7) |
+| `0xb86e` | 8 | Telemetry producer |
+| `0xb968` | 8 | TX completion/queue worker |
+
+This inventory is a heuristic aid (it favors precision from direct calls over an
+exhaustive CFG), but it is sufficient to navigate the image and to seed a
+labeled import into Ghidra/Binary Ninja.
+
+## 12. Open Items for a Full Rewrite
+
+- Recover the resident BLE-stack/bootloader region (physical flash dump). The
+  vtable at `0x40000000` (section 5a) defines the interface to recover.
+- Confirm action 139's tick period and the vehicle-side effect of the periodic
+  release at `0x3ce0`.
+- Generalize the periodic-task scheduler (now located) into a non-blocking macro
+  executor.
 - Map CAN signal extraction per supported vehicle profile (`0xC0`/`0xC1`).
 - Determine flash layout, image validation, and boot-slot selection.
+- Trace the BLE HID name-matching (section 10) to its action bindings.
 
 See [REVERSE_ENGINEERING.md](REVERSE_ENGINEERING.md) for the chronological
 evidence trail and [CLEAN_ROOM_SPEC.md](CLEAN_ROOM_SPEC.md) for the rewrite
