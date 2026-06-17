@@ -1,0 +1,77 @@
+{
+  "image": "runtime",
+  "note": "Hand-curated decode of the non-action BLE command handlers (D0/D1/D2/F0) and the HID device-name binding. Offsets are payload offsets (image base 0). Confidence labels: Confirmed (from disassembly), Correlated (matched to app/protocol behavior).",
+  "command_byte_register": "s1",
+  "subfunction_register": "s3",
+  "first_payload_byte": "lbu a4, 0(s0)  (s0 = received BLE frame body pointer)",
+  "handlers": [
+    {
+      "command_hex": "0xd0",
+      "handler": "0xc060",
+      "confidence": "Confirmed",
+      "summary": "Enable/select a per-connection notification stream. Requires first payload byte == 1, then calls the connection-slot status setter 0xb7c6 with selector a1=3.",
+      "evidence": [
+        "0xc060: lbu a4,0(s0); c.li a5,1; bne a4,a5 -> 0xbcba (reject unless byte==1)",
+        "0xc06e: jal 0xb7c6 with a1=3 (status/notify selector)",
+        "guarded by a resident-region flag at lbu (gp-0x...) before falling through to 0xd2 path"
+      ]
+    },
+    {
+      "command_hex": "0xd1",
+      "handler": "0xc2da",
+      "confidence": "Confirmed",
+      "summary": "Disable/teardown the notification stream selected by D0. Requires first payload byte == 1, then calls 0xb7c6 with selector a1=4, and returns via the unknown/no-reply tail 0xbcba.",
+      "evidence": [
+        "0xc2da: lbu a4,0(s0); c.li a5,1; bne -> 0xbcba",
+        "0xc2e8: jal 0xb7c6 with a1=4",
+        "0xc2ec: c.j 0xbcba"
+      ]
+    },
+    {
+      "command_hex": "0xd2",
+      "handler": "0xc08c",
+      "confidence": "Correlated",
+      "summary": "Raw register/diagnostic read. Invokes resident vtable slot 0x40000048 (a2=8,a1=0, out-buffer sp+0x14) to fetch 8 bytes, byte-swaps pairs into big-endian halfwords, then publishes them via the shared raw-frame store 0x28e (a0=1,a1=4).",
+      "evidence": [
+        "0xc08c: c.li a2,8; c.li a1,0; addi4spn a0,sp,0x14; c.jalr a5 (a5 = lw 0x48(0x40000000))",
+        "0xc09a: jal 0x28e (shared raw-frame store) with a0=1,a1=4",
+        "0xc09e..0xc0ba: lbu/slli/or assembling big-endian 16-bit words from the fetched bytes"
+      ],
+      "resident_slot": "0x40000048"
+    },
+    {
+      "command_hex": "0xf0",
+      "handler": "0xc0ee",
+      "confidence": "Correlated",
+      "summary": "Configuration/provisioning write. Rejects sub-code s3 <= 0xD (bgeu guard), validates a 14-byte credential/name via 0x12d4 (byte-compare against an expected 14-byte buffer), and on success forwards (s3-0xE) entries starting at frame+0xE to the config worker 0xa39a.",
+      "evidence": [
+        "0xc0ee: c.li a5,0xd; bgeu a5,s3 -> 0xbcba (require subcode > 0x0D)",
+        "0xc0f8: jal 0x12d4 with a1=0xe (14-byte compare/validate); bnez a0 -> reject",
+        "0xc100: a2=(s3-0xE) zero-extended 16-bit; a1=frame+0xE; jal 0xa39a (config worker)"
+      ],
+      "helpers": {
+        "0x12d4": "14-byte buffer validate: builds expected buffer via 0x129c, compares frame bytes 0..13; returns 0 on match.",
+        "0xa39a": "config worker: stores a 16-bit handle, then dispatches on (payload[0]-1) through a 7-entry jump table (range-checked bltu 6) into config-RAM writers."
+      }
+    }
+  ],
+  "hid_name_binding": {
+    "entry": "0x99c0-0x009bba",
+    "confidence": "Confirmed",
+    "resident_strncmp_slot": "lw a5,0(s6) / lw a5,0x3c(0x40000000) (resident memcmp/strncmp)",
+    "summary": "On GAP discovery/connect the firmware compares the peer device name against a fixed list of keyboard identities to pick which HID profile to emulate / which peer to bind. Each comparison loads a resident compare function pointer, passes the candidate name string and its length, and branches on a 0 result.",
+    "known_names": [
+      {"string": "BT KeyBoard", "offset": "0x11604", "ref": "0x99ce", "length": 11},
+      {"string": "BLE-M3", "offset": "0x11630", "ref": "0x9a6c", "length": 6},
+      {"string": "MINI_KEYBOARD", "offset": "0x11620", "ref": "0x9a54", "length": 13}
+    ],
+    "advertised_name": {"string": "TSL6", "offset": "0x10e25"},
+    "ble_stack": "CH32V20x_BLE_LIB_V1.3",
+    "evidence": [
+      "0x99ca: auipc/addi a0 -> 0x11604 ('BT KeyBoard'); c.li a2,0xb; jalr resident cmp",
+      "0x9a50: a0 -> 0x11620 ('MINI_KEYBOARD'); c.li a2,0xd; jalr resident cmp",
+      "0x9a68: a0 -> 0x11630 ('BLE-M3'); c.li a2,6; jalr resident cmp",
+      "0x9a5c: lui s6,0x40; lw a5,0x3c(s6) reloads the resident compare pointer"
+    ]
+  }
+}

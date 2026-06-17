@@ -324,14 +324,97 @@ packed just before the table above at `0xb40e`. This is direct firmware
 confirmation of the dashboard contract; the getters are the authoritative source
 of each signal.
 
-## 10. BLE HID Device Names
+## 10. BLE HID Device Names and Name Binding
 
 The runtime string table contains BLE peripheral names: `KRemote`,
 `Insta360 GPS Remote`, `BT KeyBoard`, `MK424`, `MINI_KEYBOARD`, `BLE-M3`,
 `Yiser-J6`, `Free 2`, `WiWU-WM105`, `COIDEA KM`, plus the default BLE password
-`1234`. This indicates the firmware also operates as a BLE HID central that
-recognizes specific remotes/keyboards and maps their input into the action
-system. (Correlated; exact binding logic not yet traced.)
+`1234`. The firmware advertises as `TSL6` (`0x10e25`) and also operates as a BLE
+HID central that recognizes specific remotes/keyboards and maps their input into
+the action system.
+
+The binding logic is at **`0x99c0`-`0x9bba`** (Confirmed). On GAP
+discovery/connect it compares the peer device name against the fixed identity
+list using a resident compare function (loaded as `lw a5,0x3c(0x40000000)` /
+`lw a5,0(s6)`), passing the candidate string pointer, the peer name, and the
+length. A zero result selects that profile. Confirmed comparisons:
+
+| Name string | Offset | Length | Compare site |
+|---|---|---:|---|
+| `BT KeyBoard` | `0x11604` | 11 | `0x99ce` |
+| `MINI_KEYBOARD` | `0x11620` | 13 | `0x9a54` |
+| `BLE-M3` | `0x11630` | 6 | `0x9a6c` |
+
+Full decode in [analysis/internal_commands.json](analysis/internal_commands.json)
+(`hid_name_binding`).
+
+## 10a. gp-Relative State Block
+
+All mutable BLE/rule/connection state lives in a single block based at the global
+pointer (`gp=0x1fffc000`). `tools/map_state.py` sweeps the whole image and
+tabulates every `gp+IMM` reference, recording access widths, read/write counts,
+and whether the offset is ever the base of an address-taken sub-structure. The
+result ([analysis/state_block.json](analysis/state_block.json)) lists **163**
+distinct offsets (121 directly load/stored, 42 address-taken only).
+
+Landmarks confirmed elsewhere line up:
+
+| Offset | Role |
+|---|---|
+| `gp+0x80` | rule-engine primary shortcut table (256 B, trigger/action pairs) |
+| `gp+0x84`, `gp+0x88` | rule-engine secondary tables (36 x 7 B each) |
+| `gp+0x108` | gear-change dirty counter (bumped by the gear decoder) |
+| `gp+0x178` | telemetry rate-limit timestamp (0xB0 throttle) |
+| `gp+0x184`-`gp+0x194` | hottest scalar fields (per-connection/notify state) |
+
+The `address_taken` count distinguishes scalar fields (only loaded/stored) from
+structure/array bases passed by pointer (e.g. the rule tables at `+0x80`/`+0x84`/
+`+0x88` and the connection table near `+0x74`, referenced 71 times).
+
+## 10b. CAN Receive Path and Signal Cache
+
+Vehicle telemetry originates from a CAN receive decoder, separate from the
+gp-block. Decoded scalar signals are written to an **absolute-addressed RAM
+signal cache** (`~0x20003e5c`-`0x20003f86`); the dashboard getters in section 9
+sample this cache. `tools/map_ramcache.py` maps it
+([analysis/ram_cache.json](analysis/ram_cache.json)): 353 distinct RAM addresses,
+with the 10 telemetry-sampled slots identified by getter, e.g. gear at
+`0x20003f60`, SoC at `0x20003f81`, autopilot at `0x20003f00`, door at
+`0x20003f86`.
+
+The CAN-ID dispatcher is at **`0xc934`** (Confirmed). It reads the 11-bit CAN ID
+from the frame header (`lhu a5,0(s0)`) and walks a balanced comparison tree;
+each matched arm tail-calls a per-ID decoder that extracts bitfields and writes
+the signal cache. `tools/map_can.py` recovers the table
+([analysis/can_map.json](analysis/can_map.json)): **34** decoded CAN IDs (26 with
+inline scalar decoders, 8 copied verbatim into a RAM frame buffer via the shared
+raw-frame store `0x28e` for deferred decoding). Example decoders:
+
+| CAN ID | Decoder | Correlated meaning |
+|---:|---|---|
+| `0x118` | `0x4c58` | DriveSystemStatus (gear/AP) |
+| `0x129` | `0x811e` | SteeringAngle |
+| `0x132` | raw-store | HV battery (V/I/SoC) |
+| `0x257` | `0x7f9a` | vehicle speed |
+| `0x352` | raw-store | BMS energy/SoC |
+
+IDs are correlated to community Tesla Model 3/Y bus IDs, not confirmed against
+this specific harness. The gear decoder (`0x4c5a`) is the worked example: it
+reads frame byte 5, shifts right 5 (top 3 bits), stores to `0x20003f60`, and on
+change increments the `gp+0x108` dirty counter.
+
+## 10c. Internal Commands (D0 / D1 / D2 / F0)
+
+Beyond the action and telemetry commands, four control commands manage
+notification streams, diagnostics, and provisioning. Full evidence in
+[analysis/internal_commands.json](analysis/internal_commands.json).
+
+| Cmd | Handler | Role |
+|---|---|---|
+| `0xD0` | `0xc060` | Enable/select a per-connection notification stream (payload[0]==1, status setter `0xb7c6` selector 3). Confirmed. |
+| `0xD1` | `0xc2da` | Disable that stream (payload[0]==1, `0xb7c6` selector 4). Confirmed. |
+| `0xD2` | `0xc08c` | Raw register/diagnostic read: resident slot `0x40000048` fetches 8 bytes, byte-swapped to big-endian halfwords, published via `0x28e`. Correlated. |
+| `0xF0` | `0xc0ee` | Configuration/provisioning write: subcode `s3>0x0D`, 14-byte credential validate (`0x12d4`), then config worker `0xa39a`. Correlated. |
 
 ## 11. Recovered Function Inventory
 
@@ -355,14 +438,17 @@ labeled import into Ghidra/Binary Ninja.
 ## 12. Open Items for a Full Rewrite
 
 - Recover the resident BLE-stack/bootloader region (physical flash dump). The
-  vtable at `0x40000000` (section 5a) defines the interface to recover.
+  vtable at `0x40000000` (section 5a, plus slots `0x48`/`0x3c` used by `0xD2`
+  and HID binding) defines the interface to recover.
 - Confirm action 139's tick period and the vehicle-side effect of the periodic
   release at `0x3ce0`.
 - Generalize the periodic-task scheduler (now located) into a non-blocking macro
   executor.
-- Map CAN signal extraction per supported vehicle profile (`0xC0`/`0xC1`).
+- Confirm the per-vehicle meaning of each decoded CAN ID (section 10b) against a
+  real harness; current labels are correlated to community Model 3/Y bus IDs.
 - Determine flash layout, image validation, and boot-slot selection.
-- Trace the BLE HID name-matching (section 10) to its action bindings.
+- Resolve the `0xD2` resident diagnostic source (`0x40000048`) and the `0xF0`
+  config worker's 7 sub-targets (`0xa39a`) to concrete settings.
 
 See [REVERSE_ENGINEERING.md](REVERSE_ENGINEERING.md) for the chronological
 evidence trail and [CLEAN_ROOM_SPEC.md](CLEAN_ROOM_SPEC.md) for the rewrite

@@ -1,0 +1,354 @@
+{
+  "image": "runtime",
+  "dispatcher": "0xc934",
+  "frame_pointer_register": "s0 (a0 on entry)",
+  "can_id_load": "lhu a5, 0(s0)  (11-bit ID at frame offset 0)",
+  "model": "RX CAN frame -> binary-search comparison tree on the 11-bit ID -> per-ID trampoline (reload frame ptr, tail-call) -> signal decoder that writes the absolute RAM signal cache sampled by telemetry.",
+  "raw_frame_store": {
+    "addr": "0x28e",
+    "note": "IDs flagged stored_raw copy the 12-byte frame into a RAM frame-buffer slot (indexed, stride 12) for deferred decoding instead of extracting a scalar inline."
+  },
+  "decoded_id_count": 34,
+  "ids": [
+    {
+      "can_id": 130,
+      "can_id_hex": "0x82",
+      "match": "beq",
+      "trampoline": "0xcc16",
+      "decoder": "0x4f46",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: steering/control input"
+    },
+    {
+      "can_id": 258,
+      "can_id_hex": "0x102",
+      "match": "beq",
+      "trampoline": "0xcc22",
+      "decoder": "0x28e",
+      "decoder_via": "jal",
+      "stored_raw": true,
+      "label": "correlated: body/door status (VCLEFT/RIGHT)"
+    },
+    {
+      "can_id": 259,
+      "can_id_hex": "0x103",
+      "match": "beq",
+      "trampoline": "0xcc38",
+      "decoder": "0x57b6",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: body status"
+    },
+    {
+      "can_id": 280,
+      "can_id_hex": "0x118",
+      "match": "bne-fallthrough",
+      "trampoline": "0xc998",
+      "decoder": "0x4c58",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: DriveSystemStatus (gear/AP)"
+    },
+    {
+      "can_id": 297,
+      "can_id_hex": "0x129",
+      "match": "beq",
+      "trampoline": "0xcc44",
+      "decoder": "0x811e",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: SteeringAngle"
+    },
+    {
+      "can_id": 306,
+      "can_id_hex": "0x132",
+      "match": "beq",
+      "trampoline": "0xcc50",
+      "decoder": "0x28e",
+      "decoder_via": "j",
+      "stored_raw": true,
+      "label": "correlated: HV battery (volt/current/SoC)"
+    },
+    {
+      "can_id": 505,
+      "can_id_hex": "0x1f9",
+      "match": "beq",
+      "trampoline": "0xcc60",
+      "decoder": "0x58ba",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: drive/torque"
+    },
+    {
+      "can_id": 524,
+      "can_id_hex": "0x20c",
+      "match": "beq",
+      "trampoline": "0xcc6c",
+      "decoder": "0x2fea",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: VCRIGHT door/latch"
+    },
+    {
+      "can_id": 553,
+      "can_id_hex": "0x229",
+      "match": "bne-fallthrough",
+      "trampoline": "0xc9c0",
+      "decoder": "0x4b82",
+      "decoder_via": "jal",
+      "stored_raw": false,
+      "label": "correlated: gear lever / stalk"
+    },
+    {
+      "can_id": 568,
+      "can_id_hex": "0x238",
+      "match": "beq",
+      "trampoline": "0xcc78",
+      "decoder": "0x2a2a",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: drive inverter"
+    },
+    {
+      "can_id": 579,
+      "can_id_hex": "0x243",
+      "match": "bne-fallthrough",
+      "trampoline": "0xc9ea",
+      "decoder": "0x2f58",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": null
+    },
+    {
+      "can_id": 585,
+      "can_id_hex": "0x249",
+      "match": "beq",
+      "trampoline": "0xcc84",
+      "decoder": "0x45a2",
+      "decoder_via": "jal",
+      "stored_raw": false,
+      "label": "correlated: chassis"
+    },
+    {
+      "can_id": 599,
+      "can_id_hex": "0x257",
+      "match": "beq",
+      "trampoline": "0xcc96",
+      "decoder": "0x7f9a",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: DIspeed (vehicle speed)"
+    },
+    {
+      "can_id": 602,
+      "can_id_hex": "0x25a",
+      "match": "beq",
+      "trampoline": "0xcca2",
+      "decoder": "0x4dc6",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: body"
+    },
+    {
+      "can_id": 605,
+      "can_id_hex": "0x25d",
+      "match": "beq",
+      "trampoline": "0xccae",
+      "decoder": "0x4ffa",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: body"
+    },
+    {
+      "can_id": 627,
+      "can_id_hex": "0x273",
+      "match": "beq",
+      "trampoline": "0xccba",
+      "decoder": "0x28e",
+      "decoder_via": "jal",
+      "stored_raw": true,
+      "label": "correlated: UI/driver assist"
+    },
+    {
+      "can_id": 658,
+      "can_id_hex": "0x292",
+      "match": "bne-fallthrough",
+      "trampoline": "0xca44",
+      "decoder": "0x28e",
+      "decoder_via": "j",
+      "stored_raw": true,
+      "label": null
+    },
+    {
+      "can_id": 659,
+      "can_id_hex": "0x293",
+      "match": "beq",
+      "trampoline": "0xccd8",
+      "decoder": "0x2e2a",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: UI/autopilot status"
+    },
+    {
+      "can_id": 692,
+      "can_id_hex": "0x2b4",
+      "match": "beq",
+      "trampoline": "0xcce4",
+      "decoder": "0x28e",
+      "decoder_via": "j",
+      "stored_raw": true,
+      "label": "correlated: chassis"
+    },
+    {
+      "can_id": 694,
+      "can_id_hex": "0x2b6",
+      "match": "beq",
+      "trampoline": "0xccea",
+      "decoder": "0x2dca",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: chassis"
+    },
+    {
+      "can_id": 737,
+      "can_id_hex": "0x2e1",
+      "match": "beq",
+      "trampoline": "0xccf6",
+      "decoder": "0x5762",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: VCFRONT status"
+    },
+    {
+      "can_id": 755,
+      "can_id_hex": "0x2f3",
+      "match": "beq",
+      "trampoline": "0xcd02",
+      "decoder": "0x30b4",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: UI trip/range"
+    },
+    {
+      "can_id": 786,
+      "can_id_hex": "0x312",
+      "match": "bne-fallthrough",
+      "trampoline": "0xca82",
+      "decoder": "0x5114",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": null
+    },
+    {
+      "can_id": 799,
+      "can_id_hex": "0x31f",
+      "match": "beq",
+      "trampoline": "0xcd0e",
+      "decoder": "0x4e0c",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: chassis"
+    },
+    {
+      "can_id": 801,
+      "can_id_hex": "0x321",
+      "match": "beq",
+      "trampoline": "0xcd1a",
+      "decoder": "0x2fcc",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: VCFRONT sensors (temps)"
+    },
+    {
+      "can_id": 818,
+      "can_id_hex": "0x332",
+      "match": "beq",
+      "trampoline": "0xcd26",
+      "decoder": "0x28e",
+      "decoder_via": "jal",
+      "stored_raw": true,
+      "label": "correlated: battery brick voltages"
+    },
+    {
+      "can_id": 819,
+      "can_id_hex": "0x333",
+      "match": "beq",
+      "trampoline": "0xcd48",
+      "decoder": "0x5040",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: UI charge"
+    },
+    {
+      "can_id": 820,
+      "can_id_hex": "0x334",
+      "match": "bne-fallthrough",
+      "trampoline": "0xcac2",
+      "decoder": "0x8504",
+      "decoder_via": "jal",
+      "stored_raw": false,
+      "label": null
+    },
+    {
+      "can_id": 825,
+      "can_id_hex": "0x339",
+      "match": "beq",
+      "trampoline": "0xcd54",
+      "decoder": "0x6dea",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: UI range"
+    },
+    {
+      "can_id": 826,
+      "can_id_hex": "0x33a",
+      "match": "bne-fallthrough",
+      "trampoline": "0xcafc",
+      "decoder": "0x5188",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": null
+    },
+    {
+      "can_id": 850,
+      "can_id_hex": "0x352",
+      "match": "beq",
+      "trampoline": "0xcd60",
+      "decoder": "0x28e",
+      "decoder_via": "j",
+      "stored_raw": true,
+      "label": "correlated: BMS energy status (SoC)"
+    },
+    {
+      "can_id": 880,
+      "can_id_hex": "0x370",
+      "match": "beq",
+      "trampoline": "0xce92",
+      "decoder": "0x1f8a",
+      "decoder_via": "jal",
+      "stored_raw": false,
+      "label": "correlated: BMS"
+    },
+    {
+      "can_id": 925,
+      "can_id_hex": "0x39d",
+      "match": "beq",
+      "trampoline": "0xcd7a",
+      "decoder": "0x5284",
+      "decoder_via": "j",
+      "stored_raw": false,
+      "label": "correlated: autopilot/steering"
+    },
+    {
+      "can_id": 991,
+      "can_id_hex": "0x3df",
+      "match": "beq",
+      "trampoline": "0xce20",
+      "decoder": "0x28e",
+      "decoder_via": "j",
+      "stored_raw": true,
+      "label": "correlated: UI/odometer"
+    }
+  ]
+}

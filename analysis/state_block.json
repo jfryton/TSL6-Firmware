@@ -1,0 +1,2046 @@
+{
+  "image": "runtime",
+  "global_pointer_gp": "0x1fffc000",
+  "model": "Single gp-based state block. 'direct' offsets are touched by lw/lh/lb/sw/sh/sb with (gp) base; 'address_taken' offsets are the base of sub-structures/arrays passed by pointer (e.g. the rule tables). Widths and write counts indicate scalar fields vs. structure bases.",
+  "distinct_offsets": 163,
+  "directly_accessed": 121,
+  "address_taken_only": 42,
+  "fields": [
+    {
+      "offset": 42,
+      "offset_hex": "0x2a",
+      "direct_reads": 1,
+      "direct_writes": 0,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0xb92",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 74,
+      "offset_hex": "0x4a",
+      "direct_reads": 1,
+      "direct_writes": 0,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0xba8",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 96,
+      "offset_hex": "0x60",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0xfa4a",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 112,
+      "offset_hex": "0x70",
+      "direct_reads": 2,
+      "direct_writes": 1,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7fbc",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 114,
+      "offset_hex": "0x72",
+      "direct_reads": 2,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x808e",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 116,
+      "offset_hex": "0x74",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 71,
+      "first_ref": "0x204",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 120,
+      "offset_hex": "0x78",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 4,
+      "first_ref": "0x8ad2",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 124,
+      "offset_hex": "0x7c",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 8,
+      "first_ref": "0x8b08",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 128,
+      "offset_hex": "0x80",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 3,
+      "first_ref": "0xb29e",
+      "mutable": false,
+      "note": "rule engine primary shortcut table base (256 bytes, trigger/action pairs)"
+    },
+    {
+      "offset": 132,
+      "offset_hex": "0x84",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 5,
+      "first_ref": "0xb392",
+      "mutable": false,
+      "note": "rule engine secondary table A (36 entries x 7 bytes)"
+    },
+    {
+      "offset": 136,
+      "offset_hex": "0x88",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 4,
+      "first_ref": "0xb38c",
+      "mutable": false,
+      "note": "rule engine secondary table B (36 entries x 7 bytes)"
+    },
+    {
+      "offset": 140,
+      "offset_hex": "0x8c",
+      "direct_reads": 2,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xe8e8",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 144,
+      "offset_hex": "0x90",
+      "direct_reads": 0,
+      "direct_writes": 2,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 6,
+      "first_ref": "0x1962",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 152,
+      "offset_hex": "0x98",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0xa7f2",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 160,
+      "offset_hex": "0xa0",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0xa806",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 168,
+      "offset_hex": "0xa8",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 2,
+      "first_ref": "0xf8b6",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 172,
+      "offset_hex": "0xac",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 5,
+      "first_ref": "0x86c",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 182,
+      "offset_hex": "0xb6",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0xc78",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 184,
+      "offset_hex": "0xb8",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x62a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 186,
+      "offset_hex": "0xba",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 1,
+      "first_ref": "0xbe0",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 188,
+      "offset_hex": "0xbc",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 3,
+      "first_ref": "0x636",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 190,
+      "offset_hex": "0xbe",
+      "direct_reads": 1,
+      "direct_writes": 0,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x6ba",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 192,
+      "offset_hex": "0xc0",
+      "direct_reads": 1,
+      "direct_writes": 0,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 6,
+      "first_ref": "0x790",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 194,
+      "offset_hex": "0xc2",
+      "direct_reads": 7,
+      "direct_writes": 0,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x74c",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 196,
+      "offset_hex": "0xc4",
+      "direct_reads": 1,
+      "direct_writes": 0,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x838",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 198,
+      "offset_hex": "0xc6",
+      "direct_reads": 8,
+      "direct_writes": 0,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x756",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 200,
+      "offset_hex": "0xc8",
+      "direct_reads": 1,
+      "direct_writes": 8,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xbc6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 201,
+      "offset_hex": "0xc9",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0xebc",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 204,
+      "offset_hex": "0xcc",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 1,
+      "first_ref": "0xbb4",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 208,
+      "offset_hex": "0xd0",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xc50",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 209,
+      "offset_hex": "0xd1",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0xbdc",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 210,
+      "offset_hex": "0xd2",
+      "direct_reads": 4,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x108e",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 211,
+      "offset_hex": "0xd3",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1a6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 212,
+      "offset_hex": "0xd4",
+      "direct_reads": 2,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1aa4",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 213,
+      "offset_hex": "0xd5",
+      "direct_reads": 2,
+      "direct_writes": 5,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1c0c",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 214,
+      "offset_hex": "0xd6",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x2026",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 216,
+      "offset_hex": "0xd8",
+      "direct_reads": 2,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0x1ec2",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 217,
+      "offset_hex": "0xd9",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1f44",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 218,
+      "offset_hex": "0xda",
+      "direct_reads": 3,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1ee8",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 219,
+      "offset_hex": "0xdb",
+      "direct_reads": 1,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1eaa",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 220,
+      "offset_hex": "0xdc",
+      "direct_reads": 3,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x2032",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 221,
+      "offset_hex": "0xdd",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1fca",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 222,
+      "offset_hex": "0xde",
+      "direct_reads": 3,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x21aa",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 223,
+      "offset_hex": "0xdf",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x2168",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 224,
+      "offset_hex": "0xe0",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x2190",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 225,
+      "offset_hex": "0xe1",
+      "direct_reads": 1,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x270c",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 228,
+      "offset_hex": "0xe4",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 4,
+      "first_ref": "0x1f8",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 231,
+      "offset_hex": "0xe7",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x2d5c",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 232,
+      "offset_hex": "0xe8",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 2,
+      "first_ref": "0x2dfc",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 233,
+      "offset_hex": "0xe9",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x2dca",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 234,
+      "offset_hex": "0xea",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x2e2a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 235,
+      "offset_hex": "0xeb",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x2f5c",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 236,
+      "offset_hex": "0xec",
+      "direct_reads": 1,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x3526",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 237,
+      "offset_hex": "0xed",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x3476",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 238,
+      "offset_hex": "0xee",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x3492",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 239,
+      "offset_hex": "0xef",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x34ac",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 240,
+      "offset_hex": "0xf0",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x34c8",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 241,
+      "offset_hex": "0xf1",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x3512",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 244,
+      "offset_hex": "0xf4",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 2,
+      "first_ref": "0x4302",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 252,
+      "offset_hex": "0xfc",
+      "direct_reads": 1,
+      "direct_writes": 0,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0x419a",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 253,
+      "offset_hex": "0xfd",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x41dc",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 254,
+      "offset_hex": "0xfe",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x41fa",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 256,
+      "offset_hex": "0x100",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 3,
+      "first_ref": "0x43a8",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 263,
+      "offset_hex": "0x107",
+      "direct_reads": 1,
+      "direct_writes": 4,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x4794",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 264,
+      "offset_hex": "0x108",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x4c7a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 268,
+      "offset_hex": "0x10c",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 2,
+      "first_ref": "0x4dca",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 269,
+      "offset_hex": "0x10d",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x4dde",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 270,
+      "offset_hex": "0x10e",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x4de6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 271,
+      "offset_hex": "0x10f",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x4dee",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 272,
+      "offset_hex": "0x110",
+      "direct_reads": 1,
+      "direct_writes": 5,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x4e7e",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 273,
+      "offset_hex": "0x111",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x52bc",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 276,
+      "offset_hex": "0x114",
+      "direct_reads": 3,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0x5250",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 277,
+      "offset_hex": "0x115",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x525a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 280,
+      "offset_hex": "0x118",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x53c6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 282,
+      "offset_hex": "0x11a",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x53ce",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 284,
+      "offset_hex": "0x11c",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x53d6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 286,
+      "offset_hex": "0x11e",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x53de",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 288,
+      "offset_hex": "0x120",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 3,
+      "first_ref": "0x53f6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 292,
+      "offset_hex": "0x124",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 0,
+      "first_ref": "0x5438",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 293,
+      "offset_hex": "0x125",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x5678",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 294,
+      "offset_hex": "0x126",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x5cd4",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 295,
+      "offset_hex": "0x127",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x5cf6",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 296,
+      "offset_hex": "0x128",
+      "direct_reads": 1,
+      "direct_writes": 0,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0x5804",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 297,
+      "offset_hex": "0x129",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x5842",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 298,
+      "offset_hex": "0x12a",
+      "direct_reads": 6,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x5f34",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 299,
+      "offset_hex": "0x12b",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x62f0",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 300,
+      "offset_hex": "0x12c",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x6a60",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 301,
+      "offset_hex": "0x12d",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x6aee",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 302,
+      "offset_hex": "0x12e",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x6ac0",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 303,
+      "offset_hex": "0x12f",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x61f4",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 304,
+      "offset_hex": "0x130",
+      "direct_reads": 2,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x6146",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 305,
+      "offset_hex": "0x131",
+      "direct_reads": 1,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x5f40",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 306,
+      "offset_hex": "0x132",
+      "direct_reads": 1,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x5f7c",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 308,
+      "offset_hex": "0x134",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 1,
+      "first_ref": "0x5eba",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 312,
+      "offset_hex": "0x138",
+      "direct_reads": 2,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 2,
+      "first_ref": "0x7584",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 313,
+      "offset_hex": "0x139",
+      "direct_reads": 3,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7594",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 314,
+      "offset_hex": "0x13a",
+      "direct_reads": 2,
+      "direct_writes": 3,
+      "access_widths": [
+        1,
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x75f6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 315,
+      "offset_hex": "0x13b",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7662",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 316,
+      "offset_hex": "0x13c",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7614",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 317,
+      "offset_hex": "0x13d",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x777c",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 320,
+      "offset_hex": "0x140",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 2,
+      "first_ref": "0x7792",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 321,
+      "offset_hex": "0x141",
+      "direct_reads": 2,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x77a8",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 322,
+      "offset_hex": "0x142",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x77b6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 324,
+      "offset_hex": "0x144",
+      "direct_reads": 3,
+      "direct_writes": 9,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0x784a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 325,
+      "offset_hex": "0x145",
+      "direct_reads": 3,
+      "direct_writes": 3,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x795a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 326,
+      "offset_hex": "0x146",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x78c0",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 327,
+      "offset_hex": "0x147",
+      "direct_reads": 1,
+      "direct_writes": 4,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x788a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 328,
+      "offset_hex": "0x148",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7baa",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 332,
+      "offset_hex": "0x14c",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 1,
+      "first_ref": "0x7bbe",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 336,
+      "offset_hex": "0x150",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 2,
+      "first_ref": "0x7cd0",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 337,
+      "offset_hex": "0x151",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7cb8",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 338,
+      "offset_hex": "0x152",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7c8e",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 340,
+      "offset_hex": "0x154",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0x7ea2",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 341,
+      "offset_hex": "0x155",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7eb0",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 342,
+      "offset_hex": "0x156",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7ec2",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 343,
+      "offset_hex": "0x157",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7ed4",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 344,
+      "offset_hex": "0x158",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x805e",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 345,
+      "offset_hex": "0x159",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x7fcc",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 346,
+      "offset_hex": "0x15a",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x7fdc",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 347,
+      "offset_hex": "0x15b",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x7fee",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 348,
+      "offset_hex": "0x15c",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x8000",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 349,
+      "offset_hex": "0x15d",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x8012",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 350,
+      "offset_hex": "0x15e",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x8028",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 351,
+      "offset_hex": "0x15f",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x803e",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 352,
+      "offset_hex": "0x160",
+      "direct_reads": 2,
+      "direct_writes": 7,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x8178",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 356,
+      "offset_hex": "0x164",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 2,
+      "first_ref": "0x8134",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 358,
+      "offset_hex": "0x166",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x88ae",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 359,
+      "offset_hex": "0x167",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x88f8",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 360,
+      "offset_hex": "0x168",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x890a",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 361,
+      "offset_hex": "0x169",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x889c",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 362,
+      "offset_hex": "0x16a",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x88c8",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 363,
+      "offset_hex": "0x16b",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x88e4",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 364,
+      "offset_hex": "0x16c",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x833a",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 368,
+      "offset_hex": "0x170",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0x9d28",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 372,
+      "offset_hex": "0x174",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 1,
+      "first_ref": "0x9480",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 376,
+      "offset_hex": "0x178",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 1,
+      "first_ref": "0xb8c2",
+      "mutable": true,
+      "note": "telemetry rate-limit timestamp (0xB0 dashboard packet throttle)"
+    },
+    {
+      "offset": 380,
+      "offset_hex": "0x17c",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 1,
+      "first_ref": "0xb9c6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 384,
+      "offset_hex": "0x180",
+      "direct_reads": 2,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xcecc",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 388,
+      "offset_hex": "0x184",
+      "direct_reads": 2,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 8,
+      "first_ref": "0x24a6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 389,
+      "offset_hex": "0x185",
+      "direct_reads": 3,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x248a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 390,
+      "offset_hex": "0x186",
+      "direct_reads": 12,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1ed4",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 391,
+      "offset_hex": "0x187",
+      "direct_reads": 4,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x988c",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 392,
+      "offset_hex": "0x188",
+      "direct_reads": 27,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x22dc",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 393,
+      "offset_hex": "0x189",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xd0ca",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 394,
+      "offset_hex": "0x18a",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xd122",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 396,
+      "offset_hex": "0x18c",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0x42a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 397,
+      "offset_hex": "0x18d",
+      "direct_reads": 7,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xe3ce",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 398,
+      "offset_hex": "0x18e",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xe7b6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 399,
+      "offset_hex": "0x18f",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xec36",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 400,
+      "offset_hex": "0x190",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xec44",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 401,
+      "offset_hex": "0x191",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xea68",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 402,
+      "offset_hex": "0x192",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xeaa2",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 403,
+      "offset_hex": "0x193",
+      "direct_reads": 3,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xec8c",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 404,
+      "offset_hex": "0x194",
+      "direct_reads": 3,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xec90",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 408,
+      "offset_hex": "0x198",
+      "direct_reads": 2,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0xe9f0",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 409,
+      "offset_hex": "0x199",
+      "direct_reads": 1,
+      "direct_writes": 2,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xe93a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 410,
+      "offset_hex": "0x19a",
+      "direct_reads": 4,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0xe8f0",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 412,
+      "offset_hex": "0x19c",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        2
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1083a",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 414,
+      "offset_hex": "0x19e",
+      "direct_reads": 1,
+      "direct_writes": 1,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 0,
+      "first_ref": "0x1082e",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 416,
+      "offset_hex": "0x1a0",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 1,
+      "first_ref": "0x4bc",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 420,
+      "offset_hex": "0x1a4",
+      "direct_reads": 2,
+      "direct_writes": 0,
+      "access_widths": [
+        1
+      ],
+      "address_taken": 1,
+      "first_ref": "0x10a94",
+      "mutable": false,
+      "note": null
+    },
+    {
+      "offset": 424,
+      "offset_hex": "0x1a8",
+      "direct_reads": 0,
+      "direct_writes": 1,
+      "access_widths": [
+        4
+      ],
+      "address_taken": 0,
+      "first_ref": "0x10cb6",
+      "mutable": true,
+      "note": null
+    },
+    {
+      "offset": 1894,
+      "offset_hex": "0x766",
+      "direct_reads": 0,
+      "direct_writes": 0,
+      "access_widths": [],
+      "address_taken": 1,
+      "first_ref": "0xf89e",
+      "mutable": false,
+      "note": null
+    }
+  ]
+}

@@ -1,0 +1,3591 @@
+{
+  "image": "runtime",
+  "model": "Absolute-addressed RAM signal cache (CAN-decode output). Reached via auipc+load/store rather than gp. Telemetry getters sample these slots into the 0xB0 dashboard packet.",
+  "ram_window": "0x20000000-0x20010000",
+  "distinct_addresses": 353,
+  "telemetry_slots": {
+    "0x20003f60": [
+      {
+        "getter": "0x4d14",
+        "label": "gear",
+        "width": 1
+      }
+    ],
+    "0x20003ef6": [
+      {
+        "getter": "0x2900",
+        "label": "turn signals",
+        "width": 1
+      }
+    ],
+    "0x20003f00": [
+      {
+        "getter": "0x2d08",
+        "label": "autopilot state",
+        "width": 1
+      }
+    ],
+    "0x20003f86": [
+      {
+        "getter": "0x5d42",
+        "label": "door state",
+        "width": 1
+      }
+    ],
+    "0x20003f81": [
+      {
+        "getter": "0x51ec",
+        "label": "state of charge",
+        "width": 1
+      }
+    ],
+    "0x20003f84": [
+      {
+        "getter": "0x5bd0",
+        "label": "appearance (light/dark)",
+        "width": 1
+      }
+    ],
+    "0x20003f38": [
+      {
+        "getter": "0x4162",
+        "label": "flag bit",
+        "width": 1
+      }
+    ],
+    "0x20003f85": [
+      {
+        "getter": "0x5d22",
+        "label": "flag bit",
+        "width": 1
+      }
+    ],
+    "0x20003e5c": [
+      {
+        "getter": "0x7e42",
+        "label": "inverter power",
+        "width": 2
+      }
+    ],
+    "0x20003f80": [
+      {
+        "getter": "0x4fe0",
+        "label": "battery heating",
+        "width": 1
+      }
+    ]
+  },
+  "addresses": [
+    {
+      "addr": 536883528,
+      "addr_hex": "0x20003148",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536883628,
+      "addr_hex": "0x200031ac",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536885148,
+      "addr_hex": "0x2000379c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536885344,
+      "addr_hex": "0x20003860",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536885388,
+      "addr_hex": "0x2000388c",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536885420,
+      "addr_hex": "0x200038ac",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536885542,
+      "addr_hex": "0x20003926",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536885550,
+      "addr_hex": "0x2000392e",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536885554,
+      "addr_hex": "0x20003932",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536885583,
+      "addr_hex": "0x2000394f",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536885752,
+      "addr_hex": "0x200039f8",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536885794,
+      "addr_hex": "0x20003a22",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536885891,
+      "addr_hex": "0x20003a83",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536885900,
+      "addr_hex": "0x20003a8c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886000,
+      "addr_hex": "0x20003af0",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536886050,
+      "addr_hex": "0x20003b22",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886118,
+      "addr_hex": "0x20003b66",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886125,
+      "addr_hex": "0x20003b6d",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886140,
+      "addr_hex": "0x20003b7c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886142,
+      "addr_hex": "0x20003b7e",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886196,
+      "addr_hex": "0x20003bb4",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886207,
+      "addr_hex": "0x20003bbf",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886349,
+      "addr_hex": "0x20003c4d",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536886378,
+      "addr_hex": "0x20003c6a",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886443,
+      "addr_hex": "0x20003cab",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536886446,
+      "addr_hex": "0x20003cae",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886456,
+      "addr_hex": "0x20003cb8",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886462,
+      "addr_hex": "0x20003cbe",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536886502,
+      "addr_hex": "0x20003ce6",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886512,
+      "addr_hex": "0x20003cf0",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536886517,
+      "addr_hex": "0x20003cf5",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886558,
+      "addr_hex": "0x20003d1e",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536886576,
+      "addr_hex": "0x20003d30",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886589,
+      "addr_hex": "0x20003d3d",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536886648,
+      "addr_hex": "0x20003d78",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886698,
+      "addr_hex": "0x20003daa",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536886716,
+      "addr_hex": "0x20003dbc",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886719,
+      "addr_hex": "0x20003dbf",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886722,
+      "addr_hex": "0x20003dc2",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536886746,
+      "addr_hex": "0x20003dda",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886750,
+      "addr_hex": "0x20003dde",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886778,
+      "addr_hex": "0x20003dfa",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886804,
+      "addr_hex": "0x20003e14",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886808,
+      "addr_hex": "0x20003e18",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536886818,
+      "addr_hex": "0x20003e22",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886819,
+      "addr_hex": "0x20003e23",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886824,
+      "addr_hex": "0x20003e28",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536886876,
+      "addr_hex": "0x20003e5c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false,
+      "telemetry": [
+        {
+          "getter": "0x7e42",
+          "label": "inverter power",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "addr": 536886884,
+      "addr_hex": "0x20003e64",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886893,
+      "addr_hex": "0x20003e6d",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536886949,
+      "addr_hex": "0x20003ea5",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887004,
+      "addr_hex": "0x20003edc",
+      "reads": 0,
+      "writes": 4,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887005,
+      "addr_hex": "0x20003edd",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887008,
+      "addr_hex": "0x20003ee0",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887009,
+      "addr_hex": "0x20003ee1",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887010,
+      "addr_hex": "0x20003ee2",
+      "reads": 3,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887012,
+      "addr_hex": "0x20003ee4",
+      "reads": 3,
+      "writes": 1,
+      "widths": [
+        2,
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887016,
+      "addr_hex": "0x20003ee8",
+      "reads": 0,
+      "writes": 2,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887020,
+      "addr_hex": "0x20003eec",
+      "reads": 0,
+      "writes": 11,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887024,
+      "addr_hex": "0x20003ef0",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887025,
+      "addr_hex": "0x20003ef1",
+      "reads": 6,
+      "writes": 8,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887026,
+      "addr_hex": "0x20003ef2",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887027,
+      "addr_hex": "0x20003ef3",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887028,
+      "addr_hex": "0x20003ef4",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887029,
+      "addr_hex": "0x20003ef5",
+      "reads": 4,
+      "writes": 4,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887030,
+      "addr_hex": "0x20003ef6",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true,
+      "telemetry": [
+        {
+          "getter": "0x2900",
+          "label": "turn signals",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887031,
+      "addr_hex": "0x20003ef7",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887032,
+      "addr_hex": "0x20003ef8",
+      "reads": 3,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887033,
+      "addr_hex": "0x20003ef9",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887034,
+      "addr_hex": "0x20003efa",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887035,
+      "addr_hex": "0x20003efb",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887036,
+      "addr_hex": "0x20003efc",
+      "reads": 7,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887040,
+      "addr_hex": "0x20003f00",
+      "reads": 7,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true,
+      "telemetry": [
+        {
+          "getter": "0x2d08",
+          "label": "autopilot state",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887041,
+      "addr_hex": "0x20003f01",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887046,
+      "addr_hex": "0x20003f06",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887047,
+      "addr_hex": "0x20003f07",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887048,
+      "addr_hex": "0x20003f08",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887049,
+      "addr_hex": "0x20003f09",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887052,
+      "addr_hex": "0x20003f0c",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887053,
+      "addr_hex": "0x20003f0d",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887054,
+      "addr_hex": "0x20003f0e",
+      "reads": 3,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887055,
+      "addr_hex": "0x20003f0f",
+      "reads": 3,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887056,
+      "addr_hex": "0x20003f10",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887058,
+      "addr_hex": "0x20003f12",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887060,
+      "addr_hex": "0x20003f14",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887062,
+      "addr_hex": "0x20003f16",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887064,
+      "addr_hex": "0x20003f18",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887066,
+      "addr_hex": "0x20003f1a",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887068,
+      "addr_hex": "0x20003f1c",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887069,
+      "addr_hex": "0x20003f1d",
+      "reads": 2,
+      "writes": 5,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887070,
+      "addr_hex": "0x20003f1e",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887071,
+      "addr_hex": "0x20003f1f",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887072,
+      "addr_hex": "0x20003f20",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887073,
+      "addr_hex": "0x20003f21",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887076,
+      "addr_hex": "0x20003f24",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887084,
+      "addr_hex": "0x20003f2c",
+      "reads": 0,
+      "writes": 5,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887085,
+      "addr_hex": "0x20003f2d",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887086,
+      "addr_hex": "0x20003f2e",
+      "reads": 0,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887087,
+      "addr_hex": "0x20003f2f",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887088,
+      "addr_hex": "0x20003f30",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887089,
+      "addr_hex": "0x20003f31",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887090,
+      "addr_hex": "0x20003f32",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887091,
+      "addr_hex": "0x20003f33",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887092,
+      "addr_hex": "0x20003f34",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887096,
+      "addr_hex": "0x20003f38",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true,
+      "telemetry": [
+        {
+          "getter": "0x4162",
+          "label": "flag bit",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887100,
+      "addr_hex": "0x20003f3c",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887102,
+      "addr_hex": "0x20003f3e",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887108,
+      "addr_hex": "0x20003f44",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887109,
+      "addr_hex": "0x20003f45",
+      "reads": 4,
+      "writes": 4,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887110,
+      "addr_hex": "0x20003f46",
+      "reads": 3,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887111,
+      "addr_hex": "0x20003f47",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887112,
+      "addr_hex": "0x20003f48",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887113,
+      "addr_hex": "0x20003f49",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887114,
+      "addr_hex": "0x20003f4a",
+      "reads": 2,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887115,
+      "addr_hex": "0x20003f4b",
+      "reads": 2,
+      "writes": 4,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887116,
+      "addr_hex": "0x20003f4c",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887124,
+      "addr_hex": "0x20003f54",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1,
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887125,
+      "addr_hex": "0x20003f55",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887126,
+      "addr_hex": "0x20003f56",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887127,
+      "addr_hex": "0x20003f57",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887128,
+      "addr_hex": "0x20003f58",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887136,
+      "addr_hex": "0x20003f60",
+      "reads": 4,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true,
+      "telemetry": [
+        {
+          "getter": "0x4d14",
+          "label": "gear",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887137,
+      "addr_hex": "0x20003f61",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887140,
+      "addr_hex": "0x20003f64",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887141,
+      "addr_hex": "0x20003f65",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887144,
+      "addr_hex": "0x20003f68",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887151,
+      "addr_hex": "0x20003f6f",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887160,
+      "addr_hex": "0x20003f78",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        1,
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887161,
+      "addr_hex": "0x20003f79",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887162,
+      "addr_hex": "0x20003f7a",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887163,
+      "addr_hex": "0x20003f7b",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887164,
+      "addr_hex": "0x20003f7c",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887166,
+      "addr_hex": "0x20003f7e",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887168,
+      "addr_hex": "0x20003f80",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true,
+      "telemetry": [
+        {
+          "getter": "0x4fe0",
+          "label": "battery heating",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887169,
+      "addr_hex": "0x20003f81",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true,
+      "telemetry": [
+        {
+          "getter": "0x51ec",
+          "label": "state of charge",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887170,
+      "addr_hex": "0x20003f82",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887172,
+      "addr_hex": "0x20003f84",
+      "reads": 3,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true,
+      "telemetry": [
+        {
+          "getter": "0x5bd0",
+          "label": "appearance (light/dark)",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887173,
+      "addr_hex": "0x20003f85",
+      "reads": 3,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true,
+      "telemetry": [
+        {
+          "getter": "0x5d22",
+          "label": "flag bit",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887174,
+      "addr_hex": "0x20003f86",
+      "reads": 3,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false,
+      "telemetry": [
+        {
+          "getter": "0x5d42",
+          "label": "door state",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "addr": 536887175,
+      "addr_hex": "0x20003f87",
+      "reads": 3,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887176,
+      "addr_hex": "0x20003f88",
+      "reads": 3,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887177,
+      "addr_hex": "0x20003f89",
+      "reads": 3,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887178,
+      "addr_hex": "0x20003f8a",
+      "reads": 1,
+      "writes": 6,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887179,
+      "addr_hex": "0x20003f8b",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887180,
+      "addr_hex": "0x20003f8c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887181,
+      "addr_hex": "0x20003f8d",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887182,
+      "addr_hex": "0x20003f8e",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887183,
+      "addr_hex": "0x20003f8f",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887184,
+      "addr_hex": "0x20003f90",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887185,
+      "addr_hex": "0x20003f91",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887188,
+      "addr_hex": "0x20003f94",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887192,
+      "addr_hex": "0x20003f98",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887196,
+      "addr_hex": "0x20003f9c",
+      "reads": 2,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887200,
+      "addr_hex": "0x20003fa0",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        2,
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887202,
+      "addr_hex": "0x20003fa2",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887204,
+      "addr_hex": "0x20003fa4",
+      "reads": 0,
+      "writes": 2,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887208,
+      "addr_hex": "0x20003fa8",
+      "reads": 2,
+      "writes": 4,
+      "widths": [
+        1,
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887209,
+      "addr_hex": "0x20003fa9",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887210,
+      "addr_hex": "0x20003faa",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887212,
+      "addr_hex": "0x20003fac",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887213,
+      "addr_hex": "0x20003fad",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887214,
+      "addr_hex": "0x20003fae",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887215,
+      "addr_hex": "0x20003faf",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887216,
+      "addr_hex": "0x20003fb0",
+      "reads": 2,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887217,
+      "addr_hex": "0x20003fb1",
+      "reads": 4,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887218,
+      "addr_hex": "0x20003fb2",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887219,
+      "addr_hex": "0x20003fb3",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887220,
+      "addr_hex": "0x20003fb4",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887221,
+      "addr_hex": "0x20003fb5",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887222,
+      "addr_hex": "0x20003fb6",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887223,
+      "addr_hex": "0x20003fb7",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887224,
+      "addr_hex": "0x20003fb8",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887225,
+      "addr_hex": "0x20003fb9",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887226,
+      "addr_hex": "0x20003fba",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887227,
+      "addr_hex": "0x20003fbb",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887228,
+      "addr_hex": "0x20003fbc",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887229,
+      "addr_hex": "0x20003fbd",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887230,
+      "addr_hex": "0x20003fbe",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887231,
+      "addr_hex": "0x20003fbf",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887232,
+      "addr_hex": "0x20003fc0",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887233,
+      "addr_hex": "0x20003fc1",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887234,
+      "addr_hex": "0x20003fc2",
+      "reads": 1,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887235,
+      "addr_hex": "0x20003fc3",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887236,
+      "addr_hex": "0x20003fc4",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887240,
+      "addr_hex": "0x20003fc8",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887246,
+      "addr_hex": "0x20003fce",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887248,
+      "addr_hex": "0x20003fd0",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887249,
+      "addr_hex": "0x20003fd1",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887252,
+      "addr_hex": "0x20003fd4",
+      "reads": 6,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887256,
+      "addr_hex": "0x20003fd8",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887264,
+      "addr_hex": "0x20003fe0",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887268,
+      "addr_hex": "0x20003fe4",
+      "reads": 8,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887269,
+      "addr_hex": "0x20003fe5",
+      "reads": 0,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887272,
+      "addr_hex": "0x20003fe8",
+      "reads": 0,
+      "writes": 3,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887276,
+      "addr_hex": "0x20003fec",
+      "reads": 0,
+      "writes": 3,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887278,
+      "addr_hex": "0x20003fee",
+      "reads": 0,
+      "writes": 4,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887279,
+      "addr_hex": "0x20003fef",
+      "reads": 2,
+      "writes": 5,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887280,
+      "addr_hex": "0x20003ff0",
+      "reads": 13,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887284,
+      "addr_hex": "0x20003ff4",
+      "reads": 1,
+      "writes": 4,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887286,
+      "addr_hex": "0x20003ff6",
+      "reads": 2,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887288,
+      "addr_hex": "0x20003ff8",
+      "reads": 0,
+      "writes": 2,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887292,
+      "addr_hex": "0x20003ffc",
+      "reads": 1,
+      "writes": 9,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887293,
+      "addr_hex": "0x20003ffd",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887294,
+      "addr_hex": "0x20003ffe",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887295,
+      "addr_hex": "0x20003fff",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887302,
+      "addr_hex": "0x20004006",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887304,
+      "addr_hex": "0x20004008",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887306,
+      "addr_hex": "0x2000400a",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887315,
+      "addr_hex": "0x20004013",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887318,
+      "addr_hex": "0x20004016",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887322,
+      "addr_hex": "0x2000401a",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887330,
+      "addr_hex": "0x20004022",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887340,
+      "addr_hex": "0x2000402c",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887364,
+      "addr_hex": "0x20004044",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887371,
+      "addr_hex": "0x2000404b",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887380,
+      "addr_hex": "0x20004054",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887432,
+      "addr_hex": "0x20004088",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887502,
+      "addr_hex": "0x200040ce",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887540,
+      "addr_hex": "0x200040f4",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887584,
+      "addr_hex": "0x20004120",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887662,
+      "addr_hex": "0x2000416e",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887686,
+      "addr_hex": "0x20004186",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887700,
+      "addr_hex": "0x20004194",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887750,
+      "addr_hex": "0x200041c6",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887764,
+      "addr_hex": "0x200041d4",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887773,
+      "addr_hex": "0x200041dd",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887788,
+      "addr_hex": "0x200041ec",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887796,
+      "addr_hex": "0x200041f4",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887824,
+      "addr_hex": "0x20004210",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887826,
+      "addr_hex": "0x20004212",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887831,
+      "addr_hex": "0x20004217",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887836,
+      "addr_hex": "0x2000421c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887844,
+      "addr_hex": "0x20004224",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536887859,
+      "addr_hex": "0x20004233",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887882,
+      "addr_hex": "0x2000424a",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887887,
+      "addr_hex": "0x2000424f",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887888,
+      "addr_hex": "0x20004250",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887912,
+      "addr_hex": "0x20004268",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887923,
+      "addr_hex": "0x20004273",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887928,
+      "addr_hex": "0x20004278",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887940,
+      "addr_hex": "0x20004284",
+      "reads": 3,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887950,
+      "addr_hex": "0x2000428e",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887966,
+      "addr_hex": "0x2000429e",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887980,
+      "addr_hex": "0x200042ac",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536887990,
+      "addr_hex": "0x200042b6",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887992,
+      "addr_hex": "0x200042b8",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536887996,
+      "addr_hex": "0x200042bc",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888006,
+      "addr_hex": "0x200042c6",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888074,
+      "addr_hex": "0x2000430a",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536888104,
+      "addr_hex": "0x20004328",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888175,
+      "addr_hex": "0x2000436f",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536888206,
+      "addr_hex": "0x2000438e",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536888262,
+      "addr_hex": "0x200043c6",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888324,
+      "addr_hex": "0x20004404",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888359,
+      "addr_hex": "0x20004427",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888360,
+      "addr_hex": "0x20004428",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888361,
+      "addr_hex": "0x20004429",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888396,
+      "addr_hex": "0x2000444c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888460,
+      "addr_hex": "0x2000448c",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536888472,
+      "addr_hex": "0x20004498",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888492,
+      "addr_hex": "0x200044ac",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888496,
+      "addr_hex": "0x200044b0",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888505,
+      "addr_hex": "0x200044b9",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888512,
+      "addr_hex": "0x200044c0",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888532,
+      "addr_hex": "0x200044d4",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536888646,
+      "addr_hex": "0x20004546",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888655,
+      "addr_hex": "0x2000454f",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888656,
+      "addr_hex": "0x20004550",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888666,
+      "addr_hex": "0x2000455a",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888679,
+      "addr_hex": "0x20004567",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888684,
+      "addr_hex": "0x2000456c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888751,
+      "addr_hex": "0x200045af",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888752,
+      "addr_hex": "0x200045b0",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536888904,
+      "addr_hex": "0x20004648",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536888972,
+      "addr_hex": "0x2000468c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889007,
+      "addr_hex": "0x200046af",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889008,
+      "addr_hex": "0x200046b0",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536889098,
+      "addr_hex": "0x2000470a",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889116,
+      "addr_hex": "0x2000471c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889234,
+      "addr_hex": "0x20004792",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889263,
+      "addr_hex": "0x200047af",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889264,
+      "addr_hex": "0x200047b0",
+      "reads": 3,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889266,
+      "addr_hex": "0x200047b2",
+      "reads": 6,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889276,
+      "addr_hex": "0x200047bc",
+      "reads": 4,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889280,
+      "addr_hex": "0x200047c0",
+      "reads": 0,
+      "writes": 2,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889284,
+      "addr_hex": "0x200047c4",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889285,
+      "addr_hex": "0x200047c5",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889286,
+      "addr_hex": "0x200047c6",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1,
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889287,
+      "addr_hex": "0x200047c7",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889288,
+      "addr_hex": "0x200047c8",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889289,
+      "addr_hex": "0x200047c9",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536889300,
+      "addr_hex": "0x200047d4",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889406,
+      "addr_hex": "0x2000483e",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889444,
+      "addr_hex": "0x20004864",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889446,
+      "addr_hex": "0x20004866",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889452,
+      "addr_hex": "0x2000486c",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889471,
+      "addr_hex": "0x2000487f",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889544,
+      "addr_hex": "0x200048c8",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889545,
+      "addr_hex": "0x200048c9",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889546,
+      "addr_hex": "0x200048ca",
+      "reads": 3,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889566,
+      "addr_hex": "0x200048de",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889574,
+      "addr_hex": "0x200048e6",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889660,
+      "addr_hex": "0x2000493c",
+      "reads": 5,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889661,
+      "addr_hex": "0x2000493d",
+      "reads": 2,
+      "writes": 2,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889662,
+      "addr_hex": "0x2000493e",
+      "reads": 1,
+      "writes": 3,
+      "widths": [
+        1,
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889663,
+      "addr_hex": "0x2000493f",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889664,
+      "addr_hex": "0x20004940",
+      "reads": 0,
+      "writes": 2,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889668,
+      "addr_hex": "0x20004944",
+      "reads": 0,
+      "writes": 5,
+      "widths": [
+        4
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889672,
+      "addr_hex": "0x20004948",
+      "reads": 0,
+      "writes": 2,
+      "widths": [
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889674,
+      "addr_hex": "0x2000494a",
+      "reads": 5,
+      "writes": 4,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889675,
+      "addr_hex": "0x2000494b",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889676,
+      "addr_hex": "0x2000494c",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889677,
+      "addr_hex": "0x2000494d",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889678,
+      "addr_hex": "0x2000494e",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889679,
+      "addr_hex": "0x2000494f",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889680,
+      "addr_hex": "0x20004950",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1,
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889681,
+      "addr_hex": "0x20004951",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889682,
+      "addr_hex": "0x20004952",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889684,
+      "addr_hex": "0x20004954",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889686,
+      "addr_hex": "0x20004956",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889688,
+      "addr_hex": "0x20004958",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889689,
+      "addr_hex": "0x20004959",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889690,
+      "addr_hex": "0x2000495a",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889692,
+      "addr_hex": "0x2000495c",
+      "reads": 6,
+      "writes": 5,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889693,
+      "addr_hex": "0x2000495d",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889694,
+      "addr_hex": "0x2000495e",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889695,
+      "addr_hex": "0x2000495f",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889696,
+      "addr_hex": "0x20004960",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889697,
+      "addr_hex": "0x20004961",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889698,
+      "addr_hex": "0x20004962",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1,
+        2
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889699,
+      "addr_hex": "0x20004963",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889700,
+      "addr_hex": "0x20004964",
+      "reads": 1,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536889702,
+      "addr_hex": "0x20004966",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889704,
+      "addr_hex": "0x20004968",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889706,
+      "addr_hex": "0x2000496a",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889707,
+      "addr_hex": "0x2000496b",
+      "reads": 2,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889708,
+      "addr_hex": "0x2000496c",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889712,
+      "addr_hex": "0x20004970",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536889729,
+      "addr_hex": "0x20004981",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889732,
+      "addr_hex": "0x20004984",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536889906,
+      "addr_hex": "0x20004a32",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536890092,
+      "addr_hex": "0x20004aec",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        4
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536890123,
+      "addr_hex": "0x20004b0b",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536890277,
+      "addr_hex": "0x20004ba5",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536890303,
+      "addr_hex": "0x20004bbf",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        1
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536890543,
+      "addr_hex": "0x20004caf",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536890598,
+      "addr_hex": "0x20004ce6",
+      "reads": 1,
+      "writes": 0,
+      "widths": [
+        2
+      ],
+      "mutable": false
+    },
+    {
+      "addr": 536890809,
+      "addr_hex": "0x20004db9",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536891078,
+      "addr_hex": "0x20004ec6",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536891334,
+      "addr_hex": "0x20004fc6",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536891590,
+      "addr_hex": "0x200050c6",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    },
+    {
+      "addr": 536901846,
+      "addr_hex": "0x200078d6",
+      "reads": 0,
+      "writes": 1,
+      "widths": [
+        1
+      ],
+      "mutable": true
+    },
+    {
+      "addr": 536903680,
+      "addr_hex": "0x20008000",
+      "reads": 0,
+      "writes": 0,
+      "widths": [],
+      "mutable": false
+    }
+  ]
+}
