@@ -270,6 +270,31 @@ multi-step macro (e.g. "hold, wait 0.5 s, select") **cannot** be represented in
 the existing table. It requires either a firmware change or a single existing
 action that performs the whole sequence internally.
 
+### Trigger event sources
+
+The engine's `a0` argument is an 8-bit **event code**. `tools/map_rule_triggers.py`
+finds all **33** call sites that raise an event
+([analysis/rule_triggers.json](analysis/rule_triggers.json)): **22** pass a
+constant code (a fixed signal transition), and 11 compute the code from a decoded
+signal enum at runtime (e.g. a gear/autopilot state value). Several sites sit
+directly inside the per-CAN-ID decoders from section 10b, confirming the
+end-to-end path **CAN frame -> signal decode -> event code -> rule table ->
+action**. Examples attributed to their source decoder:
+
+| Call site | Trigger | Source (CAN ID) |
+|---|---|---|
+| `0x7fd4` | `0x8a` | `0x257` vehicle speed |
+| `0x8086` | `0x9f` | `0x257` vehicle speed |
+| `0x8112` | computed | `0x257` vehicle speed |
+| `0x5300` | `0xa0` | `0x39d` autopilot/steering |
+| `0x2a6c` | `0x97` | `0x238` drive inverter |
+| `0x6e48` | `0x5d` | `0x339` UI range |
+
+The distinct constant event codes observed are `0x00, 0x01, 0x03, 0x28, 0x2a,
+0x2d, 0x2e, 0x32, 0x4a, 0x5a, 0x5b, 0x5d, 0x68, 0x69, 0x6a, 0x6c, 0x8a, 0x97,
+0x9f, 0xa0, 0xb4, 0xb6`. These are the values a user shortcut's trigger byte
+must match in the `gp+0x80` table.
+
 ## 8. Firmware Update Path
 
 The runtime contains a **relay** update dispatcher at `0xbc76` (Confirmed). It
@@ -416,6 +441,16 @@ notification streams, diagnostics, and provisioning. Full evidence in
 | `0xD2` | `0xc08c` | Raw register/diagnostic read: resident slot `0x40000048` fetches 8 bytes, byte-swapped to big-endian halfwords, published via `0x28e`. Correlated. |
 | `0xF0` | `0xc0ee` | Configuration/provisioning write: subcode `s3>0x0D`, 14-byte credential validate (`0x12d4`), then config worker `0xa39a`. Correlated. |
 
+The `0xF0` config worker `0xa39a` dispatches on `payload[0]` (1..7) through a
+7-entry self-relative jump table at `0x115bc`. The sub-handlers are decoded in
+[analysis/config_worker.json](analysis/config_worker.json): selector 1 commits
+config and sets an enable flag; 2 clears two config bytes and acks; 3 and 6 are
+reserved no-ops; 4 applies a config record (`0x8dec`); **5 and 7 are bond-table
+operations** that iterate the paired-peer array at `gp+0x7c` (stride `0x2B` = 43
+bytes, up to index `0x81`), comparing 6-byte BLE MAC keys via resident `memcmp`
+slot `0x40000040`. This is the same bond array consulted during HID name binding
+(section 10), and the persistence path uses resident slots `0x40000068`/`0x4000017c`.
+
 ## 11. Recovered Function Inventory
 
 `tools/functions.py` recovers a call graph from direct-call (`jal`) evidence and
@@ -446,9 +481,12 @@ labeled import into Ghidra/Binary Ninja.
   executor.
 - Confirm the per-vehicle meaning of each decoded CAN ID (section 10b) against a
   real harness; current labels are correlated to community Model 3/Y bus IDs.
+- Confirm the semantics of each rule-engine event code (section 7) against
+  vehicle behavior; the code set and source decoders are now recovered.
 - Determine flash layout, image validation, and boot-slot selection.
-- Resolve the `0xD2` resident diagnostic source (`0x40000048`) and the `0xF0`
-  config worker's 7 sub-targets (`0xa39a`) to concrete settings.
+- Resolve the `0xD2` resident diagnostic source (`0x40000048`) to a concrete
+  register/sensor (the `0xF0` config worker `0xa39a` and its bond table are now
+  decoded in `analysis/config_worker.json`).
 
 See [REVERSE_ENGINEERING.md](REVERSE_ENGINEERING.md) for the chronological
 evidence trail and [CLEAN_ROOM_SPEC.md](CLEAN_ROOM_SPEC.md) for the rewrite

@@ -1,0 +1,90 @@
+{
+  "image": "runtime",
+  "note": "Hand-curated decode of the 0xF0 configuration/provisioning worker 0xa39a and its 7-entry sub-dispatch. Offsets are payload offsets (image base 0). Confidence: Confirmed (from disassembly) unless marked Correlated.",
+  "entry": "0xa39a",
+  "reached_from": "BLE command 0xF0 handler 0xc0ee (after 14-byte credential validate 0x12d4)",
+  "dispatch": {
+    "selector": "payload[0] (first byte after the validated header), range 1..7",
+    "guard": "0xa3ae: bltu a4(6), (payload[0]-1) -> 0xa5f6 reject when selector>7",
+    "jump_table_base": "0x115bc",
+    "jump_table_stride": 4,
+    "jump_table_kind": "signed self-relative (target = base + s32(base + idx*4))",
+    "stored_handle": "0xa39e: sh a0 -> RAM (16-bit request/handle latched before dispatch)"
+  },
+  "shared_primitives": {
+    "0x8a54": "config-store commit/flush: walks a config object (state base ~0x1fffbfec, slot 8), invokes resident slot 0x4000017c then 0x40000068 (NVS/flash-backed bond or settings persist).",
+    "0x8f46": "send 4-byte ack/result via resident notify slot 0x40000050 (a1=4, status byte from 0x...a0).",
+    "0x8dec": "long config/bond builder: allocates via resident slot 0x40000070, populates a multi-field record (large stack frame, many callee-saved regs).",
+    "0x40000040": "resident 6-byte compare (BLE MAC memcmp) used during bond-table scans.",
+    "0x40000068": "resident config persist entry.",
+    "0x4000017c": "resident config lookup/handle entry."
+  },
+  "sub_handlers": [
+    {
+      "selector": 1,
+      "target": "0xa3e2",
+      "confidence": "Correlated",
+      "summary": "Commit current config and set enabled flag. Calls 0x8a54 (config commit), then writes 1 to a RAM enable byte and returns.",
+      "evidence": ["0xa3e2: jal 0x8a54", "0xa3e8: sb 1 -> RAM (enable flag)"]
+    },
+    {
+      "selector": 2,
+      "target": "0xa40c",
+      "confidence": "Correlated",
+      "summary": "Reset/clear two config bytes then rebuild and notify. Calls 0x8a54, zeroes two RAM config bytes, then 0x8f46 (4-byte ack).",
+      "evidence": ["0xa40c: jal 0x8a54", "0xa414/0xa418: sb zero (two config bytes)", "0xa420: jal 0x8f46"]
+    },
+    {
+      "selector": 3,
+      "target": "0xa5c4",
+      "confidence": "Confirmed",
+      "summary": "No-op / epilogue: restores callee-saved registers and returns (shared function tail). Selector 3 and 6 both land here, i.e. reserved/unused subcodes.",
+      "evidence": ["0xa5c4: register restores + c.jr ra"]
+    },
+    {
+      "selector": 4,
+      "target": "0xa424",
+      "confidence": "Correlated",
+      "summary": "Tail-call into config builder 0x8dec after epilogue (apply a new config record).",
+      "evidence": ["0xa424: register restores", "0xa434: j 0x8dec"]
+    },
+    {
+      "selector": 5,
+      "target": "0xa438",
+      "confidence": "Correlated",
+      "summary": "Bond-table operation gated on selector-arg == 0x1F. Clears a RAM byte, then iterates the connection/bond array at gp+0x7c (stride 0x2B = 43 bytes, up to index 0x81) comparing 6-byte MAC addresses via resident slot 0x40000040.",
+      "evidence": [
+        "0xa438: jal 0x8a54; sb zero",
+        "0xa44a: bne s1,0x1F -> 0xa5c4 (require arg 0x1F)",
+        "0xa450: addi s5,gp,0x7c (bond table base)",
+        "0xa45c..0xa474: lw slot; resident 6-byte memcmp (slot 0x40); stride 0x2B; limit 0x81"
+      ]
+    },
+    {
+      "selector": 6,
+      "target": "0xa5c4",
+      "confidence": "Confirmed",
+      "summary": "Reserved/unused (shared epilogue, same as selector 3).",
+      "evidence": ["table entry 5 == table entry 2 -> 0xa5c4"]
+    },
+    {
+      "selector": 7,
+      "target": "0xa4e8",
+      "confidence": "Correlated",
+      "summary": "Second bond-table operation gated on selector-arg == 7. Advances the payload pointer by 2, clears a RAM byte, then iterates the gp+0x7c bond array (stride/limit as selector 5) — pair/unpair a specific peer.",
+      "evidence": [
+        "0xa4e8: jal 0x8a54; sb zero",
+        "0xa4fa: bne s1,7 -> 0xa5c4 (require arg 7)",
+        "0xa502: addi s4,gp,0x7c (bond table base)"
+      ]
+    }
+  ],
+  "bond_table": {
+    "base": "gp+0x7c",
+    "entry_stride_bytes": 43,
+    "key": "6-byte BLE MAC at entry+3",
+    "max_index": "0x81",
+    "compare": "resident slot 0x40000040 (memcmp)",
+    "note": "Correlated: this is the paired-peer/bond record array managed by F0 subcodes 5 and 7 and read during HID name binding (section 10)."
+  }
+}

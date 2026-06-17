@@ -1,0 +1,333 @@
+{
+  "image": "runtime",
+  "rule_engine": "0xe310",
+  "trigger_arg": "a0 (8-bit event code)",
+  "action_dispatch": "0xd16e",
+  "primary_table": "gp+0x80 (trigger,action pairs)",
+  "model": "CAN/signal decoders and input handlers raise an 8-bit event code into the rule engine; the engine maps event->action via the user shortcut table. Constant trigger codes are fixed transitions; 'computed' triggers derive the code from a decoded signal enum (e.g. gear/AP state) at runtime.",
+  "call_site_count": 33,
+  "constant_trigger_count": 22,
+  "distinct_constant_codes": [
+    "0x0",
+    "0x1",
+    "0x3",
+    "0x28",
+    "0x2a",
+    "0x2d",
+    "0x2e",
+    "0x32",
+    "0x4a",
+    "0x5a",
+    "0x5b",
+    "0x5d",
+    "0x68",
+    "0x69",
+    "0x6a",
+    "0x6c",
+    "0x8a",
+    "0x97",
+    "0x9f",
+    "0xa0",
+    "0xb4",
+    "0xb6"
+  ],
+  "call_sites": [
+    {
+      "call_site": "0x25c",
+      "call_kind": "j",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x26ea",
+      "call_kind": "jal",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x27e2",
+      "call_kind": "jal",
+      "trigger_code": "0x0",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x27ea",
+      "call_kind": "jal",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x2810",
+      "call_kind": "jal",
+      "trigger_code": "0x6a",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x2818",
+      "call_kind": "jal",
+      "trigger_code": "0x6c",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x2a6c",
+      "call_kind": "jal",
+      "trigger_code": "0x97",
+      "trigger_computed": false,
+      "in_can_decoder": "0x2a2a",
+      "can_id": "0x238",
+      "can_label": "correlated: drive inverter"
+    },
+    {
+      "call_site": "0x2c28",
+      "call_kind": "jal",
+      "trigger_code": "0x1",
+      "trigger_computed": false,
+      "in_can_decoder": "0x2a2a",
+      "can_id": "0x238",
+      "can_label": "correlated: drive inverter"
+    },
+    {
+      "call_site": "0x3712",
+      "call_kind": "jal",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x3812",
+      "call_kind": "jal",
+      "trigger_code": "0x2e",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x384a",
+      "call_kind": "jal",
+      "trigger_code": "0x2d",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x5022",
+      "call_kind": "jal",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": "0x4ffa",
+      "can_id": "0x25d",
+      "can_label": "correlated: body"
+    },
+    {
+      "call_site": "0x5300",
+      "call_kind": "jal",
+      "trigger_code": "0xa0",
+      "trigger_computed": false,
+      "in_can_decoder": "0x5284",
+      "can_id": "0x39d",
+      "can_label": "correlated: autopilot/steering"
+    },
+    {
+      "call_site": "0x56a8",
+      "call_kind": "j",
+      "trigger_code": "0x69",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x570e",
+      "call_kind": "jal",
+      "trigger_code": "0x68",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x57b0",
+      "call_kind": "j",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": "0x5762",
+      "can_id": "0x2e1",
+      "can_label": "correlated: VCFRONT status"
+    },
+    {
+      "call_site": "0x58a2",
+      "call_kind": "j",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": "0x57b6",
+      "can_id": "0x103",
+      "can_label": "correlated: body status"
+    },
+    {
+      "call_site": "0x5f6e",
+      "call_kind": "jal",
+      "trigger_code": "0x28",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x5fde",
+      "call_kind": "jal",
+      "trigger_code": "0x2a",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x6036",
+      "call_kind": "jal",
+      "trigger_code": "0x32",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x6288",
+      "call_kind": "jal",
+      "trigger_code": "0x5a",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x62ce",
+      "call_kind": "jal",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x62dc",
+      "call_kind": "jal",
+      "trigger_code": "0x5b",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x646c",
+      "call_kind": "jal",
+      "trigger_code": "0xb4",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x6518",
+      "call_kind": "jal",
+      "trigger_code": "0x3",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x66c0",
+      "call_kind": "jal",
+      "trigger_code": "0xb6",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x6886",
+      "call_kind": "j",
+      "trigger_code": "0x4a",
+      "trigger_computed": false,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x69de",
+      "call_kind": "jal",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": null,
+      "can_id": null,
+      "can_label": null
+    },
+    {
+      "call_site": "0x6e48",
+      "call_kind": "j",
+      "trigger_code": "0x5d",
+      "trigger_computed": false,
+      "in_can_decoder": "0x6dea",
+      "can_id": "0x339",
+      "can_label": "correlated: UI range"
+    },
+    {
+      "call_site": "0x6ea6",
+      "call_kind": "jal",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": "0x6dea",
+      "can_id": "0x339",
+      "can_label": "correlated: UI range"
+    },
+    {
+      "call_site": "0x7fd4",
+      "call_kind": "jal",
+      "trigger_code": "0x8a",
+      "trigger_computed": false,
+      "in_can_decoder": "0x7f9a",
+      "can_id": "0x257",
+      "can_label": "correlated: DIspeed (vehicle speed)"
+    },
+    {
+      "call_site": "0x8086",
+      "call_kind": "jal",
+      "trigger_code": "0x9f",
+      "trigger_computed": false,
+      "in_can_decoder": "0x7f9a",
+      "can_id": "0x257",
+      "can_label": "correlated: DIspeed (vehicle speed)"
+    },
+    {
+      "call_site": "0x8112",
+      "call_kind": "j",
+      "trigger_code": null,
+      "trigger_computed": true,
+      "in_can_decoder": "0x7f9a",
+      "can_id": "0x257",
+      "can_label": "correlated: DIspeed (vehicle speed)"
+    }
+  ]
+}
