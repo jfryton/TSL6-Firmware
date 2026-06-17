@@ -312,13 +312,8 @@ not recommended.
 
 ## Useful Local Analysis Files
 
-Generated offline under:
-
-```text
-/Users/jeff/tsl-firmware-downloads/535C62E239E339E31475FB10-2026-06-11/
-```
-
-Not all generated files are committed because full disassembly output is noisy.
+Generated offline alongside the archived images. Not all generated files are
+committed because full disassembly output is noisy.
 
 Useful generated files:
 
@@ -329,11 +324,8 @@ Useful generated files:
 - `runtime/runtime.base0.seeded.disasm.txt`
 - `runtime/runtime.seeded.disasm.txt`
 
-Tooling added to the Android repo:
-
-```text
-/Users/jeff/tsl-android/tools/analyze_firmware.py
-```
+Tooling is maintained in the Android repository
+([TSL-Cmd](https://github.com/jfryton/TSL-Cmd), `tools/analyze_firmware.py`).
 
 It uses Capstone in a local virtual environment to disassemble RISC-V/RVC.
 It can also emit a targeted disassembly window:

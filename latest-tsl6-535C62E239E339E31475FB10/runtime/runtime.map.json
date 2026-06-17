@@ -1,5 +1,5 @@
 {
-  "file": "/Users/jeff/tsl-firmware-downloads/535C62E239E339E31475FB10-2026-06-11/runtime/runtime.bin",
+  "file": "latest-tsl6-535C62E239E339E31475FB10/runtime/runtime.bin",
   "sha256_transport": "b1b2a3aa5e71d88336719bccb5da822faffc05acf50b5b482e570f1981dabbd5",
   "sha256_payload_if_stripped": "7adcb4622f017714a4896060522ce0076e8f0ff94511845d1b9d15b49dd677fd",
   "transport_size": 73872,

@@ -1,5 +1,5 @@
 {
-  "file": "/Users/jeff/tsl-firmware-downloads/535C62E239E339E31475FB10-2026-06-11/boot/boot.bin",
+  "file": "latest-tsl6-535C62E239E339E31475FB10/boot/boot.bin",
   "sha256_transport": "af8d613097164f0be2f37ca3aaf7f79d5eaa81dbf6996b0890827bd004914db7",
   "sha256_payload_if_stripped": "068c0a748ec58834258411126c610658e8008d75b88304737469a4a921f467a3",
   "transport_size": 12312,

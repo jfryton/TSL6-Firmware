@@ -16,13 +16,15 @@ Short answer: not safely yet.
 Useful local artifacts:
 
 - Runtime image:
-  `/Users/jeff/tsl-firmware-downloads/535C62E239E339E31475FB10-2026-06-11/runtime/runtime.bin`
+  `latest-tsl6-535C62E239E339E31475FB10/runtime/runtime.bin`
 - Boot image:
-  `/Users/jeff/tsl-firmware-downloads/535C62E239E339E31475FB10-2026-06-11/boot/boot.bin`
+  `latest-tsl6-535C62E239E339E31475FB10/boot/boot.bin`
 - Analyzer:
-  `/Users/jeff/tsl-android/tools/analyze_firmware.py`
+  `tools/analyze_firmware.py` (in the
+  [TSL-Cmd](https://github.com/jfryton/TSL-Cmd) Android repository)
 - Capstone venv:
-  `/Users/jeff/tsl-android/tools/.venv-re`
+  `tools/.venv-re` (in the
+  [TSL-Cmd](https://github.com/jfryton/TSL-Cmd) Android repository)
 
 Key findings:
 
