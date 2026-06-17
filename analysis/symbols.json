@@ -1,0 +1,2856 @@
+{
+  "image": "runtime",
+  "image_base": "0x0 (rebase to program image base in Ghidra)",
+  "symbol_count": 474,
+  "named_count": 86,
+  "kinds": {
+    "f": "function entry",
+    "l": "code label"
+  },
+  "symbols": [
+    {
+      "address": "0x180",
+      "name": "sub_0180",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1a6",
+      "name": "sub_01a6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1ac",
+      "name": "sub_01ac",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1da",
+      "name": "sub_01da",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1de",
+      "name": "sub_01de",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1e8",
+      "name": "sub_01e8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1f2",
+      "name": "sub_01f2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x204",
+      "name": "sub_0204",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x22e",
+      "name": "sub_022e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x272",
+      "name": "sub_0272",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x284",
+      "name": "sub_0284",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x28e",
+      "name": "can_raw_frame_store",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x2b8",
+      "name": "sub_02b8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x376",
+      "name": "sub_0376",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x42a",
+      "name": "sub_042a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x508",
+      "name": "sub_0508",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5b0",
+      "name": "sub_05b0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xd02",
+      "name": "sub_0d02",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xe8a",
+      "name": "sub_0e8a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1060",
+      "name": "sub_1060",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1096",
+      "name": "sub_1096",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x110a",
+      "name": "ble_tx_framer",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0x1236",
+      "name": "sub_1236",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1272",
+      "name": "sub_1272",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x129c",
+      "name": "sub_129c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x12d4",
+      "name": "icmd_helper_0x12d4",
+      "kind": "f",
+      "source": "internal_commands"
+    },
+    {
+      "address": "0x1316",
+      "name": "sub_1316",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1360",
+      "name": "sub_1360",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x13d0",
+      "name": "sub_13d0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x13f2",
+      "name": "sub_13f2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1436",
+      "name": "sub_1436",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x14d0",
+      "name": "sub_14d0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x14ea",
+      "name": "sub_14ea",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1684",
+      "name": "sub_1684",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1774",
+      "name": "sub_1774",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x193a",
+      "name": "sub_193a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x19e8",
+      "name": "sub_19e8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1a06",
+      "name": "sub_1a06",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1a12",
+      "name": "sub_1a12",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1a1e",
+      "name": "sub_1a1e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1ab4",
+      "name": "sub_1ab4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1ac0",
+      "name": "sub_1ac0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1ad2",
+      "name": "sub_1ad2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1b06",
+      "name": "sub_1b06",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1b1e",
+      "name": "sub_1b1e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1b5e",
+      "name": "sub_1b5e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1bc8",
+      "name": "sub_1bc8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1d92",
+      "name": "sub_1d92",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1dba",
+      "name": "sub_1dba",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1ddc",
+      "name": "sub_1ddc",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1e26",
+      "name": "sub_1e26",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1e48",
+      "name": "sub_1e48",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1e82",
+      "name": "sub_1e82",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1eb0",
+      "name": "sub_1eb0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1ee8",
+      "name": "sub_1ee8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1ef8",
+      "name": "sub_1ef8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1efe",
+      "name": "sub_1efe",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1f42",
+      "name": "sub_1f42",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1f5a",
+      "name": "sub_1f5a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1f64",
+      "name": "sub_1f64",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1f80",
+      "name": "sub_1f80",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1f8a",
+      "name": "can_decode_370",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x2144",
+      "name": "sub_2144",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x222e",
+      "name": "sub_222e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x22c6",
+      "name": "sub_22c6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x22d8",
+      "name": "sub_22d8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x243c",
+      "name": "sub_243c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x25a4",
+      "name": "sub_25a4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x25b0",
+      "name": "sub_25b0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x25f6",
+      "name": "sub_25f6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x28ac",
+      "name": "sub_28ac",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x28ba",
+      "name": "sub_28ba",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2900",
+      "name": "get_turn_signals",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x2922",
+      "name": "sub_2922",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x292c",
+      "name": "sub_292c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x295c",
+      "name": "sub_295c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x29a2",
+      "name": "sub_29a2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x29e2",
+      "name": "sub_29e2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2a24",
+      "name": "sub_2a24",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2a2a",
+      "name": "can_decode_238",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x2a8a",
+      "name": "sub_2a8a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2a94",
+      "name": "sub_2a94",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2a9e",
+      "name": "sub_2a9e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2aa8",
+      "name": "sub_2aa8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2ab2",
+      "name": "sub_2ab2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2ac0",
+      "name": "sub_2ac0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2b34",
+      "name": "sub_2b34",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2c08",
+      "name": "sub_2c08",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2c78",
+      "name": "sub_2c78",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2cac",
+      "name": "sub_2cac",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2d08",
+      "name": "get_autopilot_state",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x2d3a",
+      "name": "sub_2d3a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2d7c",
+      "name": "sub_2d7c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2dca",
+      "name": "can_decode_2B6",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x2dea",
+      "name": "sub_2dea",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2e24",
+      "name": "sub_2e24",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2e2a",
+      "name": "can_decode_293",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x2ec4",
+      "name": "sub_2ec4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2f1e",
+      "name": "sub_2f1e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x2f58",
+      "name": "can_decode_243",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x2fcc",
+      "name": "can_decode_321",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x2fea",
+      "name": "can_decode_20C",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x308c",
+      "name": "sub_308c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3096",
+      "name": "sub_3096",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x30a0",
+      "name": "sub_30a0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x30aa",
+      "name": "sub_30aa",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x30b4",
+      "name": "can_decode_2F3",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x3212",
+      "name": "sub_3212",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3222",
+      "name": "sub_3222",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3242",
+      "name": "sub_3242",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3254",
+      "name": "sub_3254",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x32b4",
+      "name": "sub_32b4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x32ce",
+      "name": "sub_32ce",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3352",
+      "name": "sub_3352",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3368",
+      "name": "sub_3368",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3396",
+      "name": "sub_3396",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x33aa",
+      "name": "sub_33aa",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x33e2",
+      "name": "keycode_primitive",
+      "kind": "f",
+      "source": "action_table"
+    },
+    {
+      "address": "0x341e",
+      "name": "sub_341e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x39d6",
+      "name": "sub_39d6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x39e2",
+      "name": "sub_39e2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x39ec",
+      "name": "sub_39ec",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x39f6",
+      "name": "sub_39f6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3a30",
+      "name": "action139_latch",
+      "kind": "f",
+      "source": "action_table"
+    },
+    {
+      "address": "0x3a3c",
+      "name": "sub_3a3c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3a46",
+      "name": "sub_3a46",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3a50",
+      "name": "sub_3a50",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3a5a",
+      "name": "sub_3a5a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x3a64",
+      "name": "sub_3a64",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x405a",
+      "name": "sub_405a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4064",
+      "name": "sub_4064",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x40be",
+      "name": "sub_40be",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4162",
+      "name": "get_indicator_flag_bit",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x4172",
+      "name": "sub_4172",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x437a",
+      "name": "sub_437a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4476",
+      "name": "sub_4476",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4498",
+      "name": "sub_4498",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x44aa",
+      "name": "sub_44aa",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x44e8",
+      "name": "sub_44e8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x45a2",
+      "name": "can_decode_249",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x4924",
+      "name": "sub_4924",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4930",
+      "name": "sub_4930",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4946",
+      "name": "sub_4946",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4950",
+      "name": "sub_4950",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x495a",
+      "name": "sub_495a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4990",
+      "name": "sub_4990",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x49c4",
+      "name": "sub_49c4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4a12",
+      "name": "sub_4a12",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4b6c",
+      "name": "sub_4b6c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4b82",
+      "name": "can_decode_229",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x4c58",
+      "name": "can_decode_118",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x4d0a",
+      "name": "sub_4d0a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4d14",
+      "name": "get_gear",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x4d1e",
+      "name": "sub_4d1e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4db0",
+      "name": "sub_4db0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4dc6",
+      "name": "can_decode_25A",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x4e0c",
+      "name": "can_decode_31F",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x4e52",
+      "name": "sub_4e52",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4e58",
+      "name": "sub_4e58",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4e6a",
+      "name": "sub_4e6a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4f30",
+      "name": "sub_4f30",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4f46",
+      "name": "can_decode_82",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x4fac",
+      "name": "sub_4fac",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4fd2",
+      "name": "sub_4fd2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x4fe0",
+      "name": "get_battery_heating_state",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x4ffa",
+      "name": "can_decode_25D",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x5040",
+      "name": "can_decode_333",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x508e",
+      "name": "sub_508e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x50b0",
+      "name": "sub_50b0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x510a",
+      "name": "sub_510a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5114",
+      "name": "can_decode_312",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x517e",
+      "name": "sub_517e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5188",
+      "name": "can_decode_33A",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x51ec",
+      "name": "get_state_of_charge",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x51f6",
+      "name": "sub_51f6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5200",
+      "name": "sub_5200",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5248",
+      "name": "sub_5248",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5284",
+      "name": "can_decode_39D",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x5350",
+      "name": "sub_5350",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5356",
+      "name": "sub_5356",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5378",
+      "name": "sub_5378",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5442",
+      "name": "sub_5442",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5448",
+      "name": "sub_5448",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x545a",
+      "name": "sub_545a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x54c2",
+      "name": "sub_54c2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x54fe",
+      "name": "sub_54fe",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5556",
+      "name": "sub_5556",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x55d0",
+      "name": "sub_55d0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x55fc",
+      "name": "sub_55fc",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5644",
+      "name": "sub_5644",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5724",
+      "name": "sub_5724",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5762",
+      "name": "can_decode_2E1",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x57b6",
+      "name": "can_decode_103",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x58ba",
+      "name": "can_decode_1F9",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x5b70",
+      "name": "sub_5b70",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5b8e",
+      "name": "sub_5b8e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5bd0",
+      "name": "get_vehicle_light_dark_appearance",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x5bda",
+      "name": "sub_5bda",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5d22",
+      "name": "get_indicator_flag_bit_5d22",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x5d2c",
+      "name": "sub_5d2c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5d32",
+      "name": "sub_5d32",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5d42",
+      "name": "get_door_state",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x5d8e",
+      "name": "sub_5d8e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5ef6",
+      "name": "sub_5ef6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x5f0a",
+      "name": "sub_5f0a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6896",
+      "name": "sub_6896",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6992",
+      "name": "sub_6992",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x69ea",
+      "name": "sub_69ea",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6a1c",
+      "name": "sub_6a1c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6a50",
+      "name": "sub_6a50",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6ac0",
+      "name": "sub_6ac0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6b0c",
+      "name": "sub_6b0c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6bb4",
+      "name": "sub_6bb4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6c86",
+      "name": "sub_6c86",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6c90",
+      "name": "sub_6c90",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6d30",
+      "name": "sub_6d30",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6d72",
+      "name": "sub_6d72",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6dca",
+      "name": "sub_6dca",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6dea",
+      "name": "can_decode_339",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x6e5e",
+      "name": "sub_6e5e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x6ed6",
+      "name": "sub_6ed6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7128",
+      "name": "sub_7128",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7370",
+      "name": "sub_7370",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x737a",
+      "name": "sub_737a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7386",
+      "name": "sub_7386",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7392",
+      "name": "sub_7392",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x739c",
+      "name": "sub_739c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x73c4",
+      "name": "sub_73c4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x73ce",
+      "name": "sub_73ce",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x73f6",
+      "name": "sub_73f6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7400",
+      "name": "sub_7400",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7428",
+      "name": "sub_7428",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7432",
+      "name": "sub_7432",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x745a",
+      "name": "sub_745a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7464",
+      "name": "sub_7464",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x74a0",
+      "name": "sub_74a0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x74aa",
+      "name": "sub_74aa",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x74e6",
+      "name": "sub_74e6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x74f0",
+      "name": "sub_74f0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7500",
+      "name": "sub_7500",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x751e",
+      "name": "sub_751e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x752c",
+      "name": "sub_752c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7536",
+      "name": "sub_7536",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7540",
+      "name": "sub_7540",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x754c",
+      "name": "sub_754c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x755e",
+      "name": "sub_755e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7692",
+      "name": "sub_7692",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x76a8",
+      "name": "get_sport_mode",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x7702",
+      "name": "sub_7702",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x773a",
+      "name": "sub_773a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7740",
+      "name": "sub_7740",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7746",
+      "name": "sub_7746",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x774c",
+      "name": "sub_774c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7752",
+      "name": "sub_7752",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7760",
+      "name": "sub_7760",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7766",
+      "name": "sub_7766",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7778",
+      "name": "sub_7778",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7792",
+      "name": "sub_7792",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7808",
+      "name": "sub_7808",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x780e",
+      "name": "sub_780e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7814",
+      "name": "sub_7814",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7822",
+      "name": "sub_7822",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x78b8",
+      "name": "sub_78b8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7a76",
+      "name": "sub_7a76",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7a7c",
+      "name": "sub_7a7c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7a82",
+      "name": "sub_7a82",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7ab8",
+      "name": "sub_7ab8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7abe",
+      "name": "sub_7abe",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7b32",
+      "name": "sub_7b32",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7b80",
+      "name": "sub_7b80",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7c5a",
+      "name": "sub_7c5a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7c6c",
+      "name": "sub_7c6c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7d44",
+      "name": "sub_7d44",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7d9c",
+      "name": "sub_7d9c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7dda",
+      "name": "sub_7dda",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7e08",
+      "name": "sub_7e08",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7e42",
+      "name": "get_inverter_power_front_rear_signed",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x7e6a",
+      "name": "sub_7e6a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7ef0",
+      "name": "sub_7ef0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7f88",
+      "name": "sub_7f88",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x7f9a",
+      "name": "can_decode_257",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x80e0",
+      "name": "sub_80e0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x80e6",
+      "name": "get_speed_units_flag",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0x80ec",
+      "name": "sub_80ec",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x811e",
+      "name": "can_decode_129",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x8234",
+      "name": "sub_8234",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x82fa",
+      "name": "sub_82fa",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x837c",
+      "name": "sub_837c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x83b0",
+      "name": "sub_83b0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x83d2",
+      "name": "sub_83d2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x8414",
+      "name": "sub_8414",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x848e",
+      "name": "sub_848e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x8504",
+      "name": "can_decode_334",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0x8912",
+      "name": "sub_8912",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x896e",
+      "name": "sub_896e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x89d4",
+      "name": "sub_89d4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x8a54",
+      "name": "cfg_0x8a54",
+      "kind": "f",
+      "source": "config_worker"
+    },
+    {
+      "address": "0x8a8e",
+      "name": "sub_8a8e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x8ac0",
+      "name": "sub_8ac0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x8b76",
+      "name": "sub_8b76",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x8ba6",
+      "name": "sub_8ba6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x8dec",
+      "name": "cfg_0x8dec",
+      "kind": "f",
+      "source": "config_worker"
+    },
+    {
+      "address": "0x8f46",
+      "name": "cfg_0x8f46",
+      "kind": "f",
+      "source": "config_worker"
+    },
+    {
+      "address": "0x8f5a",
+      "name": "sub_8f5a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x904a",
+      "name": "sub_904a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x91d6",
+      "name": "sub_91d6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x99c0",
+      "name": "hid_name_binding",
+      "kind": "f",
+      "source": "internal_commands"
+    },
+    {
+      "address": "0xa200",
+      "name": "sub_a200",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa348",
+      "name": "sub_a348",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa35a",
+      "name": "sub_a35a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa39a",
+      "name": "f0_config_worker",
+      "kind": "f",
+      "source": "config_worker"
+    },
+    {
+      "address": "0xa3e2",
+      "name": "f0_sub1",
+      "kind": "l",
+      "source": "config_worker"
+    },
+    {
+      "address": "0xa40c",
+      "name": "f0_sub2",
+      "kind": "l",
+      "source": "config_worker"
+    },
+    {
+      "address": "0xa424",
+      "name": "f0_sub4",
+      "kind": "l",
+      "source": "config_worker"
+    },
+    {
+      "address": "0xa438",
+      "name": "f0_sub5",
+      "kind": "l",
+      "source": "config_worker"
+    },
+    {
+      "address": "0xa4e8",
+      "name": "f0_sub7",
+      "kind": "l",
+      "source": "config_worker"
+    },
+    {
+      "address": "0xa5c4",
+      "name": "f0_sub3",
+      "kind": "l",
+      "source": "config_worker"
+    },
+    {
+      "address": "0xa5f8",
+      "name": "sub_a5f8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa698",
+      "name": "sub_a698",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa6dc",
+      "name": "sub_a6dc",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa72a",
+      "name": "sub_a72a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa756",
+      "name": "sub_a756",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa772",
+      "name": "sub_a772",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa780",
+      "name": "sub_a780",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa80c",
+      "name": "sub_a80c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa89c",
+      "name": "sub_a89c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xa9a2",
+      "name": "sub_a9a2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xaa6a",
+      "name": "sub_aa6a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xaa9c",
+      "name": "sub_aa9c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xab12",
+      "name": "sub_ab12",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xab44",
+      "name": "sub_ab44",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xab74",
+      "name": "sub_ab74",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xaba6",
+      "name": "sub_aba6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xac7e",
+      "name": "sub_ac7e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xacb0",
+      "name": "sub_acb0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xad02",
+      "name": "sub_ad02",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xad34",
+      "name": "sub_ad34",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xad64",
+      "name": "sub_ad64",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xad96",
+      "name": "sub_ad96",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xade8",
+      "name": "sub_ade8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xaf30",
+      "name": "sub_af30",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xb206",
+      "name": "sub_b206",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xb280",
+      "name": "sub_b280",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xb2f0",
+      "name": "sub_b2f0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xb360",
+      "name": "sub_b360",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xb3e0",
+      "name": "telemetry_packer",
+      "kind": "f",
+      "source": "telemetry"
+    },
+    {
+      "address": "0xb76c",
+      "name": "cmd_reply_builder",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xb7c6",
+      "name": "status_reply_builder",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xb86e",
+      "name": "telemetry_producer",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xb8fc",
+      "name": "sub_b8fc",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xb968",
+      "name": "sub_b968",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xb9f4",
+      "name": "sub_b9f4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xba2e",
+      "name": "sub_ba2e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xbab8",
+      "name": "sub_bab8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xbb86",
+      "name": "sub_bb86",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xbb9e",
+      "name": "sub_bb9e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xbc2c",
+      "name": "sub_bc2c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xbc76",
+      "name": "update_dispatch",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xbdb8",
+      "name": "cmd_reply_tail",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xbdea",
+      "name": "ble_cmd_dispatch",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xbe3e",
+      "name": "cmd_A0_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xbe7c",
+      "name": "cmd_A1_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xbeae",
+      "name": "cmd_A3_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xbfb4",
+      "name": "cmd_A6_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xbfd2",
+      "name": "cmd_AB_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc00a",
+      "name": "cmd_B0_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc034",
+      "name": "cmd_BB_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc060",
+      "name": "cmd_D0_handler",
+      "kind": "f",
+      "source": "internal_commands"
+    },
+    {
+      "address": "0xc08c",
+      "name": "cmd_D2_handler",
+      "kind": "f",
+      "source": "internal_commands"
+    },
+    {
+      "address": "0xc0ee",
+      "name": "cmd_F0_handler",
+      "kind": "f",
+      "source": "internal_commands"
+    },
+    {
+      "address": "0xc2da",
+      "name": "cmd_D1_handler",
+      "kind": "f",
+      "source": "internal_commands"
+    },
+    {
+      "address": "0xc2ee",
+      "name": "cmd_C0_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc4fa",
+      "name": "cmd_C1_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc52a",
+      "name": "cmd_A7_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc53c",
+      "name": "cmd_A2_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc57e",
+      "name": "cmd_A4_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc594",
+      "name": "cmd_A5_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc5d4",
+      "name": "cmd_A9_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc68a",
+      "name": "cmd_BA_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc702",
+      "name": "cmd_B9_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc7f8",
+      "name": "cmd_AF_handler",
+      "kind": "f",
+      "source": "command_dispatch"
+    },
+    {
+      "address": "0xc860",
+      "name": "sub_c860",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xc89e",
+      "name": "sub_c89e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xc904",
+      "name": "sub_c904",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xc934",
+      "name": "can_id_dispatch",
+      "kind": "f",
+      "source": "can_map"
+    },
+    {
+      "address": "0xd044",
+      "name": "sub_d044",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xd0c8",
+      "name": "sub_d0c8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xd122",
+      "name": "sub_d122",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xd16e",
+      "name": "action_dispatch",
+      "kind": "f",
+      "source": "action_table"
+    },
+    {
+      "address": "0xdf14",
+      "name": "sub_df14",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xe310",
+      "name": "rule_engine",
+      "kind": "f",
+      "source": "rule_engine"
+    },
+    {
+      "address": "0xe3c2",
+      "name": "sub_e3c2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xe3e6",
+      "name": "sub_e3e6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xe4e4",
+      "name": "sub_e4e4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xe612",
+      "name": "sub_e612",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xe65e",
+      "name": "sub_e65e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xe7aa",
+      "name": "sub_e7aa",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xe858",
+      "name": "sub_e858",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xeaec",
+      "name": "sub_eaec",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xebb8",
+      "name": "sub_ebb8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xebfa",
+      "name": "sub_ebfa",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xee02",
+      "name": "sub_ee02",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xee34",
+      "name": "sub_ee34",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xeebe",
+      "name": "sub_eebe",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xef20",
+      "name": "sub_ef20",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf1ee",
+      "name": "sub_f1ee",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf296",
+      "name": "onehot_bitfield_worker",
+      "kind": "f",
+      "source": "action_table"
+    },
+    {
+      "address": "0xf2c2",
+      "name": "sub_f2c2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf358",
+      "name": "sub_f358",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf378",
+      "name": "sub_f378",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf404",
+      "name": "sub_f404",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf40e",
+      "name": "sub_f40e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf450",
+      "name": "sub_f450",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf64e",
+      "name": "sub_f64e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf6c8",
+      "name": "sub_f6c8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf89a",
+      "name": "sub_f89a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xf93a",
+      "name": "sub_f93a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfa24",
+      "name": "sub_fa24",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfad2",
+      "name": "sub_fad2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfb18",
+      "name": "sub_fb18",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfb70",
+      "name": "sub_fb70",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfb80",
+      "name": "sub_fb80",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfb98",
+      "name": "sub_fb98",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfc50",
+      "name": "sub_fc50",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfc58",
+      "name": "sub_fc58",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfc78",
+      "name": "sub_fc78",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfc82",
+      "name": "sub_fc82",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfc9a",
+      "name": "sub_fc9a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfd8c",
+      "name": "sub_fd8c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xfe8e",
+      "name": "sub_fe8e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0xff62",
+      "name": "sub_ff62",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10006",
+      "name": "sub_10006",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10010",
+      "name": "sub_10010",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10018",
+      "name": "sub_10018",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10036",
+      "name": "sub_10036",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10044",
+      "name": "sub_10044",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10072",
+      "name": "sub_10072",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x100d6",
+      "name": "sub_100d6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10108",
+      "name": "sub_10108",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x101ca",
+      "name": "sub_101ca",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x101e0",
+      "name": "sub_101e0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x101f2",
+      "name": "sub_101f2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1021a",
+      "name": "sub_1021a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1022e",
+      "name": "sub_1022e",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1023a",
+      "name": "sub_1023a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1025a",
+      "name": "sub_1025a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10278",
+      "name": "sub_10278",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10296",
+      "name": "sub_10296",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x102b4",
+      "name": "sub_102b4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x102d2",
+      "name": "sub_102d2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x102f0",
+      "name": "sub_102f0",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1031a",
+      "name": "sub_1031a",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10374",
+      "name": "sub_10374",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x1039c",
+      "name": "sub_1039c",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x103c6",
+      "name": "sub_103c6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x103ea",
+      "name": "sub_103ea",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10818",
+      "name": "sub_10818",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10840",
+      "name": "sub_10840",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10894",
+      "name": "sub_10894",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10a74",
+      "name": "sub_10a74",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10abe",
+      "name": "sub_10abe",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10bf2",
+      "name": "sub_10bf2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10c32",
+      "name": "sub_10c32",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10ccc",
+      "name": "sub_10ccc",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10dd2",
+      "name": "sub_10dd2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x10fd8",
+      "name": "sub_10fd8",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x11042",
+      "name": "sub_11042",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x112f4",
+      "name": "sub_112f4",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x11328",
+      "name": "sub_11328",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x11340",
+      "name": "sub_11340",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x113d6",
+      "name": "sub_113d6",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x11846",
+      "name": "sub_11846",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x11ce2",
+      "name": "sub_11ce2",
+      "kind": "f",
+      "source": "functions"
+    },
+    {
+      "address": "0x11e66",
+      "name": "sub_11e66",
+      "kind": "f",
+      "source": "functions"
+    }
+  ]
+}

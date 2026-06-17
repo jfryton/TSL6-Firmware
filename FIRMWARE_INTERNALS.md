@@ -470,6 +470,14 @@ This inventory is a heuristic aid (it favors precision from direct calls over an
 exhaustive CFG), but it is sufficient to navigate the image and to seed a
 labeled import into Ghidra/Binary Ninja.
 
+`tools/gen_symbols.py` merges this inventory with every other artifact (command
+handlers, action workers, telemetry getters, CAN decoders, rule engine, internal
+commands, config worker) into a single consolidated symbol map:
+[analysis/symbols.json](analysis/symbols.json) and an import-ready
+[analysis/symbols.ghidra](analysis/symbols.ghidra) for Ghidra's
+`ImportSymbolsScript.py` (474 entries, 86 with recovered semantic names). This is
+the fastest way to bring a labeled view of the image into a disassembler.
+
 ## 12. Open Items for a Full Rewrite
 
 - Recover the resident BLE-stack/bootloader region (physical flash dump). The
