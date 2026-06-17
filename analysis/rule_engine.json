@@ -1,0 +1,27 @@
+{
+  "entry": "0xe310",
+  "primary_table": {
+    "location": "gp+0x80",
+    "size_bytes": 256,
+    "scan": "offset 0..0xFE step 2; byte N = trigger, byte N+1 = action",
+    "usable_pairs": 127,
+    "action_call": "0xd16e",
+    "stored_fields": "trigger,action only; no delay/sequence/pointer"
+  },
+  "secondary_tables": [
+    {
+      "location": "gp+0x84",
+      "entries": 36,
+      "stride_bytes": 7,
+      "trigger": "9-bit value from first two bytes",
+      "gate": "bit 1 of second byte enables the operation"
+    },
+    {
+      "location": "gp+0x88",
+      "entries": 36,
+      "stride_bytes": 7,
+      "trigger": "9-bit value from first two bytes",
+      "gate": "bit 1 of second byte enables the operation"
+    }
+  ]
+}

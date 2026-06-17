@@ -1,0 +1,6 @@
+# Local analysis scratch space (regenerable from archived binaries via tools/)
+work/
+*.payload.bin
+.venv-re/
+__pycache__/
+*.pyc

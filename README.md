@@ -63,6 +63,9 @@ The map files record both transport and stripped-payload structure.
 
 ## Documentation
 
+- [FIRMWARE_INTERNALS.md](FIRMWARE_INTERNALS.md): component-level map of the
+  runtime/boot firmware (memory map, command dispatcher, action table, rule
+  engine, update path, telemetry). Start here to understand the firmware.
 - [CLEAN_ROOM_SPEC.md](CLEAN_ROOM_SPEC.md): compatibility requirements for an
   independent replacement firmware.
 - [ANALYSIS_WORKFLOW.md](ANALYSIS_WORKFLOW.md): reproducible extraction and
@@ -70,6 +73,15 @@ The map files record both transport and stripped-payload structure.
 - [REVERSE_ENGINEERING.md](REVERSE_ENGINEERING.md): chronological findings and
   detailed evidence.
 - [SESSION_NOTES.md](SESSION_NOTES.md): working notes from analysis sessions.
+
+## Tooling and Generated Analysis
+
+- [tools/](tools/): reproducible RISC-V analysis tooling (payload extraction,
+  RV32+RVC disassembler, dispatcher/action-table decoders, artifact generator).
+  Only dependency is Capstone. See [tools/README.md](tools/README.md).
+- [analysis/](analysis/): committed machine-readable analysis of the runtime
+  image (`memory_map.json`, `command_dispatch.json`, `action_table.json`,
+  `rule_engine.json`), regenerable from the archived binaries.
 
 ## Backend Endpoint
 

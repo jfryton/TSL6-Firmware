@@ -1,0 +1,156 @@
+{
+  "dispatcher": "0xbdea",
+  "command_register": "s1",
+  "unknown_command_path": "0xbcba",
+  "update_dispatcher": "0xbc76",
+  "a2_handler": "0xc53c",
+  "handlers": [
+    {
+      "command": 160,
+      "command_hex": "0xa0",
+      "compare_at": "0xbe3a",
+      "compare": "bne",
+      "handler": "0xbe3e"
+    },
+    {
+      "command": 161,
+      "command_hex": "0xa1",
+      "compare_at": "0xbe0e",
+      "compare": "beq",
+      "handler": "0xbe7c"
+    },
+    {
+      "command": 162,
+      "command_hex": "0xa2",
+      "compare_at": "0xbea2",
+      "compare": "beq",
+      "handler": "0xc53c"
+    },
+    {
+      "command": 163,
+      "command_hex": "0xa3",
+      "compare_at": "0xbeaa",
+      "compare": "bne",
+      "handler": "0xbeae"
+    },
+    {
+      "command": 164,
+      "command_hex": "0xa4",
+      "compare_at": "0xbe22",
+      "compare": "beq",
+      "handler": "0xc57e"
+    },
+    {
+      "command": 165,
+      "command_hex": "0xa5",
+      "compare_at": "0xbfa8",
+      "compare": "beq",
+      "handler": "0xc594"
+    },
+    {
+      "command": 166,
+      "command_hex": "0xa6",
+      "compare_at": "0xbfb0",
+      "compare": "bne",
+      "handler": "0xbfb4"
+    },
+    {
+      "command": 167,
+      "command_hex": "0xa7",
+      "compare_at": "0xbf9c",
+      "compare": "beq",
+      "handler": "0xc52a"
+    },
+    {
+      "command": 169,
+      "command_hex": "0xa9",
+      "compare_at": "0xbfc6",
+      "compare": "beq",
+      "handler": "0xc5d4"
+    },
+    {
+      "command": 171,
+      "command_hex": "0xab",
+      "compare_at": "0xbfce",
+      "compare": "bne",
+      "handler": "0xbfd2"
+    },
+    {
+      "command": 175,
+      "command_hex": "0xaf",
+      "compare_at": "0xbe16",
+      "compare": "beq",
+      "handler": "0xc7f8"
+    },
+    {
+      "command": 176,
+      "command_hex": "0xb0",
+      "compare_at": "0xc006",
+      "compare": "bne",
+      "handler": "0xc00a"
+    },
+    {
+      "command": 185,
+      "command_hex": "0xb9",
+      "compare_at": "0xbffa",
+      "compare": "beq",
+      "handler": "0xc702"
+    },
+    {
+      "command": 186,
+      "command_hex": "0xba",
+      "compare_at": "0xc028",
+      "compare": "beq",
+      "handler": "0xc68a"
+    },
+    {
+      "command": 187,
+      "command_hex": "0xbb",
+      "compare_at": "0xc030",
+      "compare": "bne",
+      "handler": "0xc034"
+    },
+    {
+      "command": 192,
+      "command_hex": "0xc0",
+      "compare_at": "0xbfee",
+      "compare": "beq",
+      "handler": "0xc2ee"
+    },
+    {
+      "command": 193,
+      "command_hex": "0xc1",
+      "compare_at": "0xc054",
+      "compare": "beq",
+      "handler": "0xc4fa"
+    },
+    {
+      "command": 208,
+      "command_hex": "0xd0",
+      "compare_at": "0xc05c",
+      "compare": "bne",
+      "handler": "0xc060"
+    },
+    {
+      "command": 209,
+      "command_hex": "0xd1",
+      "compare_at": "0xc048",
+      "compare": "beq",
+      "handler": "0xc2da"
+    },
+    {
+      "command": 210,
+      "command_hex": "0xd2",
+      "compare_at": "0xc088",
+      "compare": "bne",
+      "handler": "0xc08c"
+    },
+    {
+      "command": 240,
+      "command_hex": "0xf0",
+      "compare_at": "0xc0ea",
+      "compare": "bne",
+      "handler": "0xc0ee"
+    }
+  ]
+}
