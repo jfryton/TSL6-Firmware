@@ -1,0 +1,522 @@
+{
+  "image": "boot",
+  "image_base": "0x0 (rebase to program image base in Ghidra)",
+  "symbol_count": 85,
+  "named_count": 3,
+  "kinds": {
+    "f": "function entry",
+    "l": "code label"
+  },
+  "symbols": [
+    {
+      "address": "0x180",
+      "name": "sub_0180",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1a2",
+      "name": "sub_01a2",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2a8",
+      "name": "sub_02a8",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x350",
+      "name": "sub_0350",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x860",
+      "name": "sub_0860",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x95c",
+      "name": "sub_095c",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0xadc",
+      "name": "sub_0adc",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0xb12",
+      "name": "sub_0b12",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0xc3e",
+      "name": "sub_0c3e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0xc62",
+      "name": "sub_0c62",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0xc9a",
+      "name": "sub_0c9a",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0xd06",
+      "name": "sub_0d06",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0xd28",
+      "name": "sub_0d28",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0xf7e",
+      "name": "sub_0f7e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1002",
+      "name": "sub_1002",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1018",
+      "name": "sub_1018",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1036",
+      "name": "sub_1036",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1042",
+      "name": "sub_1042",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x104e",
+      "name": "sub_104e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x10d4",
+      "name": "sub_10d4",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x10e6",
+      "name": "sub_10e6",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1108",
+      "name": "sub_1108",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x110c",
+      "name": "flash_program",
+      "kind": "f",
+      "source": "boot"
+    },
+    {
+      "address": "0x1176",
+      "name": "sub_1176",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x119e",
+      "name": "sub_119e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x11c0",
+      "name": "sub_11c0",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x11d4",
+      "name": "sub_11d4",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x121c",
+      "name": "write_page_handler",
+      "kind": "f",
+      "source": "boot"
+    },
+    {
+      "address": "0x13ac",
+      "name": "sub_13ac",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x13d2",
+      "name": "sub_13d2",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x13fa",
+      "name": "sub_13fa",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1412",
+      "name": "sub_1412",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1438",
+      "name": "sub_1438",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x14ca",
+      "name": "sub_14ca",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x14da",
+      "name": "sub_14da",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x155e",
+      "name": "sub_155e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x156e",
+      "name": "sub_156e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1a1e",
+      "name": "sub_1a1e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1b20",
+      "name": "sub_1b20",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1c28",
+      "name": "boot_reset_entry",
+      "kind": "f",
+      "source": "boot"
+    },
+    {
+      "address": "0x1cc8",
+      "name": "sub_1cc8",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1db2",
+      "name": "sub_1db2",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1e60",
+      "name": "sub_1e60",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1ea6",
+      "name": "sub_1ea6",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1efe",
+      "name": "sub_1efe",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1f0e",
+      "name": "sub_1f0e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1f26",
+      "name": "sub_1f26",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1fde",
+      "name": "sub_1fde",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x1fe6",
+      "name": "sub_1fe6",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2006",
+      "name": "sub_2006",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2010",
+      "name": "sub_2010",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2028",
+      "name": "sub_2028",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2032",
+      "name": "sub_2032",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x203a",
+      "name": "sub_203a",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2058",
+      "name": "sub_2058",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2066",
+      "name": "sub_2066",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2094",
+      "name": "sub_2094",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x20f8",
+      "name": "sub_20f8",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x212a",
+      "name": "sub_212a",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x21ec",
+      "name": "sub_21ec",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2202",
+      "name": "sub_2202",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2214",
+      "name": "sub_2214",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x223c",
+      "name": "sub_223c",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2250",
+      "name": "sub_2250",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x225c",
+      "name": "sub_225c",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x227c",
+      "name": "sub_227c",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x235c",
+      "name": "sub_235c",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x237a",
+      "name": "sub_237a",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2398",
+      "name": "sub_2398",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x23b6",
+      "name": "sub_23b6",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x23d4",
+      "name": "sub_23d4",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x23f2",
+      "name": "sub_23f2",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x241c",
+      "name": "sub_241c",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2476",
+      "name": "sub_2476",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x249a",
+      "name": "sub_249a",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x24c0",
+      "name": "sub_24c0",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x24e4",
+      "name": "sub_24e4",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2904",
+      "name": "sub_2904",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x29de",
+      "name": "sub_29de",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x29fa",
+      "name": "sub_29fa",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2a30",
+      "name": "sub_2a30",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2a58",
+      "name": "sub_2a58",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2c4e",
+      "name": "sub_2c4e",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2d62",
+      "name": "sub_2d62",
+      "kind": "f",
+      "source": "boot_functions"
+    },
+    {
+      "address": "0x2da2",
+      "name": "sub_2da2",
+      "kind": "f",
+      "source": "boot_functions"
+    }
+  ]
+}

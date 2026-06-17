@@ -46,8 +46,13 @@ Expected stripped-payload SHA-256:
 | `map_dispatch.py` | Decode a command comparison ladder into command -> handler targets. |
 | `functions.py` | Recover a function inventory and call graph (function starts, extents, callees, callers). |
 | `decode_telemetry.py` | Decode the dashboard telemetry packer into a per-field getter/width/shift map. |
+| `map_state.py` | Map the gp-relative state block: every `gp+IMM` field with access widths, read/write counts, and structure-base detection. |
+| `map_ramcache.py` | Map the absolute-addressed RAM signal cache (CAN-decode output) and tie telemetry getters to their cache slots. |
+| `map_can.py` | Decode the CAN-ID dispatch table into CAN ID -> decoder mappings (inline vs. raw-frame-stored). |
+| `map_rule_triggers.py` | Find all rule-engine call sites and recover each trigger event code, attributed to its source CAN decoder. |
 | `gen_analysis.py` | Emit the committed runtime JSON artifacts under `analysis/`. |
 | `gen_boot_analysis.py` | Emit the committed bootloader artifact `analysis/boot.json`. |
+| `gen_symbols.py` | Consolidate all artifacts into one symbol map + Ghidra import file (`--boot` for the boot image). |
 
 ## Important: branch operand convention
 

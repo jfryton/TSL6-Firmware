@@ -63,6 +63,8 @@ The map files record both transport and stripped-payload structure.
 
 ## Documentation
 
+- [INDEX.md](INDEX.md): master cross-reference linking every document, analysis
+  artifact, tool, and firmware landmark. Use this as the navigation hub.
 - [FIRMWARE_INTERNALS.md](FIRMWARE_INTERNALS.md): component-level map of the
   runtime firmware (memory map, command dispatcher, action table, rule engine,
   BLE TX path, telemetry packing). Start here to understand the firmware.

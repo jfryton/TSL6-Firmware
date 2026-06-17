@@ -20,10 +20,15 @@ Sources merged:
   - internal_commands.json D0/D1/D2/F0 handlers, helpers, HID-binding entry.
   - config_worker.json    the F0 worker, its sub-handlers, shared primitives.
 
+For the boot image, pass `--boot` to merge `boot_functions.json` + `boot.json`
+instead (boot landmarks: reset entry, update dispatcher, write-page handler,
+flash-program function).
+
 Deterministic and re-runnable.
 
 Usage:
-    gen_symbols.py analysis/ analysis/symbols.json analysis/symbols.ghidra
+    gen_symbols.py        analysis/ analysis/symbols.json      analysis/symbols.ghidra
+    gen_symbols.py --boot analysis/ analysis/boot_symbols.json analysis/boot_symbols.ghidra
 """
 import json
 import os
@@ -54,9 +59,12 @@ def parse_addr(v):
 
 
 def main():
-    adir = sys.argv[1]
-    out_json = sys.argv[2]
-    out_ghidra = sys.argv[3]
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    flags = [a for a in sys.argv[1:] if a.startswith("--")]
+    adir = args[0]
+    out_json = args[1]
+    out_ghidra = args[2]
+    image = "boot" if "--boot" in flags else "runtime"
 
     # address -> {name, kind, source}; first writer with a "good" name wins,
     # but a function entry is always upgraded to its specific landmark name.
@@ -73,6 +81,12 @@ def main():
                 return
         syms[addr] = {"address": hex(addr), "name": name,
                       "kind": kind, "source": source}
+
+    if image == "boot":
+        build_boot(adir, add)
+        rows = finalize(syms)
+        write_outputs(rows, out_json, out_ghidra, image)
+        return
 
     # 1. functions -> generic names first (lowest priority)
     fns = load(adir, "functions.json")
@@ -183,6 +197,11 @@ def main():
             add(parse_addr(sh.get("target")),
                 "f0_sub%d" % sh["selector"], "l", "config_worker")
 
+    rows = finalize(syms)
+    write_outputs(rows, out_json, out_ghidra, image)
+
+
+def finalize(syms):
     rows = [syms[a] for a in sorted(syms)]
     # Ensure unique labels: if two addresses share a name, suffix with address.
     seen = {}
@@ -191,8 +210,12 @@ def main():
             r["name"] = "%s_%s" % (r["name"], r["address"][2:])
         else:
             seen[r["name"]] = r["address"]
+    return rows
+
+
+def write_outputs(rows, out_json, out_ghidra, image):
     doc = {
-        "image": "runtime",
+        "image": image,
         "image_base": "0x0 (rebase to program image base in Ghidra)",
         "symbol_count": len(rows),
         "named_count": sum(1 for r in rows if not r["name"].startswith("sub_")),
@@ -204,7 +227,7 @@ def main():
         f.write("\n")
 
     with open(out_ghidra, "w") as f:
-        f.write("# TSL6 runtime symbols for Ghidra ImportSymbolsScript.py\n")
+        f.write("# TSL6 %s symbols for Ghidra ImportSymbolsScript.py\n" % image)
         f.write("# format: name address kind (f=function, l=label)\n")
         f.write("# addresses are image-base-0 offsets; rebase as needed.\n")
         for r in rows:
@@ -212,6 +235,29 @@ def main():
 
     print("wrote %s (%d symbols, %d named) and %s" % (
         out_json, len(rows), doc["named_count"], out_ghidra))
+
+
+def build_boot(adir, add):
+    """Merge boot-image artifacts into the symbol table."""
+    # 1. boot functions -> generic names
+    bf = load(adir, "boot_functions.json")
+    if bf:
+        for f in bf["functions"]:
+            add(f["start"], "sub_%04x" % f["start"], "f", "boot_functions")
+
+    # 2. boot landmarks from boot.json
+    b = load(adir, "boot.json")
+    if b:
+        add(parse_addr(b.get("reset_jump_target")), "boot_reset_entry", "f",
+            "boot", force=True)
+        add(parse_addr(b.get("update_dispatcher")), "update_dispatch", "f",
+            "boot", force=True)
+        wp = b.get("write_page_flow") or {}
+        add(parse_addr(wp.get("handler")), "write_page_handler", "f", "boot",
+            force=True)
+        add(parse_addr(wp.get("flash_program_fn")), "flash_program", "f",
+            "boot", force=True)
+        # update_commands keys are command bytes, not addresses; skip.
 
 
 if __name__ == "__main__":
