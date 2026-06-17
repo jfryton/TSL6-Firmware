@@ -1,0 +1,32 @@
+{
+  "image": "boot",
+  "payload_size": 12288,
+  "reset_jump_target": "0x1c28",
+  "global_pointer_gp": "0x20003000",
+  "stack_pointer_sp": "0x2000f000",
+  "update_dispatcher": "0x121c",
+  "update_commands": {
+    "0x55": "prepare/select update target; clears in-progress flag at gp+0xaf, validates target via 0xc9a",
+    "0x53": "begin selected target; sets in-progress flag gp+0xaf, selects boot(0)/runtime(1) slot",
+    "0x57": "write one 1026-byte transport page",
+    "0x45": "finalize/report completion"
+  },
+  "write_page_flow": {
+    "handler": "0x121c",
+    "page_size_check": "0x402 (1026) validated before accepting a page",
+    "page_index": "2-byte big-endian prefix parsed to compute flash destination",
+    "flash_program_fn": "0x110c",
+    "erase": "resident flash erase pointer at 0x4000004c, granularity 0x400 (1 KiB page)",
+    "program": "1024-byte payload written in 0x100-byte (256) chunks",
+    "verify": "word-by-word read-back compare; mismatch aborts the page"
+  },
+  "flash_controller": {
+    "control_register": "0x40021004 (read-modify-write, OR with 0x80 or 0x90)",
+    "note": "CH32V20x flash/option programming region; exact register semantics not yet fully decoded",
+    "size_variant_detect": "compares gp+0x80 size word against 0x8954400 to pick control bit 0x80 vs 0x90"
+  },
+  "notes": [
+    "The bootloader, not the runtime, performs the actual flash erase/program/verify. The runtime update dispatcher relays pages to it.",
+    "This is the safety-critical mapping: do not exercise 0x55/0x53/0x57/0x52/0x45 without a hardware recovery path."
+  ]
+}

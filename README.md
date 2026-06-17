@@ -64,8 +64,10 @@ The map files record both transport and stripped-payload structure.
 ## Documentation
 
 - [FIRMWARE_INTERNALS.md](FIRMWARE_INTERNALS.md): component-level map of the
-  runtime/boot firmware (memory map, command dispatcher, action table, rule
-  engine, update path, telemetry). Start here to understand the firmware.
+  runtime firmware (memory map, command dispatcher, action table, rule engine,
+  BLE TX path, telemetry packing). Start here to understand the firmware.
+- [BOOTLOADER.md](BOOTLOADER.md): the boot image and the flash erase/program/
+  verify update flow (safety-critical).
 - [CLEAN_ROOM_SPEC.md](CLEAN_ROOM_SPEC.md): compatibility requirements for an
   independent replacement firmware.
 - [ANALYSIS_WORKFLOW.md](ANALYSIS_WORKFLOW.md): reproducible extraction and

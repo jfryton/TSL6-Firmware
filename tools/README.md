@@ -45,7 +45,9 @@ Expected stripped-payload SHA-256:
 | `classify_actions.py` | Decode every action stub: arguments and shared worker, grouped by reuse. |
 | `map_dispatch.py` | Decode a command comparison ladder into command -> handler targets. |
 | `functions.py` | Recover a function inventory and call graph (function starts, extents, callees, callers). |
-| `gen_analysis.py` | Emit the committed JSON artifacts under `analysis/`. |
+| `decode_telemetry.py` | Decode the dashboard telemetry packer into a per-field getter/width/shift map. |
+| `gen_analysis.py` | Emit the committed runtime JSON artifacts under `analysis/`. |
+| `gen_boot_analysis.py` | Emit the committed bootloader artifact `analysis/boot.json`. |
 
 ## Important: branch operand convention
 

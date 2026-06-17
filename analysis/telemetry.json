@@ -1,0 +1,99 @@
+{
+  "producer": "0xb3e0",
+  "packet_command": "0xB0",
+  "min_packet_bytes": 33,
+  "note": "Each field = getter() & mask, shifted into a packed word, merged, stored to the outgoing packet. Getter semantics correlated from CLEAN_ROOM_SPEC section 8.",
+  "fields": [
+    {
+      "merge_at": "0xb428",
+      "getter": "0x4d14",
+      "width_bits": 3,
+      "shift": 9,
+      "label": "gear"
+    },
+    {
+      "merge_at": "0xb440",
+      "getter": "0x2900",
+      "width_bits": 2,
+      "shift": 12,
+      "label": "turn signals"
+    },
+    {
+      "merge_at": "0xb458",
+      "getter": "0x2d08",
+      "width_bits": 2,
+      "shift": 14,
+      "label": "autopilot state"
+    },
+    {
+      "merge_at": "0xb46e",
+      "getter": "0x5d42",
+      "width_bits": 4,
+      "shift": 16,
+      "label": "door state"
+    },
+    {
+      "merge_at": "0xb498",
+      "getter": "0x51ec",
+      "width_bits": 7,
+      "shift": 24,
+      "label": "state of charge"
+    },
+    {
+      "merge_at": "0xb4ea",
+      "getter": "0x5bd0",
+      "width_bits": 1,
+      "shift": 2,
+      "label": "vehicle light/dark appearance"
+    },
+    {
+      "merge_at": "0xb4f6",
+      "getter": "0x76a8",
+      "width_bits": 1,
+      "shift": 3,
+      "label": "sport mode"
+    },
+    {
+      "merge_at": "0xb508",
+      "getter": "0x4162",
+      "width_bits": 1,
+      "shift": 4,
+      "label": "indicator/flag bit"
+    },
+    {
+      "merge_at": "0xb51a",
+      "getter": "0x5d22",
+      "width_bits": 1,
+      "shift": 5,
+      "label": "indicator/flag bit"
+    },
+    {
+      "merge_at": "0xb55a",
+      "getter": "0x7e42",
+      "width_bits": 11,
+      "shift": 8,
+      "label": "inverter power (front/rear, signed)"
+    },
+    {
+      "merge_at": "0xb578",
+      "getter": "0x7e42",
+      "width_bits": 11,
+      "shift": 19,
+      "label": "inverter power (front/rear, signed)"
+    },
+    {
+      "merge_at": "0xb5b8",
+      "getter": "0x4fe0",
+      "width_bits": 2,
+      "shift": 12,
+      "label": "battery heating state"
+    },
+    {
+      "merge_at": "0xb5d0",
+      "getter": "0x80e6",
+      "width_bits": 1,
+      "shift": 14,
+      "label": "speed units / flag"
+    }
+  ]
+}

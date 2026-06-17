@@ -18,8 +18,11 @@ Machine-readable companions to this document live in [analysis/](analysis/):
   shared reply/TX helpers and the resident BLE-stack vtable slots
 - `action_table.json` - all 253 action stubs, workers, arguments, labels
 - `rule_engine.json` - shortcut/rule table structure
+- `telemetry.json` - dashboard packet field map (getter/width/shift per field)
 - `functions.json` - recovered function inventory and call graph (419 runtime
   functions) from `tools/functions.py`
+- `boot.json`, `boot_functions.json` - bootloader structure and flash update
+  flow (see [BOOTLOADER.md](BOOTLOADER.md))
 
 ## Confidence Labels
 
@@ -137,6 +140,24 @@ Full command -> handler table (payload offsets). See
 The `0xA0` handler reply builder also dispatches sub-commands `0xAD`, `0xAE`,
 `0xA8` (factory/authorization/password-verify) seen at `0xbcc8..`.
 
+### Handler details (confirmed by disassembly)
+
+- **`0xA1`** (`0xbe7c`): validates via `0x1a6`, then emits a `0x12c`-byte (300)
+  reply through the TX framer `0x110a` - a bulk settings/state dump.
+- **`0xA5`** (`0xc594`): reboot path; validates via `0x12d4` then issues a reset.
+- **`0xA9`** (`0xc5d4`): BLE password change. Operates on the BLE context block
+  at `gp+0x74` (offsets `+0x12`/`+0x16` for old/new 4-char strings).
+- **`0xAF`** (`0xc7f8`): authorization/activation; requires sub-command `2`,
+  then reads a 16-bit token from the payload.
+- **`0xB9`** (`0xc702`): RGB/ambient-light config with sub-modes `0`-`3`.
+- **`0xBA`** (`0xc68a`): BLE-button config; sub-command `2` is the read path.
+- **`0xC0`** (`0xc2ee`): CAN debug/control. Sub-command `0` disables, `1`
+  enables the CAN channels (via `0xa756` for channels 0/1/2), `2` selects an
+  alternate mode (`0xa72a`), and `0xFF` is an extended debug mode. CAN channel
+  control flows through `0x83d2`/`0xa698`.
+- **`0xC1`** (`0xc4fa`): vehicle-type query; reads the type via `0xc89e` and
+  replies with a 4-byte payload through reply builder `0xb76c`.
+
 ## 5. Steering-Wheel / Media Keycode Primitive
 
 The `0xA2` handler (`0xc53c`) reads payload byte 0, validates `1..5`, and (for
@@ -251,10 +272,17 @@ action that performs the whole sequence internally.
 
 ## 8. Firmware Update Path
 
-Separate update dispatcher at `0xbc76` (Confirmed). It selects on the command
-byte and accepts `0x57` (write), `0x53` (start), `0x55` (prepare), `0x45`
-(finalize); a related path uses `0x52` (read/verify). All converge on a worker
-at `0x1bc8`.
+The runtime contains a **relay** update dispatcher at `0xbc76` (Confirmed). It
+selects on the command byte and accepts `0x57` (write), `0x53` (start), `0x55`
+(prepare), `0x45` (finalize); a related path uses `0x52` (read/verify). All
+converge on a worker at `0x1bc8` that hands pages to the bootloader.
+
+The **actual flash erase/program/verify is performed by the bootloader**, not
+the runtime. The full mechanism - page size check (`0x402`), page-index ->
+flash-address mapping, 1 KiB erase granularity, 256-byte program chunks,
+word-by-word read-back verification, and the CH32V `0x40022000` flash controller
+- is documented in [BOOTLOADER.md](BOOTLOADER.md) and
+[analysis/boot.json](analysis/boot.json).
 
 This confirms the safety boundary in the README and `CLEAN_ROOM_SPEC.md`: the
 page-read `0x52` is part of the update flow, not a standalone safe backup API.
@@ -267,6 +295,34 @@ then calls the status builder `0xb7c6` and the telemetry producer `0xb86e`. The
 returned >=33-byte packed layout (speed, gear, signals, SoC, tire pressures,
 powers, temperatures, etc.) is documented field-by-field in
 [CLEAN_ROOM_SPEC.md](CLEAN_ROOM_SPEC.md) section 8.
+
+### Packing function and signal getters
+
+The packed bytes are assembled by the telemetry packer at **`0xb3e0`**. It reads
+the live vehicle state from a CAN-decoded RAM block (around `0x20003f60`, via a
+resident snapshot pointer at `0x40000048`) and builds the packet word-by-word.
+For each field it calls a dedicated per-signal getter, masks it to the field
+width, shifts it to its bit position, and merges it into the current packet
+word. `tools/decode_telemetry.py` extracts this mechanically; the result is in
+[analysis/telemetry.json](analysis/telemetry.json).
+
+Confirmed field merges in word 0 (each getter is a small accessor into the
+CAN-decoded state block):
+
+| Getter | Width | Shift | Field (per CLEAN_ROOM_SPEC s8) |
+|---:|---:|---:|---|
+| `0x4d14` | 3 | 9 | gear |
+| `0x2900` | 2 | 12 | turn signals |
+| `0x2d08` | 2 | 14 | autopilot state |
+| `0x5d42` | 4 | 16 | door state |
+| `0x51ec` | 7 | 24 | state of charge |
+
+Word 1 packs single-bit appearance/sport/flag fields (getters `0x5bd0`,
+`0x76a8`, `0x4162`, `0x5d22`) and the 11-bit inverter powers (`0x7e42`, packed
+twice at shifts 8 and 19 for front/rear). Speed (the first 9-bit field) is
+packed just before the table above at `0xb40e`. This is direct firmware
+confirmation of the dashboard contract; the getters are the authoritative source
+of each signal.
 
 ## 10. BLE HID Device Names
 
