@@ -41,7 +41,7 @@ STOCK_TRANSPORT_SHA256 = "b1b2a3aa5e71d88336719bccb5da822faffc05acf50b5b482e570f
 STOCK_PAYLOAD_SHA256 = "7adcb4622f017714a4896060522ce0076e8f0ff94511845d1b9d15b49dd677fd"
 
 # Safety invariants on the contiguous payload image:
-# 1. Reset vector at 0x0000: `j 0xf89a` (6f f0 90 89). TSL-BOOT checks byte 0 == 0x6F.
+# 1. Reset vector at 0x0000: `j 0xf89a` (6f f0 b0 09). TSL-BOOT checks byte 0 == 0x6F.
 RESET_VECTOR_OFFSET = 0x0000
 RESET_VECTOR_EXPECTED = bytes.fromhex("6ff0b009")
 
