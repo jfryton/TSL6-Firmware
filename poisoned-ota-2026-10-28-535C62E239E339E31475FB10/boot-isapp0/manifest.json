@@ -1,0 +1,13 @@
+{
+  "isapp": 0,
+  "chunk_count": 1,
+  "page_count": 67,
+  "pack_size": 1026,
+  "bytes_count": 68742,
+  "transport_bytes": 68742,
+  "payload_bytes": 68608,
+  "transport_sha256": "e5946fe50422653e2bc70efdf2592e2e5e6f71b94fb65a315ca9c92bdc28df83",
+  "payload_sha256": "bc13a7bfb46d62328c8047d8393f9a2da23943cf84705af0464157d8569f41ed",
+  "first_160_utf8": " CH32V208 数据手册\nV2.6\n概述\nCH32V 系列是基于青稞 32 位 RISC-V 设计的工业级通用微控制器。全系产品加入硬件堆栈区、快\n速�",
+  "last_160_utf8": "温度范围\n6 = -40℃～85℃（工业级）\n7 = -40℃～105℃（汽车 2 级）\n3 = -40℃～125℃（汽车 1 级）\nD = -40℃～150℃（汽车 0 级）"
+}
