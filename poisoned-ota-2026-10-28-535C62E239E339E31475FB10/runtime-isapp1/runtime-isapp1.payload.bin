@@ -1,0 +1,3288 @@
+ CH32V208 数据手册
+V2.6
+概述
+CH32V 系列是基于青稞 32 位 RISC-V 设计的工业级通用微控制器。全系产品加入硬件堆栈区、快
+速中断入口等设计，相比标准大大提高了中断响应速度。CH32V208 搭载 V4C 内核，增加内存保护功能，
+减少硬件除法周期。在产品功能上支持 144MHz 主频零等待运行，该系列产品集成 2Mbps 低功耗蓝牙
+BLE 通讯模块、10M 以太网 MAC+PHY 模块、USB2.0 全速设备+主机/设备接口、CAN 控制器等。
+产品特性
+l 内核 Core：
+- 青稞 32 位 RISC-V 内核，多种指令集组合
+- 快速可编程中断控制器+硬件中断堆栈
+- 分支预测、冲突处理机制
+- 单周期乘法、硬件除法
+- 系统主频 144MHz
+l 存储器：
+- 可配最大 64KB 易失数据存储区 SRAM
+- 可配 480KB 程序存储区 CodeFlash
+（零等待应用区+非零等待数据区）
+- 28KB 系统引导程序存储区 BootLoader
+- 128B 系统非易失配置信息存储区
+- 128B 用户自定义信息存储区
+l 电源管理和低功耗：
+- 系统供电 VDD额定：3.3V
+- GPIO 单元独立供电 VIO额定：3.3V
+- 低功耗模式：睡眠、停止、待机
+- VBAT电源独立为 RTC 和后备寄存器供电
+l 系统时钟、复位
+- 内嵌出厂调校的 8MHz 的 RC 振荡器
+- 内嵌 40KHz 的 RC 振荡器
+- 内嵌 PLL，可选 CPU 时钟达 144MHz
+- 外部支持 32MHz 高速振荡器
+- 外部支持 32.768KHz 低速振荡器
+- 上/下电复位、可编程电压监测器
+l 实时时钟 RTC：32 位独立定时器
+l 1 组 8 路通用 DMA 控制器
+- 8 个通道，支持环形缓冲区管理
+- 支持 TIMx/ADC/USART/I2C/SPI
+l 2 组运放、比较器：连接 ADC 和 TIMx
+l 1 组 12 位模数转换 ADC
+- 模拟输入范围：VSSA～VDDA
+- 16 路外部信号+2 路内部信号通道
+- 片上温度传感器
+- 双 ADC 转换模式
+l 16 路 TouchKey 通道检测
+l 多组定时器
+- 1 个 16 位高级定时器，增加死区控制和紧急
+刹车，提供用于电机控制的 PWM 互补输出
+- 3 个 16 位通用定时器，提供输入捕获/输出比
+较/PWM/脉冲计数及增量编码器输入
+- 1 个 32 位通用定时器
+- 2 个看门狗定时器（独立和窗口型）
+- 系统时基定时器：64 位计数器
+l 多种通讯接口：
+- 4 个 USART 接口
+- 2 个 I2C 接口（支持 SMBus/PMBus）
+- 2 个 SPI 接口
+- USB2.0 全速设备接口（全速和低速）
+- USB2.0 全速主机/设备接口
+- 1 组 CAN 接口（2.0B 主动）
+- 内置 10M PHY 收发器
+- 低功耗蓝牙 BLE5.3
+l 快速 GPIO 端口
+- 53 个 I/O 口，映像 16 个外部中断
+l 安全特性：CRC 计算单元，96 位芯片唯一 ID
+l 调试模式：串行 2 线调试接口
+l 封装形式：LQFP 和 QFN
+CH32V208 数据手册 http://wch.cn
+V2.6 1
+第 1 章 系列产品说明
+CH32V 系列产品是基于 32 位 RISC-V 指令集及架构设计的工业级通用增强型 MCU。其产品按照功能
+资源划分为通用、连接、无线等类别。它们之间以封装类别、外设资源及数量、引脚数目、器件特性
+高低上的差异相互延伸，但在软件和功能、硬件引脚配置上保持相互兼容，为用户在产品开发中进行
+产品迭代及快速应用提供了自由和方便。
+有关此系列产品的器件特性请参考数据手册。
+有关产品各外设功能描述、使用方法及寄存器配置等详细信息请参考《CH32FV2x_V3xRM》。
+数据手册和参考手册均可在沁恒官网下载：www.wch.cn
+有关 RISC-V 指令集及架构的相关信息，可在“http://riscv.org”网站下载。
+本手册为 CH32V208 系列产品数据手册。V203 系列请参考《CH32V203DS0》、V303_305_307 系列请
+参考《CH32V307DS0》。
+表 1-1 系列产品概览
+中小容量通用型(V203) 大容量通用型(V303) 连接型(V305) 互联型(V307) 无线型(V208)
+青稞 V4B 青稞 V4F 青稞 V4C
+32K 闪存 64K 闪存 128K 闪存 256K 闪存 128K 闪存 256K 闪存 128K 闪存
+10K SRAM 20K SRAM 32K SRAM 64K SRAM 32K SRAM 64K SRAM 64K SRAM
+2*ADC(TKey)
+ADTM
+3*GPTM
+2*USART
+SPI
+I2C
+USBD
+USBFS
+CAN
+RTC
+2*WDG
+2*OPA
+2*ADC(TKey)
+ADTM
+3*GPTM
+4*USART
+2*SPI
+2*I2C
+USBD
+USBFS
+CAN
+RTC
+2*WDG
+2*OPA
+2*ADC(TKey)
+2*DAC
+ADTM
+3*GPTM
+3*USART
+2*SPI
+2*I2C
+USBFS
+CAN
+RTC
+2*WDG
+4*OPA
+2*ADC(TKey)
+2*DAC
+4*ADTM
+4*GPTM
+2*BCTM
+8*USART/UART
+3*SPI(2*I2S)
+2*I2C
+USBFS
+CAN
+RTC
+2*WDG
+4*OPA
+RNG
+SDIO
+FSMC
+2*ADC(TKey)
+2*DAC
+4*ADTM
+4*GPTM
+2*BCTM
+5*USART/UART
+3*SPI(2*I2S)
+2*I2C
+OTG_FS
+USBHS(+PHY)
+2*CAN
+RTC
+2*WDG
+4*OPA
+RNG
+SDIO
+2*ADC(TKey)
+2*DAC
+4*ADTM
+4*GPTM
+2*BCTM
+8*USART/UART
+3*SPI(2*I2S)
+2*I2C
+OTG_FS
+USBHS(+PHY)
+2*CAN
+RTC
+2*WDG
+4*OPA
+RNG
+SDIO
+FSMC
+DVP
+ETH-1000MAC
+10M-PHY
+ADC(TKey)
+ADTM
+3*GPTM
+GPTM(32)
+4*USART/UART
+2*SPI
+2*I2C
+USBD
+USBFS
+CAN
+RTC
+2*WDG
+2*OPA
+ETH-10M(+PHY)
+BLE5.3
+注：同一类产品的某些外设数量或功能可能受封装限制，选择时请确认产品封装。
+缩写
+ADTM：高级定时器
+GPTM：通用定时器
+GPTM(32)：32 位通用定时器
+BCTM：基本定时器
+TKey：触摸按键
+OPA：运放、比较器
+RNG：随机数发生器
+USBD：全速设备控制器
+USBFS：全速主机/设备控制器
+USBHS：高速主机/设备控制器
+CH32V208 数据手册 http://wch.cn
+V2.6 2
+表 1-2 内核对比概览
+特点
+内核 指令集
+硬件
+堆栈
+级数
+中断
+嵌套
+级数
+快速
+中断
+通道数
+整数
+除法
+周期
+向量表
+模式
+扩展
+指令
+内存
+保护
+V4B IMAC 2 2 4 9 地址或指令 支持 无
+V4C IMAC 2 2 4 5 地址或指令 支持 标准
+V4F IMAFC 3 8 4 5 地址或指令 支持 标准
+注：有关内核的相关信息，可参考 QingKeV4 微处理器手册《QingKeV4_Processor_Manual》。
+CH32V208 数据手册 http://wch.cn
+V2.6 3
+第 2 章 规格信息
+CH32V208 系列基于 RISC-V 指令架构设计的 32 位 RISC 内核 MCU，工作频率 144MHz，内置高速存储
+器，系统结构中多条总线同步工作，提供了丰富的外设功能和增强型 I/O 端口。本系列产品内置 1 个 12
+位 ADC 模块、多组定时器、多通道触摸按键电容检测（TKey）等功能，还包含了标准和专用通讯接口：
+I2C、SPI、USART、CAN 控制器、USB2.0 全速主机/设备控制器、USB2.0 全速设备控制器、低功耗蓝牙等。
+产品工作额定电压为 3.3V，工作温度范围为-40℃～85℃工业级。支持多种省电工作模式来满足产
+品低功耗应用要求。系列产品中各型号在资源分配、外设数量、外设功能等方面有所差异，按需选择。
+2.1 型号对比
+表 2-1 无线型产品资源分配
+产品型号
+资源差异
+CH32V208
+GB CB RB WB
+芯片引脚数 28 48 64 68
+闪存（字节）
+(1) 128K(2) 128K(2) 128K(2) 128K(2)
+SRAM（字节） 64K(2) 64K(2) 64K(2) 64K(2)
+GPIO 端口数 21 37 49 53
+GPIO 供电 与 VDD共用 独立 VIO
+定
+时
+器
+高级（16 位） 1 1 1 1
+通用（16 位） 3 3 3 3
+通用（32 位） 1 1 1 1
+看门狗 2 2 2 2
+系统时基（24 位） 支持
+RTC 支持
+ADC/TKey
+（通道数/单元) 8@1 16@1 16@1 16@1
+运放、比较器 OPA2 2 2 2
+通
+信
+接
+口
+USART/UART 2 4 4 4
+SPI 1 2 2 2
+I2C 1 2 2 2
+CAN 1 1 1 1
+USB(FS)
+USBD 1 1 1 1
+USBHD 1 1 1 1
+Ethernet 10M - 10M
+BLE 5.3 支持
+CPU 主频 Max：144MHz
+额定电压 3.3V
+工作温度 工业级：-40℃～85℃
+封装形式 QFN28 QFN48 LQFP64M QFN68
+注：1.闪存字节表示的是零等待运行区域 R0WAIT，非零等待区域于 V208 型号是 480K- R0WAIT
+2.128K FLASH+64K SRAM 的 208 产品支持用户选择字配置为（128K FLASH+64K SRAM）、（144K
+FLASH+48K SRAM）、（160K FLASH+32K SRAM）几种组合中的一种。
+CH32V208 数据手册 http://wch.cn
+V2.6 4
+2.2 系统架构
+微控制器基于 RISC-V 指令集设计，其架构中将内核、仲裁单元、DMA 模块、SRAM 存储等部分通过
+多组总线实现交互。设计中集成通用 DMA 控制器以减轻 CPU 负担、提高访问效率，应用多级时钟管理
+机制降低了外设的运行功耗，同时兼有数据保护机制，时钟自动切换保护等措施增加了系统稳定性。
+下图是系列产品内部总体架构框图。
+图 2-1 系统框图
+FLASH
+CTRL
+Flash
+Memory
+RISC-V (V4C)
+PFIC RV32
+IMAC SDI
+SRAM
+AHB to APB2
+Bridge
+AHB to APB1
+Bridge
+EXTIT/WKUP
+GPIOB
+GPIOC
+GPIOD
+I-code Bus
+D-code Bus
+APB2: Fmax = 144
+MHz
+APB1: Fmax = 144
+MHz
+MUX
+PA0 ~ PA15
+PB0 ~ PB15
+PC0 ~ PC15
+PD2
+AIN0 ~ AIN15
+LSI-RC
+LSE
+RTC_CLK
+IWDG_CLK OSC32_IN
+OSC32_OUT
+SWCLK
+SWDIO
+VDD: 2.4V~3.6V
+VSS
+VDDA: VIO
+VSSA
+RCC
+GPIOA
+TIM1
+USART1
+IWDG
+TIM2
+TIM3
+SPI2
+I2C1
+I2C2
+bxCAN1
+Temp Sensor
+Tkey
+ADC
+WWDG
+@VDDA
+@VDD
+@VIO33
+RTC/BKP
+@VBAT
+(VSSA)VREF -
+(2.4V~VDDA)VREF+
+RX, TX, CTS, RTS, CK
+4 channels
+3 complementary Channels
+ETR, BIKN
+4 channels, ETR
+4 channels, ETR
+MOSI/SD, MISO,
+SCK/CK, MCK, NSS/WS
+SCL, SDA, SMBA
+SCL, SDA, SMBA
+VIO: 2.4V~3.6V
+VSS
+TAMPER-RTC
+RXP, RXN
+TXP, TXN
+CAN1_TX,CAN1_RX
+MUX
+System Bus
+AHB Fmax = 144
+MHz
+USBD USBDM,USBDP
+USBFS FS_DP
+FS_DM
+BLE 5.3
+DMA 8 Channels
+10M PHY
+OPAx_CHP OPA1-2
+OPAx_CHN
+OPAx_OUT
+(x=1,2)
+MOSI,MISO,SCK, NSS SPI1
+HSE
+HSI-RC
+PLL
+SYSCLK
+Reset &
+MUX & DIV
+AHBCLK
+APB1CLK
+APB2CLK
+OSC_IN
+OSC_OUT
+UART4 RX, TX
+USART3 RX, TX, CTS, RTS, CK
+USART2 RX, TX, CTS, RTS, CK
+TIM5 4 channels
+TIM4 4 channels, ETR
+CH
+3
+2
+V
+208 数据手册 ht
+t
+p:/
+/
+w
+c
+h.cn
+V2.6
+5
+2.3
+存
+储
+器
+映
+射
+表
+图 2-2
+存
+储
+器地址
+映
+射
+B
+L
+E
+5.3
+U
+S
+BD
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+T
+IM3
+T
+IM4
+R
+e
+s
+e
+rved
+RTC WWDG IWDG SPI2
+s
+h
+a
+r
+e
+5
+1
+2
+B SR
+AM
+bxC
+AN1
+BKP PWR
+R
+e
+s
+e
+rved
+A
+FIO
+E
+XTI
+P
+o
+r
+t A
+P
+o
+r
+t B
+P
+o
+r
+t C
+P
+o
+r
+t D
+R
+e
+s
+e
+rved
+A
+D
+C
+1
+/
+T
+o
+u
+c
+h
+Key
+T
+IM1 SPI1
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+DMA
+R
+e
+s
+e
+rved
+RCC
+R
+e
+s
+e
+rved
+F
+l
+a
+s
+h
+I
+n
+t
+e
+r
+f
+ace
+R
+e
+s
+e
+rved
+CRC
+EXT
+END
+T
+IM5
+R
+e
+s
+e
+rved
+U
+S
+A
+RT2
+U
+S
+A
+RT3
+U
+A
+RT4
+I2C1 I2C2
+U
+S
+A
+RT1
+R
+e
+s
+e
+rved
+T
+IM2
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+Rese
+r
+ved
+V
+e
+n
+d
+or
+B
+ytes
+O
+p
+t
+i
+on
+B
+ytes
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+0
+x
+0
+0
+0
+0
+0
+000
+0
+x
+2
+0
+0
+0
+0
+000
+0
+x
+6
+0
+0
+0
+0
+000
+4G线性地址空
+间
+P
+e
+r
+i
+p
+h
+e
+r
+als
+S
+R
+A
+M
+(
+6
+4
+K
+B
+m
+ax)
+0
+x
+2
+0
+0
+1
+0
+000
+0
+x
+0
+0
+0
+0
+0
+000
+0
+x
+0
+8
+0
+0
+0
+000
+0
+x
+1
+F
+F
+F
+8
+000
+0
+x
+4
+0
+0
+0
+0
+000
+0
+x
+4
+0
+0
+0
+0
+400
+0
+x
+4
+0
+0
+0
+5
+C00
+0
+x
+A
+000
+0
+000
+0
+x
+C
+000
+0
+000
+0
+x
+E
+000
+0
+000
+0
+x
+F
+FFF
+F
+FFFF
+0
+x
+4
+0
+0
+0
+0
+000
+0
+x
+E
+010
+0
+000
+C
+o
+r
+e
+P
+r
+i
+v
+ate
+P
+e
+r
+iph
+e
+rals
+FLASH
+0
+x
+1
+F
+F
+F
+F
+000
+0
+x
+1
+F
+F
+F
+F
+780
+0
+x
+1
+F
+F
+F FFFF
+Cod
+e
+F
+LA
+SH
+480
+K
+B
+max Includes 0 wait and n
+o
+n
+-0
+w
+a
+i
+t
+i
+n
+g
+a
+r
+eas
+S
+y
+s
+t
+e
+m
+FLASH
+(B
+O
+O
+T_
+2
+8
+KB)
+0
+x
+1
+F
+F
+F
+F
+800
+Ali
+a
+s
+e
+d
+t
+o
+Fla
+s
+h
+or
+s
+y
+s
+t
+e
+m
+m
+e
+m
+o
+ry
+d
+e
+p
+e
+n
+d
+i
+n
+g
+on
+B
+O
+O
+T
+p
+ins
+0
+x
+4
+0
+0
+0
+0
+800
+0
+x
+4
+0
+0
+0
+2
+C00
+0
+x
+4
+0
+0
+0
+3
+000
+0
+x
+4
+0
+0
+0
+3
+800
+0
+x
+4
+0
+0
+0
+2
+800
+0
+x
+4
+0
+0
+0
+3
+400
+0
+x
+4
+0
+0
+0
+6
+000
+0
+x
+4
+0
+0
+0
+6
+400
+0
+x
+4
+0
+0
+1
+2
+800
+0
+x
+4
+0
+0
+1
+1
+000
+0
+x
+4
+0
+0
+0
+6
+800
+0
+x
+4
+0
+0
+0
+7
+400
+0
+x
+4
+0
+0
+1
+0
+000
+0
+x
+4
+0
+0
+1
+0
+800
+0
+x
+4
+0
+0
+0
+7
+000
+0
+x
+4
+0
+0
+1
+2
+400
+0
+x
+4
+0
+0
+0
+6
+C00
+0
+x
+4
+0
+0
+1
+1
+C00
+0
+x
+4
+0
+0
+1
+1
+400
+0
+x
+4
+0
+0
+1
+0
+400
+0
+x
+4
+0
+0
+1
+0
+C00
+0
+x
+4
+0
+0
+2
+3
+400
+0
+x
+4
+0
+0
+2
+1
+000
+0
+x
+4
+0
+0
+1
+3
+400
+0
+x
+4
+0
+0
+1
+4
+C00
+0
+x
+4
+0
+0
+2
+0
+000
+0
+x
+4
+0
+0
+1
+3
+000
+0
+x
+4
+0
+0
+2
+3
+000
+0
+x
+4
+0
+0
+1
+2
+C00
+0
+x
+4
+0
+0
+2
+2
+000
+0
+x
+4
+0
+0
+2
+2
+400
+0
+x
+4
+0
+0
+2
+1
+400
+0
+x
+4
+0
+0
+1
+5
+400
+0
+x
+4
+0
+0
+2
+0
+400
+0
+x
+4
+0
+0
+2
+3
+C00
+0
+x
+4
+0
+0
+2
+3
+800
+0
+x
+4
+0
+0
+0
+7
+800
+0
+x
+1
+F
+F
+F
+F
+700
+0
+x
+7
+0
+0
+0
+0
+000
+0
+x
+4
+0
+0
+0
+0
+C00
+0
+x
+4
+0
+0
+0
+1
+000
+0
+x
+4
+0
+0
+0
+1
+400
+0
+x
+4
+0
+0
+0
+1
+800
+0
+x
+4
+0
+0
+0
+3
+C00
+0
+x
+4
+0
+0
+0
+4
+400
+0
+x
+4
+0
+0
+0
+4
+800
+0
+x
+4
+0
+0
+0
+4
+C00
+0
+x
+4
+0
+0
+0
+5
+000
+0
+x
+4
+0
+0
+0
+5
+400
+0
+x
+4
+0
+0
+0
+5
+800
+0
+x
+4
+0
+0
+1
+1
+800
+0
+x
+4
+0
+0
+1
+3
+800
+0
+x
+4
+0
+0
+1
+3
+C00
+0
+x
+4
+0
+0
+1
+5
+000
+0
+x
+4
+0
+0
+1
+8
+400
+0
+x
+4
+0
+0
+1
+8
+000
+0
+x
+4
+0
+0
+2
+4
+000
+U
+S
+BFS
+E
+t
+h
+e
+r
+net
+0
+x
+4
+0
+0
+2
+8
+000
+0
+x
+5
+0
+0
+0
+0
+000
+0x
+4
+0
+0
+2
+A
+000
+0
+x
+5
+0
+0
+4
+0
+000
+0
+x
+5
+0
+0
+5
+0
+000
+0
+x
+5
+0
+0
+5
+0
+400
+0
+x
+4
+0
+0
+2
+6
+000
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+R
+e
+s
+e
+rved
+0
+x
+0
+8
+0
+7
+8
+000
+CH32V208 数据手册 http://wch.cn
+V2.6 6
+2.4 时钟树
+系统中引入 4 组时钟源：内部高频 RC 振荡器（HSI）、内部低频 RC 振荡器(LSI)、外接高频振荡器
+(HSE)、外接低频振荡器(LSE)。其中，低频时钟源为 RTC 和独立看门狗提供了时钟基准。高频时钟源
+直接或者间接通过 PLL 倍频后输出为系统总线时钟（SYSCLK），系统时钟再由各预分频器提供了 AHB
+域、APB1 域、APB2 域外设控制时钟及采样或接口输出时钟，部分模块工作需要由 PLL 时钟直接提供。
+图 2-3 时钟树框图
+OSC32_IN
+OSC32_OUT
+32kHz
+LSI RC
+IWDGCLK
+to independent watchdog
+32.768kHz
+LSE OSC
+/128
+to RTC RTCCLK
+OSC_IN
+OSC_OUT
+32MHz
+HSE OSC
+8MHz
+HSI RC
+/2
+*3,*4,…
+*16,*18
+PLLMUL
+PLLSRC
+SW
+MCO
+MCO[3:0]
+HSE
+HSI
+PLLCLK/2
+AHB prescaler
+/1,/2…/512
+APB1 prescaler
+/1,/2…/16
+APB2 prescaler
+/1,/2…/16
+to AHB bus/core/memory/DMA
+FCLK core free running clock
+to Core System timer /8
+PCLK1
+to APB1 peripherals
+perpheral clock enable
+if(APB1 prescaler=1)*1
+else *2
+perpheral clock enable
+TIMxCLK
+to TIM2,3,4
+PCLK2
+to APB2 peripherals
+perpheral clock enable
+if(APB2 prescaler=1)*1
+else *2
+perpheral clock enable
+TIMxCLK
+to TIM1
+ADC prescaler
+/2,/4,/6,/8 ADCCLK
+to ADC1
+perpheral clock enable
+144MHz max
+48MHz USB prescaler
+/1,/2,/3,/5
+/8
+to Flash prog IF
+PLLXTPRE
+PLLCLK
+HCLK
+/4
+/2
+USBPRE
+USBCLK
+USB clock enable
+60MHz
+ETH-PHY
+ETH clock enable
+/1,/2
+CSS
+/1,/2
+RFCLK BLE control
+BLE
+BLEC/S clock enable
+CH32V208 数据手册 http://wch.cn
+V2.6 7
+注：1.当使用 USB 功能时，CPU 的频率必须是 48MHz 或 96MHz 或 144MHz。当系统从停机或待机状态唤
+醒时，系统会自动切换为 HSI 做主频。如果同时使用 USB 和 ETH 功能，需选择 USBPRE=5DIV,将
+PLLCKR=SYSCLK 配置为 240M，AHBPRE=2DIV,CPU 频率 120M。
+2.CH32V208 产品外接晶体或时钟（HSE）为 32M，使用外置晶体时无需负载电容已内置。
+CH32V208 数据手册 http://wch.cn
+V2.6 8
+2.5 功能概述
+2.5.1 RISC-V4C 处理器
+RISC-V4C 支持 RISC-V 指令集 IMAC 子集。处理器内部以模块化管理，包含快速可编程中断控制器
+（PFIC）、内存保护、分支预测模式、扩展指令支持等单元。对外多组总线与外部单元模块相连，实现
+外部功能模块和内核的交互。
+处理器以其极简指令集、多种工作模式、模块化定制扩展等特点可以灵活应用不同场景微控制器
+设计，例如小面积低功耗嵌入式场景、高性能应用操作系统场景等。
+l 支持机器和用户特权模式
+l 快速可编程中断控制器（PFIC）
+l 多级硬件中断堆栈
+l 串行2线调试接口
+l 标准内存保护设计
+l 静态或动态分支预测、高效跳转、冲突检测机制
+l 自定义扩展指令
+2.5.2 片上存储器及自举模式
+内置最大 64K 字节 SRAM 区，用于存放数据，掉电后数据丢失。具体容量要对应芯片型号。
+内置最大 480K 字节程序闪存存储区（Code FLASH），用于用户的应用程序和常量数据存储。其中
+包括零等待程序运行区域和非零等待区域。区域具体大小对应芯片型号。
+内置 28K 字节系统存储区（System FLASH），用于系统引导程序存储（厂家固化自举加载程序）。
+128 字节用于系统非易失配置信息存储区，128 字节用于用户选择字存储区。
+在启动时，通过自举引脚（BOOT0 和 BOOT1）可以选择三种自举模式中的一种：
+l 从程序闪存存储器自举
+l 从系统存储器自举
+l 从内部 SRAM 自举
+自举加载程序存放于系统存储区，可以通过USART1和USB接口对程序闪存存储区的内容重新编程。
+2.5.3 供电方案
+l VDD = 2.4～3.6V：为部分 I/O 引脚和内部调压器供电。
+l VIO = 2.4～3.6V：为大部分 I/O 引脚供电以及以太网模块，决定了引脚输出高压幅值。正常
+工作时，VIO电压不能高于 VDD电压。
+l VDDA = 2.4～3.6V：为高频 RC 振荡器、ADC、温度传感器、DAC 及 PLL 的模拟部分供电。VDDA
+电压必须和 VIO电压相同（如果 VDD掉电，VIO带电，则 VDDA必须带电并且和 VIO一致）。使用 ADC 时，VDDA
+不得小于 2.4V。
+l VBAT = 1.8～3.6V：当关闭 VDD时，（通过内部电源切换器）单独为 RTC、外部低频振荡器和后
+备寄存器供电。（注意 VBAT供电）
+2.5.4 供电监控器
+本产品内部集成了上电复位(POR)/掉电复位(PDR)电路，该电路始终处于工作状态，保证系统在供
+电超过 2.4V 时工作；当 VDD低于设定的阀值(VPOR/PDR)时，置器件于复位状态，而不必使用外部复位电路。
+另外系统设有一个可编程的电压监测器（PVD），需要通过软件开启，用于比较 VDD供电与设定的阀
+值 VPVD的电压大小。打开 PVD 相应边沿中断，可在 VDD下降到 PVD 阈值或上升到 PVD 阈值时，收到中断
+通知。关于 VPOR/PDR和 VPVD的值参考第 4 章。
+CH32V208 数据手册 http://wch.cn
+V2.6 9
+2.5.5 电压调节器
+复位后，调节器自动开启，根据应用方式有三个操作模式
+l 开启模式：正常的运行操作，提供稳定的内核电源
+l 低功耗模式：当 CPU 进入停止模式后，可选择调节器低功耗运行
+l 关断模式：当 CPU 进入待机模式后自动切换调节器到此模式，调压器输出为高阻状态，内核
+电路的供电切断，调压器处于零消耗状态。
+该调压器在复位后始终处于开启模式，在待机模式下被关闭处于关断模式，此时是高阻输出。
+2.5.6 低功耗模式
+系统支持三种低功耗模式，可以针对低功耗、短启动时间和多种唤醒事件等条件下选择达到最佳
+的平衡。
+l 睡眠模式
+在睡眠模式下，只有 CPU 时钟停止，但所有外设时钟供电正常，外设处于工作状态。此模式是最
+浅低功耗模式，但可以达到最快唤醒。
+退出条件：任意中断或唤醒事件。
+l 停止模式
+此模式 FLASH 进入低功耗模式，PLL、HSI 的 RC 振荡器和 HSE 晶体振荡器被关闭。在保持 SRAM 和
+寄存器内容不丢失的情况下，停止模式可以达到最低的电能消耗。
+退出条件：任意外部中断/事件（EXTI 信号）、NRST 上的外部复位信号、IWDG 复位，其中 EXTI 信
+号包括 16 个外部 I/O 口之一、PVD 的输出、RTC 闹钟、以太网唤醒信号或 USB 的唤醒信号。
+l 待机模式
+此模式下，系统主 LDO 关闭，由低功耗 LDO 给唤醒电路供电，其他数字电路全部断电，且 FLASH
+处于断电状态。从待机模式唤醒系统会产生复位，同时 SBF（PWR_CSR）会置位。唤醒后，查询 SBF 状
+态可知唤醒前的低功耗模式，SBF 由 CSBF(PWR_CR)位清除。在待机模式下，32KB 的 SRAM 的内容可以
+保持（取决于睡前的规划配置），后备寄存器内容保留。
+退出条件：任意外部事件（EXTI 信号）、NRST 上的外部复位信号、IWDG 复位、WKUP 引脚上的一个
+上升边沿，其中 EXTI 信号包括 16 个外部 I/O 口之一、RTC 闹钟、以太网唤醒信号或 USB 的唤醒信号。
+2.5.7 CRC（循环冗余校验）计算单元
+CRC（循环冗余校验）计算单元使用一个固定的多项式发生器，从一个 32 位的数据字产生一个 CRC
+码。在众多的应用中，基于 CRC 的技术被用于验证数据传输或存储的一致性。在 EN/IEC 60335-1 标准
+的范围内，提供了一种检测闪存存储器错误的手段，CRC 计算单元可以用于实时地计算软件的签名，
+并与在链接和生成该软件时产生的签名对比。
+2.5.8 快速可编程中断控制器（PFIC）
+产品内置快速可编程中断控制器（PFIC），最多支持 255 个中断向量，以最小的中断延迟提供了灵
+活的中断管理功能。当前产品管理了 8 个内核私有中断和 88 个外设中断管理，其他中断源保留。PFIC
+的寄存器均可以在用户和机器特权模式下访问。
+l 2 个可单独屏蔽中断
+l 提供一个不可屏蔽中断 NMI
+l 支持硬件中断堆栈(HPE)，无需指令开销
+l 提供 4 路免表中断(VTF)
+l 向量表支持地址或指令模式
+l 中断嵌套深度可配置最高 2 级
+l 支持中断尾部链接功能
+CH32V208 数据手册 http://wch.cn
+V2.6 10
+2.5.9 外部中断/事件控制器（EXTI）
+外部中断/事件控制器总共包含 19 个边沿检测器，用于产生中断/事件请求。每个中断线都可以独
+立地配置其触发事件（上升沿或下降沿或双边沿），并能够单独地被屏蔽；挂起寄存器维持所有中断请
+求状态。EXTI 可以检测到脉冲宽度小于内部 APB2 的时钟周期。多达 53 个通用 I/O 口都可选择连接到
+16 个外部中断线。
+2.5.10 通用 DMA 控制器
+系统内置了 1 组通用 DMA 控制器，管理 8 个通道，灵活处理存储器到存储器、外设到存储器和存
+储器到外设间的高速数据传输，支持环形缓冲区方式。每个通道都有专门的硬件 DMA 请求逻辑，支持
+一个或多个外设对存储器的访问请求，可配置访问优先权、传输长度、传输的源地址和目标地址等。
+DMA 用于主要的外设包括：通用/高级/基本定时器 TIMx、ADC、USART、I2C、SPI。
+注：DMA 和 CPU 经过仲裁器仲裁之后对系统 SRAM 进行访问。
+2.5.11 时钟和启动
+系统时钟源 HSI 默认开启，在没有配置时钟或者复位后，内部 8MHz 的 RC 振荡器作为默认的 CPU
+时钟，随后可以另外选择外部 32MHz 时钟或 PLL 时钟。当打开时钟安全模式后，如果 HSE 用作系统时
+钟（直接或间接），此时检测到外部时钟失效，系统时钟将自动切换到内部 RC 振荡器，同时 HSE 和 PLL
+自动关闭；对于关闭时钟的低功耗模式，唤醒后系统也将自动地切换到内部的 RC 振荡器。如果使能了
+时钟中断，软件可以接收到相应的中断。
+多个预分频器用于配置 AHB 的频率、高速 APB(APB2)和低速 APB(APB1)区域提供各外设时钟，最高
+频率 144MHz，参考图 2-3 的时钟树框图。
+2.5.12 RTC（实时时钟）和后备寄存器
+RTC 和后备寄存器在系统内部处于后备供电区域，在 VDD有效时由 VDD供电，在 VDD无效时内部自动
+切换到由 VBAT引脚供电。
+RTC 实时时钟是一组 32 位可编程计数器，时基支持 20 位预分频，用于较长时间段的测量。时钟
+基准来源高速的外部时钟 128 分频（HSE/128）、外部晶体低频振荡器(LSE)或内部低功耗 RC 振荡器
+(LSI)。其中 LSE 也存在后备供电区域，所以，当选择 LSE 做 RTC 时基下，系统复位或从待机模式唤醒
+后，RTC 的设置和时间能够保持不变。
+后备寄存器最多包含 42 个 16 位寄存器，可以用来存储 84 字节的用户应用数据。此数据在待机唤
+醒后，或系统复位或电源复位时，都能继续保持。在侵入检测功能开启下，一旦侵入检测信号有效，
+将被清除后备寄存器中所有内容。
+2.5.13 ADC（模拟/数字转换器）和触摸按键电容检测（TKey）
+产品内嵌 1 个 12 位的模拟/数字转换器(ADC)，共用多达 16 个外部通道和 2 个内部通道采样，可
+编程的通道采样时间，可以实现单次、连续、扫描或间断转换，且支持双 ADC 转换模式。提供模拟看
+门狗功能允许非常精准地监视一路或多路选中的通道，用于监视通道信号电压。支持外部事件触发转
+换，触发源包括片上定时器的内部信号和外部引脚。支持使用 DMA 操作。
+ADC 内部通道采样包括一路内置温度传感器采样和一路内部参考电源采样。温度传感器产生一个
+随温度线性变化的电压。温度传感器在内部被连接到 IN16 输入通道上，用于将传感器的输出转换到数
+字数值。
+触摸按键电容检测单元，提供了多达 16 个检测通道，复用 ADC 模块的外部通道。检测结果通过
+ADC 模块转换输出结果，通过用户软件识别触摸按键状态。
+2.5.14 定时器及看门狗
+系统中的定时器包括高级定时器、通用定时器、基本定时器、看门狗定时器以及系统时基定时器。
+CH32V208 数据手册 http://wch.cn
+V2.6 11
+系列中不同的产品包含的定时器数量有差异，具体参考表 2-2。
+表 2-2 定时器比较
+定时器 分辨率 计数类型 时基 DMA 功能作用
+高级
+定时器
+TIM1 16 位
+向上
+向下
+向上/下
+APB2 时域
+16 位分频器 支持
+PWM 互补输出，单脉冲输出
+输入捕获
+输出比较
+定时计数
+通用
+定时器
+TIM2
+16 位
+向上
+向下
+向上/下
+APB1 时域
+16 位分频器 支持
+输入捕获
+输出比较
+定时计数
+TIM3
+TIM4
+TIM5 32 位
+窗口看门狗 7 位 向下
+APB1 时域
+4 种分频
+不支持 定时
+复位系统（正常工作）
+独立看门狗 12 位 向下
+APB1 时域
+7 种分频
+不支持 定时
+复位系统（正常+低功耗工作）
+系统时基定时器 64 位 向上或下
+SYSCLK 或
+SYSCLK/8
+不支持 定时
+l 高级控制定时器
+高级控制定时器是一个 16 位的自动装载递加/递减计数器，具有 16 位可编程的预分频器。除了完
+整的通用定时器功能外，可以被看成是分配到 6 个通道的三相 PWM 发生器，具有带死区插入的互补 PWM
+输出功能，允许在指定数目的计数器周期之后更新定时器进行重复计数周期，刹车功能等。高级控制
+定时器的很多功能都与通用定时器相同，内部结构也相同，因此高级控制定时器可以通过定时器链接
+功能与其他 TIM 定时器协同操作，提供同步或事件链接功能。
+l 通用定时器
+通用定时器是一个 16 位或 32 位的自动装载递加/递减计数器，具有一个可编程的 16 位预分频器
+以及 4 个独立的通道，每个通道都支持输入捕获、输出比较、PWM 生成和单脉冲模式输出。还能通过
+定时器链接功能与高级控制定时器共同工作，提供同步或事件链接功能。在调试模式下，计数器可以
+被冻结，同时 PWM 输出被禁止，从而切断由这些输出所控制的开关。任意通用定时器都能用于产生 PWM
+输出。每个定时器都有独立的 DMA 请求机制。这些定时器还能够处理增量编码器的信号，也能处理 1
+至 3 个霍尔传感器的数字输出。
+l 独立看门狗
+独立看门狗是一个自由运行的 12 位递减计数器，支持 7 种分频系数。由一个内部独立的 40KHz
+的 RC 振荡器（LSI）提供时钟；因为 LSI 独立于主时钟，所以可运行于停止和待机模式。IWDG 在主程
+序之外，可以完全独立工作，因此，用于在发生问题时复位整个系统，或作为一个自由定时器为应用
+程序提供超时管理。通过选项字节可以配置成是软件或硬件启动看门狗。在调试模式下，计数器可以
+被冻结。
+l 窗口看门狗
+窗口看门狗是一个 7 位的递减计数器，并可以设置成自由运行。可以被用于在发生问题时复位整
+个系统。其由主时钟驱动，具有早期预警中断功能；在调试模式下，计数器可以被冻结。
+CH32V208 数据手册 http://wch.cn
+V2.6 12
+l 系统时基定时器
+青稞微处理器内核自带一个 64 位可选递增或递减的计数器，用于产生 SYSTICK 异常（异常号：15），
+可专用于实时操作系统，为系统提供“心跳”节律，也可当成一个标准的 64 位计数器。具有自动重加
+载功能及可编程的时钟源。
+2.5.15 通讯接口
+2.5.15.1 通用同步/异步收发器（USART）
+产品提供了 3 组通用同步/异步收发器（USART1、USART2、USART3），以及 1 组通用异步收发器
+（UART4）。支持全双工异步通信、同步单向通信以及半双工单线通信，也支持 LIN(局部互连网)，兼
+容 ISO7816 的智能卡协议和 IrDA SIR ENDEC 传输编解码规范，以及调制解调器(CTS/RTS 硬件流控)操
+作。还允许多处理器通信。其采用分数波特率发生器系统，并支持 DMA 操作连续通讯。
+2.5.15.2 串行外设接口（SPI）
+最高 2 组串行外设 SPI 接口，提供主或从操作，动态切换。支持多主模式，全双工或半双工同步
+传输，支持基本的 SD 卡和 MMC 模式。可编程的时钟极性和相位，数据位宽提供 8 或 16 位选择，可靠
+通信的硬件 CRC 产生/校验，支持 DMA 操作连续通讯。
+2.5.15.3 I2C 总线
+多达 2 个 I2C 总线接口，能够工作于多主机模式或从模式，完成所有 I2C 总线特定的时序、协议、
+仲裁等。支持标准和快速两种通讯速度，同时与 SMBus2.0 兼容。
+I2C 接口提供 7 位或 10 位寻址，并且在 7 位从模式时支持双从地址寻址。内置了硬件 CRC 发生器
+/校验器。可以使用 DMA 操作并支持 SMBus 总线 2.0 版/PMBus 总线。
+2.5.15.4 控制器区域网络（CAN）
+CAN 接口兼容规范 2.0A 和 2.0B(主动)，波特率高达 1Mbits/s，支持时间触发通信功能。可以接
+收和发送 11 位标识符的标准帧，也可以接收和发送 29 位标识符的扩展帧。具有 3 个发送邮箱和 2 个
+3 级深度接收 FIFO。
+具有 1 组 CAN 控制器产品只有 14 个可设置的过滤器，并和 USBD 模块共用一个专用的 512 字节 SRAM
+存储器用于数据的发送和接收，当 USBD 和 CAN 同时使用时，为了防止访问 SRAM 冲突，USBD 只能使用
+低 384 字节空间。
+2.5.15.5 通用串行总线（USBD）
+产品内嵌 1 个 USB2.0 全速控制器，遵循 USB2.0 Fullspeed 标准。USBD 提供 16 个可配置的 USB
+设备端点，支持低速设备和全速设备，支持控制/批量/同步/中断传输，双缓冲区机制，USB 挂起/恢
+复操作，具有待机/唤醒功能。USB 专用的 48MHz 时钟由内部主 PLL 分频直接产生。
+2.5.15.6 通用串行总线 USB2.0 全速主机/设备控制器（USBFS）
+USB2.0 全速主机控制器和设备控制器（USBFS），遵循 USB2.0 Fullspeed 标准。提供 16 个可配置
+的 USB 设备端点及一组主机端点。支持控制/批量/同步/中断传输，双缓冲区机制，USB 总线挂起/恢
+复操作，并提供待机/唤醒功能。USBFS 模块专用的 48MHz 时钟由内部主 PLL 分频直接产生(PLL 必须为
+144MHz 或 96MHz 或 48MHz)。
+2.5.16 通用输入输出接口（GPIO）
+系统提供了 4 组 GPIO 端口，共 53 个 GPIO 引脚。每个引脚都可以由软件配置成输出(推挽或开漏)、
+输入(带或不带上拉或下拉)或复用的外设功能端口。多数 GPIO 引脚都与数字或模拟的复用外设共用。
+除了具有模拟输入功能的端口，所有的 GPIO 引脚都有大电流通过能力。提供锁定机制冻结 IO 配置，
+CH32V208 数据手册 http://wch.cn
+V2.6 13
+以避免意外的写入 I/O 寄存器。
+系统中大部分 IO 引脚电源由 VIO提供，通过改变 VIO供电将改变 IO 引脚输出电平高值来适配外部
+通讯接口电平。具体引脚请参考引脚描述。
+2.5.17 运放比较器（OPA）
+产品内置 2 组运放/比较器，内部选择关联到 ADC 和 TIMx 外设，其输入和输出均可通过更改配置
+对多个通道进行选择。支持将外部模拟小信号被放大送入 ADC 以实现小信号 ADC 转换，也可以完成信
+号比较器功能，比较结果由 GPIO 输出或者直接接入 TIMx 的输入通道。
+2.5.18 串行 2 线调试接口（SDI Serial Debug Interface）
+内核自带一个串行 2 线调试的接口（SDI），包括 SWDIO 和 SWCLK 引脚。系统上电或复位后默认调
+试接口引脚功能开启，主程序运行后可以根据需要关闭 SDI。
+CH32V208 数据手册 http://wch.cn
+V2.6 14
+第 3 章 引脚信息
+3.1 引脚排列
+ CH32V208WBU6 CH32V208GBU6
+CH32V208RBT6 CH32V208CBU6
+VBAT 1
+PC13/TAMPER-RTC 2
+PC14/OSC32IN 3
+PC15/OSC32OUT 4
+OSC_IN 6
+OSC_OUT 7
+NRST 8
+PC0/ADC10 9
+PC1/ADC11 10
+PC2/ADC12 11
+PC3/ADC13 12
+VSSA 5
+VDDA 13
+PA0/WKUP/ADC0 14
+PA1/ADC1 15
+PA2/ADC2 16
+PA3/ADC3
+19
+VIO_4 17
+PD4
+18
+PA4/ADC4
+20
+PA5/ADC5
+21
+PA6/ADC6
+22
+PA7/ADC7
+23
+PC4/ADC14
+24
+PC5/ADC15
+25
+PB0/ADC8
+26
+PB1/ADC9
+27
+PB2/BOOT1
+28
+PB10
+29
+PB11
+30
+VDD_1
+32
+VIO_1
+31
+PB12 35 PB13 36 PB14 37 PB15 38 PC6/RXP 39 PC7/RXN 40 PC8/TXP 41 PC9/TXN 42 PA8 43 PA9 44 PA10 45 PA11/USB1DM 46 PA12/USB1DP 47 PA13/SWDIO 48
+VINTA 50 ANT 51
+PA14/SWCLK
+52
+PA15
+53
+PC10
+54
+PC11
+55
+PC12
+56
+PD2
+57
+PB3
+58
+PB4
+59
+PB5
+60
+PB6/USB2DM
+61
+PB7/USB2DP
+62
+BOOT0
+63
+PB8
+64
+PB9
+65
+VIO_3
+67
+VDD_3
+68
+@VDD&VBAT power
+PD5
+33
+VSS_2 49
+PD3
+66
+@VDD power
+@VIO power
+VSS 0
+PD6
+34
+VBAT 1
+PC13/TAMPER-RTC 2
+PC14/OSC32IN 3
+PC15/OSC32OUT 4
+OSC_IN 6
+OSC_OUT 7
+NRST 8
+PC0/ADC10 9
+PC1/ADC11 10
+PC2/ADC12 11
+PC3/ADC13 12
+VSSA 5
+VDDA 13
+PA0/WKUP/ADC0 14
+PA1/ADC1 15
+PA2/ADC2 16
+PA3/ADC3
+17
+VSS_4
+18
+VDD_VIO_4
+19
+PA4/ADC4
+20
+PA5/ADC5
+21
+PA6/ADC6
+22
+PA7/ADC7
+23
+PC4/ADC14
+24
+PC5/ADC15
+25
+PB0/ADC8
+26
+PB1/ADC9
+27
+PB2/BOOT1
+28
+PB10
+29
+PB11
+30
+VSS_1
+31
+VDD_VIO_1
+32
+PB12 33 PB13 34 PB14 35 PB15 36 PC6/RXP 37 PC7/RXN 38 PC8/TXP 39 PC9/TXN 40 PA8 41 PA9 42 PA10 43 PA11/USB1DM 44 PA12/USB1DP 45 PA13/SWDIO 46 VINTA 47 ANT 48
+PA14/SWCLK
+49
+PA15
+50
+PC10
+51
+PC11
+52
+PC12
+53
+PD2
+54
+PB3
+55
+PB4
+56
+PB5
+57
+PB6/USB2DM
+58
+PB7/USB2DP
+59
+BOOT0
+60
+PB8
+61
+PB9
+62
+VSS_3
+63
+VDD_VIO_3
+64
+@VDD&VIO power
+@VDD&VBAT power
+PA6/ADC6
+15
+PA7/ADC7
+16
+PB0/ADC8
+17
+PB1/ADC9
+18
+PB2/BOOT1
+19
+PB10
+20
+PB11
+21
+VDD_VIO_1
+22
+PB12
+23
+PB13
+24
+PB14 25 PB15 26 PA8 27 PA9 28 PA10 29 PA11/USB1DM 30 PA12/USB1DP 31 PA13/SWDIO 32 VINTA 33 ANT 34
+PA14/SWCLK
+36
+PA15
+37
+PB3
+38
+PB4
+39
+PB5
+40
+PB6/USB2DM
+41
+PB7/USB2DP
+42
+BOOT0
+43
+PB8
+44
+PB9
+45
+VSS_3
+46
+VDD_VIO_3
+47
+VBAT
+48
+PC13/TAMPER_RTC 1
+PC14/OSC32IN 2
+PC15/OSC32OUT 3
+OSC_IN 5
+OSC_OUT 6
+NRST 7
+VSSA 4
+VDDA 8
+PA0/WKUP/ADC0 9
+PA1/ADC1 10
+PA2/ADC2
+11
+PA3/ADC3
+12
+PA4/ADC4
+13
+PA5/ADC5
+14
+@VDD&VIO power
+@VDD&VBAT power
+VSS_2
+35
+VSS 0
+PA6/ADC6
+11
+PA7/ADC7
+12
+VDD_VIO_1
+13
+PC6/RXP
+14
+PC7/RXN 15 PC8/TXP 16 PC9/TXN 17 PA11/USB1DM 18 PA12/USB1DP 19 PA13/SWDIO 20 VINTA 21
+ANT
+22
+PA14/SWCLK
+23
+PC14/OSC32IN
+28
+PB6/USB2DM
+24
+PB7/USB2DP
+25
+PB8/BOOT0
+26
+VDD_VIO_3
+27
+OSC_IN 2
+OSC_OUT 3
+PC15/OSC32OUT 1
+VDDA 4
+PA0/WKUP/ADC0 5
+PA1/ADC1 6
+PA2/ADC2 7
+PA3/ADC3
+8
+PA4/ADC4
+9
+PA5/ADC5
+10
+VSS 0
+BOOT1=GND
+CH32V208 数据手册 http://wch.cn
+V2.6 15
+3.2 引脚描述
+表 3-1 引脚定义
+注意，下表中的引脚功能描述针对的是所有功能，不涉及具体型号产品。不同型号之间外设资源有差
+异，查看前请先根据产品型号资源表确认是否有此功能。
+引脚编号
+引脚
+名称
+引脚
+类型
+(1)
+I/O
+电
+平
+主功能
+（复位后） 默认复用功能 重映射功能(8)
+QFN28
+QFN48
+LQFP64M
+QFN68
+0 0 - 0 VSS P - VSS
+- 48 1 1 VBAT P - VBAT
+- 1 2 2
+PC13-
+TAMPER-RTC(2) I/O - PC13(3) TAMPER-RTC
+28 2 3 3
+PC14-
+OSC32_IN(2) I/O/A - PC14(3) OSC32_IN
+1 3 4 4
+PC15-
+OSC32_OUT(2) I/O/A - PC15(3) OSC32_OUT
+- 4 5 5 VSSA P - VSSA
+2 5 6 6 OSC_IN I/A - OSC_IN
+3 6 7 7 OSC_OUT O/A - OSC_OUT
+- 7 8 8 NRST I - NRST
+- - 9 9 PC0 I/O/A - PC0 ADC_IN10
+- - 10 10 PC1 I/O/A - PC1 ADC_IN11
+- - 11 11 PC2 I/O/A - PC2 ADC_IN12
+- - 12 12 PC3 I/O/A - PC3 ADC_IN13
+4 8 13 13 VDDA P - VDDA
+5 9 14 14 PA0-WKUP I/O/A - PA0
+WKUP/USART2_CTS
+ADC_IN0/TIM2_CH1(9)
+TIM2_ETR(9)/TIM5_CH1
+TIM2_CH1_2(9)
+TIM2_ETR_2(9)
+6 10 15 15 PA1 I/O/A - PA1
+USART2_RTS/ADC_IN1
+TIM5_CH2/TIM2_CH2
+TIM2_CH2_2
+7 11 16 16 PA2 I/O/A - PA2
+USART2_TX/TIM5_CH3
+ADC_IN2/TIM2_CH3
+OPA2_OUT0
+TIM2_CH3_1
+- - - 17 VIO_4 P - VIO_4
+- - - 18 PD4 I/O FT PD4
+8 12 17 19 PA3 I/O/A - PA3
+USART2_RX/TIM5_CH4
+ADC_IN3/TIM2_CH4
+OPA1_OUT0
+TIM2_CH4_1
+- - 18 VSS_4 P - VSS_4
+- - 19 - VDD_IO_4 P - VDD_IO_4
+9 13 20 20 PA4 I/O/A - PA4
+SPI1_NSS/USART2_CK
+ADC_IN4/OPA2_OUT1
+10 14 21 21 PA5 I/O/A - PA5 SPI1_SCK/ADC_IN5 
+CH32V208 数据手册 http://wch.cn
+V2.6 16
+引脚编号
+引脚
+名称
+引脚
+类型
+(1)
+I/O
+电
+平
+主功能
+（复位后） 默认复用功能 重映射功能(8)
+QFN28
+QFN48
+LQFP64M
+QFN68
+OPA2_CH1N
+11 15 22 22 PA6 I/O/A - PA6
+SPI1_MISO/ADC_IN6
+TIM3_CH1/OPA1_CH1N
+TIM1_BKIN_1
+12 16 23 23 PA7 I/O/A - PA7
+SPI1_MOSI/ADC_IN7
+TIM3_CH2/OPA2_CH1P
+TIM1_CH1N_1
+- - 24 24 PC4 I/O/A - PC4 ADC_IN14
+- - 25 25 PC5 I/O/A - PC5 ADC_IN15
+- 17 26 26 PB0 I/O/A - PB0
+ADC_IN8/TIM3_CH3
+OPA1_CH1P
+TIM1_CH2N_1
+TIM3_CH3_2
+UART4_TX_1
+- 18 27 27 PB1 I/O/A - PB1
+ADC_IN9
+TIM3_CH4
+OPA1_OUT1
+TIM1_CH3N_1
+TIM3_CH4_2
+UART4_RX_1
+- 19 28 28 PB2 I/O FT PB2/BOOT1
+- 20 29 29 PB10 I/O/A FT PB10
+I2C2_SCL/USART3_TX
+OPA2_CH0N
+TIM2_CH3_2
+TIM2_CH3_3
+- 21 30 30 PB11 I/O/A FT PB11
+I2C2_SDA/USART3_RX
+OPA1_CH0N
+TIM2_CH4_2
+TIM2_CH4_3
+- - 31 - VSS_1 P VSS_1
+13 22 32 - VDD_IO_1 P VDD_IO_1
+- - - 31 VIO_1 P VIO_1
+- - - 32 VDD_1 P VDD_1
+- - - 33 PD5 I/O FT PD5
+- - - 34 PD6 I/O FT PD6
+- 23 33 35 PB12 I/O/A FT PB12
+SPI2_NSS/I2C2_SMBA
+USART3_CK/TIM1_BKIN
+- 24 34 36 PB13 I/O/A FT PB13
+SPI2_SCK/TIM1_CH1N
+USART3_CTS
+USART3_CTS_1
+- 25 35 37 PB14 I/O/A FT PB14
+SPI2_MISO/TIM1_CH2N
+USART3_RTS/OPA2_CH0P
+USART3_RTS_1
+- 26 36 38 PB15 I/O/A FT PB15
+SPI2_MOSI/TIM1_CH3N
+OPA1_CH0P
+14 - 37 39 PC6 I/O FT PC6 ETH_RXP TIM3_CH1_3
+15 - 38 40 PC7 I/O FT PC7 ETH_RXN TIM3_CH2_3
+16 - 39 41 PC8 I/O FT PC8 ETH_TXP TIM3_CH3_3
+17 - 40 42 PC9 I/O FT PC9 ETH_TXN TIM3_CH4_3
+- 27 41 43 PA8 I/O FT PA8
+USART1_CK
+TIM1_CH1/MCO
+USART1_CK_1
+TIM1_CH1_1
+- 28 42 44 PA9 I/O FT PA9
+USART1_TX
+TIM1_CH2
+TIM1_CH2_1 
+CH32V208 数据手册 http://wch.cn
+V2.6 17
+引脚编号
+引脚
+名称
+引脚
+类型
+(1)
+I/O
+电
+平
+主功能
+（复位后） 默认复用功能 重映射功能(8)
+QFN28
+QFN48
+LQFP64M
+QFN68
+- 29 43 45 PA10 I/O FT PA10
+USART1_RX
+TIM1_CH3
+TIM1_CH3_1
+18 30 44 46 PA11 I/O/A FT PA11
+USART1_CTS/USBDM
+CAN1_RX/TIM1_CH4
+USART1_CTS_1
+TIM1_CH4_1
+19 31 45 47 PA12 I/O/A FT PA12
+USART1_RTS/USBDP
+CAN1_TX/TIM1_ETR
+USART1_RTS_1
+TIM1_ETR_1
+20 32 46 48 PA13 I/O FT SWDIO PA13
+- 35 - 49 VSS_2 P - VSS_2
+21 33 47 50 VINTA P - VINTA
+22 34 48 51 ANT A - ANT
+23 36 49 52 PA14 I/O FT SWCLK PA14
+- 37 50 53 PA15 I/O FT PA15
+TIM2_CH1_1(9)
+TIM2_ETR_1(9)
+TIM2_CH1_3(9)
+TIM2_ETR_3(9)
+SPI1_NSS_1
+- - 51 54 PC10 I/O FT PC10 UART4_TX USART3_TX_1
+- - 52 55 PC11 I/O FT PC11 UART4_RX USART3_RX_1
+- - 53 56 PC12 I/O FT PC12 USART3_CK_1
+- - 54 57 PD2 I/O FT PD2 TIM3_ETR
+TIM3_ETR_2
+TIM3_ETR_3
+- 38 55 58 PB3 I/O FT PB3
+TIM2_CH2_1
+TIM2_CH2_3
+SPI1_SCK_1
+- 39 56 59 PB4 I/O FT PB4
+TIM3_CH1_2
+SPI1_MISO_1
+- 40 57 60 PB5 I/O FT PB5 I2C1_SMBA
+TIM3_CH2_2
+SPI1_MOSI_1
+24 41 58 61 PB6 I/O FT PB6
+I2C1_SCL
+TIM4_CH1/USBFS_DM
+USART1_TX_1
+25 42 59 62 PB7 I/O FT PB7
+I2C1_SDA
+TIM4_CH2/USBFS_DP
+USART1_RX_1
+26(6)
+43 60 63 BOOT0 I - BOOT0
+44 61 64 PB8 I/O/A FT PB8 TIM4_CH3
+I2C1_SCL_1
+/CAN1_RX_2
+- 45 62 65 PB9 I/O/A FT PB9 TIM4_CH4
+I2C1_SDA_1
+/CAN1_TX_2
+- - - 66 PD3 I/O FT PD3
+- 46 63 - VSS_3 P - VSS_3
+27 47 64 - VDD_IO_3 P - VDD_IO_3
+CH32V208 数据手册 http://wch.cn
+V2.6 18
+引脚编号
+引脚
+名称
+引脚
+类型
+(1)
+I/O
+电
+平
+主功能
+（复位后） 默认复用功能 重映射功能(8)
+QFN28
+QFN48
+LQFP64M
+QFN68
+- - - 67 VIO_3 P - VIO_3
+- - - 68 VDD_3 P - VDD_3
+注 1：表格缩写解释：
+I = TTL/CMOS 电平斯密特输入；O = CMOS 电平三态输出；A = 模拟信号输入或输出；
+P = 电源；FT = 耐受5V；ANT = 射频信号输入输出（天线）；
+注2：PC13，PC14和PC15引脚通过电源开关进行供电，而这个电源开关只能够吸收有限的电流(3mA)。PC13
+可以作为TAMPER引脚、RTC闹钟或秒输出；PC14和PC15只能用作LSE引脚；作为输出脚时只能工作在2MHz
+模式下，最大驱动负载为30pF，并且不能作为电流源(如驱动LED)。
+注3：这些引脚在备份区域第一次上电时处于主功能状态下，之后即使复位，这些引脚的状态由备份区
+域寄存器控制（这些寄存器不会被主复位系统所复位）。关于如何控制这些IO口的具体信息，请参考
+CH32FV2x_V3xRM手册的电池备份区域和BKP寄存器的相关章节。
+注4：LQFP64M封装的引脚5和引脚6在芯片复位后默认配置为OSC_IN和OSC_OUT功能脚。软件可以重新设
+置这两个引脚为PD0和PD1功能。但对于LQFP100封装，由于PD0和PD1为固有的功能引脚，因此没有必要
+再由软件进行重映像设置。CH32V203RBT6只有OSC_IN和OSC_OUT功能脚，不能复用为PD0和PD1功能。更
+多详细信息请参考CH32FV2x_V3xRM手册的复用功能I/O章节和调试设置章节。
+注5：BOOT0引脚未引出的芯片，在内部将下拉到GND。BOOT0引脚引出，但BOOT1/PB2引脚未引出的芯片，
+内部BOOT1/PB2引脚将下拉到GND。此时如果进入低功耗模式配置IO口状态时，建议BOOT1/PB2引脚使用
+输入下拉模式防止产生额外电流。
+注6：BOOT0和PB8引脚合封芯片，建议外接500K下拉电阻，保证芯片上电稳定进入程序闪存存储器自举
+模式。另外，此PB8引脚及其复用功能只保留了输出驱动功能，所有输入功能已被禁止。
+注7：20和28引脚封装芯片有许多合封引脚（至少2个IO功能引脚物理合为一个引脚），此时驱动不要同
+时配置输出功能，否则可能损坏引脚。有功耗要求的注意引脚状态；
+注 8：重映射功能下划线后的数值表示 AFIO 寄存器中相对应位的配置值。例如：UART4_RX_3 表示 AFIO
+寄存器相应位配置为 11b；
+注 9：TIM2_CH1 和 TIM2_ETR 共用一个引脚，但不能同时使用。
+CH32V208 数据手册 http://wch.cn
+V2.6 19
+3.3 引脚复用功能
+注意，下表中的引脚功能描述针对的是所有功能，不涉及具体型号产品。不同型号之间外设资源有差异，查看前请先根据产品型号资源表确认是否有此功能。
+表 3-2 引脚复用和重映射功能
+复用
+引脚
+ADC TIM1 TIM2/3/4/5 UART/USART USB SYS I2C SPI ETH OPA CAN
+PA0 ADC_IN0
+TIM2_CH1
+TIM2_ETR
+TIM2_CH1_2
+TIM2_ETR_2
+TIM5_CH1
+USART2_CTS WKUP
+PA1 ADC_IN1
+TIM2_CH2
+TIM2_CH2_2
+TIM5_CH2
+USART2_RTS
+PA2 ADC_IN2
+TIM2_CH3
+TIM2_CH3_1
+TIM5_CH3
+USART2_TX OPA2_OUT0
+PA3 ADC_IN3
+TIM2_CH4
+TIM2_CH4_1
+TIM5_CH4
+USART2_RX OPA1_OUT0
+PA4 ADC_IN4 USART2_CK SPI1_NSS OPA2_OUT1
+PA5 ADC_IN5 SPI1_SCK OPA2_CH1N
+PA6 ADC_IN6 TIM1_BKIN_1 TIM3_CH1 SPI1_MISO OPA1_CH1N
+PA7 ADC_IN7 TIM1_CH1N_1 TIM3_CH2 SPI1_MOSI OPA2_CH1P
+PA8 TIM1_CH1
+TIM1_CH1_1
+USART1_CK
+USART1_CK_1 MCO
+PA9 TIM1_CH2
+TIM1_CH2_1 USART1_TX
+PA10 TIM1_CH3
+TIM1_CH3_1 USART1_RX
+PA11 TIM1_CH4
+TIM1_CH4_1
+USART1_CTS
+USART1_CTS_1 USBDM CAN1_RX
+PA12 TIM1_ETR
+TIM1_ETR_1
+USART1_RTS
+USART1_RTS_1 USBDP CAN1_TX
+PA13 SWDIO
+PA14 SWCLK
+PA15
+TIM2_CH1_1
+TIM2_ETR_1
+TIM2_CH1_3
+TIM2_ETR_3
+SPI1_NSS_1
+PB0 ADC_IN8 TIM1_CH2N_1 TIM3_CH3
+TIM3_CH3_2 UART4_TX_1 OPA1_CH1P
+PB1 ADC_IN9 TIM1_CH3N_1 TIM3_CH4
+TIM3_CH4_2 UART4_RX_1 OPA1_OUT1
+PB2 BOOT1
+PB3 TIM2_CH2_1
+TIM2_CH2_3 SPI1_SCK_1
+PB4 TIM3_CH1_2 SPI1_MISO_1
+PB5 TIM3_CH2_2 I2C1_SMBA SPI1_MOSI_1
+PB6 TIM4_CH1 USART1_TX_1 USBFS_DM I2C1_SCL
+PB7 TIM4_CH2 USART1_RX_1 USBFS_DP I2C1_SDA
+PB8 TIM4_CH3 I2C1_SCL_1 CAN1_RX_2
+PB9 TIM4_CH4 I2C1_SDA_1 CAN1_TX_2 
+CH32V208 数据手册 http://wch.cn
+V2.6 20
+复用
+引脚
+ADC TIM1 TIM2/3/4/5 UART/USART USB SYS I2C SPI ETH OPA CAN
+PB10 TIM2_CH3_2
+TIM2_CH3_3 USART3_TX I2C2_SCL OPA2_CH0N
+PB11 TIM2_CH4_2
+TIM2_CH4_3 USART3_RX I2C2_SDA OPA1_CH0N
+PB12 TIM1_BKIN USART3_CK I2C2_SMBA SPI2_NSS
+PB13 TIM1_CH1N USART3_CTS
+USART3_CTS_1 SPI2_SCK
+PB14 TIM1_CH2N USART3_RTS
+USART3_RTS_1 SPI2_MISO OPA2_CH0P
+PB15 TIM1_CH3N SPI2_MOSI OPA1_CH0P
+PC0 ADC_IN10
+PC1 ADC_IN11
+PC2 ADC_IN12
+PC3 ADC_IN13
+PC4 ADC_IN14
+PC5 ADC_IN15
+PC6 TIM3_CH1_3 ETH_RXP
+PC7 TIM3_CH2_3 ETH_RXN
+PC8 TIM3_CH3_3 ETH_TXP
+PC9 TIM3_CH4_3 ETH_TXN
+PC10 UART4_TX
+USART3_TX_1
+PC11 UART4_RX
+USART3_RX_1
+PC12 USART3_CK_1
+PC13 TAMPER_RTC
+PC14 OSC32_IN
+PC15 OSC33_OUT
+PD2
+TIM3_ETR
+TIM3_ETR_2
+TIM3_ETR_3 
+CH32V208 数据手册 http://wch.cn
+V2.6 21
+第 4 章 电气特性
+4.1 测试条件
+除非特殊说明和标注，所有电压都以 VSS为基准。
+所有最小值和最大值将在最坏的环境温度、供电电压和时钟频率条件下得到保证。典型数值是基
+于常温 25℃和 VDD = 3.3V 环境下用于设计指导。
+对于通过综合评估、设计模拟或工艺特性得到的数据，不会在生产线进行测试。在综合评估的基
+础上，最小和最大值是通过样本测试后统计得到。除非特殊说明为实测值，否则特性参数以综合评估
+或设计保证。
+供电方案：
+图 4-1 常规供电典型电路
+0.1uF
+VDD
+VDD
+VDDA
+VSSA
+VDDx/VIOx
+VSSx
+VBAT
+1.8-3.6V
+0.1uF
+4.2 绝对最大值
+临界或者超过绝对最大值将可能导致芯片工作不正常甚至损坏。
+表 4-1 绝对最大值参数表
+符号 描述 最小值 最大值 单位
+TA 工作时的环境温度 -40 85 ℃
+TS 存储时的环境温度 -40 125 ℃
+VDD-VSS 外部主供电电压（包含 VDDA和 VDD） -0.3 4.0 V
+VIO-VSS IO 域端供电电压 -0.3 4.0 V
+VIN
+FT（耐受 5V）引脚上的输入电压 VSS-0.3 5.5 V
+其他引脚上的输入电压 VSS-0.3 VDD+0.3
+|△VDD_x| 不同主供电引脚之间的电压差 50 mV
+|△VIO_x| 不同 IO 端供电引脚之间的电压差 50 mV
+|△VSS_x| 不同接地引脚之间的电压差 50 mV
+VESD(HBM)
+ESD 静电放电电压（人体模型，非接触式） 4K V
+USB 引脚（PA11、PA12） 3K V
+IVDD 经过 VDD/VDDA/VIO电源线的总电流（供应电流） 150
+mA
+IVss 经过 VSS地线的总电流（流出电流） 150
+IIO
+任意 I/O 和控制引脚上的灌电流 25
+任意 I/O 和控制引脚上的输出电流 -25
+IINJ(PIN) NRST 引脚注入电流 +/-5 
+CH32V208 数据手册 http://wch.cn
+V2.6 22
+HSE 的 OSC_IN 引脚和 LSE 的 OSC_IN 引脚注入电流 +/-5
+其他引脚的注入电流 +/-5
+∑IINJ(PIN) 所有 IO 和控制引脚的总注入电流 +/-25
+4.3 电气参数
+4.3.1 工作条件
+表 4-2 通用工作条件
+符号 参数 条件 最小值 最大值 单位
+FHCLK 内部 AHB 时钟频率 144 MHz
+FPCLK1 内部 APB1 时钟频率 144 MHz
+FPCLK2 内部 APB2 时钟频率 144 MHz
+VDD 标准工作电压 2.4 3.6
+V 使用 USB 或 ETH 3.0 3.6
+VIO 大部分 IO 引脚输出电压 VIO不能高于 VDD 2.4 3.6 V
+VDDA
+模拟部分工作电压（未使用 ADC） VDDA 必须与 VIO 相同，VREF+
+不能高于 VDDA，VREF-等于 VSS
+2.4 3.6 V 模拟部分工作电压（使用 ADC）
+VBAT
+(1) 备份单元工作电压 不能大于 VDD 1.8 3.6 V
+TA 环境温度 -40 85 ℃
+TJ 结温度范围 -40 105 ℃
+注：1.电池到 VBAT连线要尽可能的短。
+表 4-3 上电和掉电条件
+符号 参数 条件 最小值 最大值 单位
+tVDD
+VDD上升速率 0 ∞
+us/V
+VDD下降速率 30 ∞
+4.3.2 内嵌复位和电源控制模块特性
+表 4-4 复位及电压监测（PDR 选择高阈值档位）
+符号 参数 条件 最小值 典型值 最大值 单位
+VPVD
+(1) 可编程电压检测器的电
+平选择
+PLS[2:0] = 000(上升沿) 2.39 V
+PLS[2:0] = 000(下降沿) 2.31 V
+PLS[2:0] = 001(上升沿) 2.56 V
+PLS[2:0] = 001(下降沿) 2.48 V
+PLS[2:0] = 010(上升沿) 2.65 V
+PLS[2:0] = 010(下降沿) 2.57 V
+PLS[2:0] = 011(上升沿) 2.78 V
+PLS[2:0] = 011(下降沿) 2.69 V
+PLS[2:0] = 100(上升沿) 2.89 V
+PLS[2:0] = 100(下降沿) 2.81 V
+PLS[2:0] = 101(上升沿) 3.05 V
+PLS[2:0] = 101(下降沿) 2.96 V
+PLS[2:0] = 110(上升沿) 3.17 V
+PLS[2:0] = 110(下降沿) 3.08 V 
+CH32V208 数据手册 http://wch.cn
+V2.6 23
+PLS[2:0] = 111(上升沿) 3.31 V
+PLS[2:0] = 111(下降沿) 3.21 V
+VPVDhyst PVD 迟滞 0.08 V
+VPOR/PDR 上电/掉电复位阈值 上升沿 1.9 2.2 2.4 V
+下降沿 1.9 2.2 2.4 V
+VPDRhyst PDR 迟滞 20 mV
+tRSTTEMPO
+上电复位 24 28 30
+mS 其他复位 8 10 30
+注：1.常温测试值。
+4.3.3 内置的参考电压
+表 4-5 内置参考电压
+符号 参数 条件 最小值 最大值 单位
+VREFINT 内置参考电压 TA = -40℃～85℃ 1.17 1.2 1.23 V
+TS_vrefint
+当读出内部参考电压
+时，ADC 的采样时间
+17.1 us
+4.3.4 供电电流特性
+电流消耗是多种参数和因素的综合指标，这些参数和因素包括工作电压、环境温度、I/O 引脚的
+负载、产品的软件配置、工作频率、I/O 脚的翻转速率、程序在存储器中的位置以及执行的代码等。
+电流消耗测量方法如下图：
+图 4-2 电流消耗测量
+微控制器处于下列条件：
+常温 VDD = 3.3V 情况下，测试时：所有 IO 端口配置上拉输入，HSE 或 HSI 只开 1 个，HSE=32M，
+HSI=8M（已校准），FPLCK1=FHCLK/2，FPLCK2=FHCLK，当 FHCLK>8MHz 时，PLL 打开。使能或关闭所有外设时钟的
+功耗。
+表 4-6-1 运行模式下典型的电流消耗，数据处理代码从内部闪存中运行
+符号 参数 条件
+典型值
+单位
+使能所有外设 关闭所有外设
+(2)
+IDD
+(1) 运行模式下的
+供应电流
+外部时钟
+FHCLK = 144MHz 21.37 16.77
+mA
+FHCLK = 72MHz 10.91 8.73
+FHCLK = 48MHz 7.58 6.16
+FHCLK = 36MHz 6.49 5.29
+FHCLK = 24MHz 4.59 3.61 
+CH32V208 数据手册 http://wch.cn
+V2.6 24
+FHCLK = 16MHz 3.13 2.59
+FHCLK = 8MHz 2.0 1.71
+FHCLK = 4MHz 1.42 1.28
+FHCLK = 500KHz 1.0 0.95
+运行于高速内部
+RC 振荡器（HSI），
+使用 AHB 预分频
+以减低频率
+FHCLK = 144MHz 20.75 16.27
+FHCLK = 72MHz 10.74 8.53
+FHCLK = 48MHz 7.42 5.98
+FHCLK = 36MHz 5.96 5.05
+FHCLK = 24MHz 4.62 3.41
+FHCLK = 16MHz 3.03 2.49
+FHCLK = 8MHz 1.66 1.42
+FHCLK = 4MHz 1.11 1.0
+FHCLK = 500KHz 0.63 0.62
+注：1.以上为实测参数
+2.测试时，关闭所有外设时钟时，串口 1，GPIOA 时钟未关闭。
+表 4-6-2 蓝牙 BLE 功耗
+符号 参数 条件 最小值 典型值 最大值 单位
+IDD(BLE)
+(1)
+接收
+常温 VDD = 3.3V
+15.2
+mA 发送
+-18dBm 6.28
+0dBm 12.8
++7dBm 35.1
+注：1.以上为实测参数。
+表 4-7 睡眠模式下典型的电流消耗，数据处理代码从内部闪存或 SRAM 中运行
+符号 参数 条件
+典型值
+单位
+使能所有外设 关闭所有外设
+(2)
+IDD
+(1)
+睡眠模式下
+的供应电流
+（此时外设供
+电和时钟保
+持）
+外部时钟
+FHCLK = 144MHz 8.17 3.69
+mA
+FHCLK = 72MHz 4.75 2.16
+FHCLK = 48MHz 3.35 1.69
+FHCLK = 36MHz 3.29 1.89
+FHCLK = 24MHz 2.18 1.26
+FHCLK = 16MHz 1.63 1.11
+FHCLK = 8MHz 1.23 0.98
+FHCLK = 4MHz 1.06 0.94
+FHCLK = 500KHz 0.97 0.91
+运行于高速内部
+RC 振荡器（HSI），
+使用 AHB 预分频
+以减低频率
+FHCLK = 144MHz 7.65 3.44
+FHCLK = 72MHz 4.61 2.02
+FHCLK = 48MHz 3.22 1.55
+FHCLK = 36MHz 2.73 1.44
+FHCLK = 24MHz 1.9 1.1
+FHCLK = 16MHz 1.48 0.95
+FHCLK = 8MHz 0.93 0.69 
+CH32V208 数据手册 http://wch.cn
+V2.6 25
+FHCLK = 4MHz 0.75 0.63
+FHCLK = 500KHz 0.58 0.56
+注：1.以上为实测参数；
+ 2.测试时，串口 1，GPIOA 时钟，电源模块时钟未关闭。
+表 4-8 停止和待机模式下典型的电流消耗
+符号 参数 条件 典型值 单位
+IDD
+停止模式下的供应电流
+调压器处于运行模式，低速和高速内部
+RC 振荡器及外部振荡器都处于关闭状
+态（没有独立看门狗）
+253.4
+uA
+调压器处于低功耗模式，低速和高速内
+部 RC 振荡器及外部振荡器都处于关闭
+状态（没有独立看门狗，PVD 关闭），
+RAM 进入低功耗模式
+23.8
+待机模式下的供应电流
+低速内部 RC 振荡器和独立看门狗处于
+开启状态，所有 RAM 不带电
+1.3
+低速内部 RC 振荡器处于开启状态，独
+立看门狗关闭状态，所有 RAM 不带电
+1.3
+LSI/LSE/RTC/IWDG 关闭，
+32K_RAM 带电并处于低功耗状态
+2.18
+LSI/LSE/RTC/IWDG 关闭，
+2K_RAM 带电并处于低功耗状态
+0.86
+LSI/LSE/RTC/IWDG 关闭，
+所有 RAM 不带电
+0.7
+IDD_VBAT
+备份区域的供应电流
+（移除 VDD 和 VDDA，只使
+用 VBAT供电）
+低速外部振荡器和 RTC 处于开启状态 1.23
+注：以上为实测参数。
+4.3.5 外部时钟源特性
+表 4-9 来自外部高速时钟
+符号 参数 条件 最小值 典型值 最大值 单位
+FHSE_ext 外部时钟频率 32 MHz
+VHSEH
+(1) OSC_IN 输入引脚高电平电压 0.8VIO VIO V
+VHSEL
+(1) OSC_IN 输入引脚低电平电压 0 0.2VIO V
+Cin(HSE) OSC_IN 输入电容 5 pF
+DuCy(HSE) 占空比 50 %
+IL OSC_IN 输入漏电流 ±1 uA
+注：1.不满足此条件可能会引起电平识别错误。
+CH32V208 数据手册 http://wch.cn
+V2.6 26
+图 4-3 外部提供高频时钟源电路
+表 4-10 来自外部低速时钟
+符号 参数 条件 最小值 典型值 最大值 单位
+FLSE_ext 用户外部时钟频率 32.768 1000 KHz
+VLSEH OSC32_IN 输入引脚高电平电压 0.8VDD VDD V
+VLSEL OSC32_IN 输入引脚低电平电压 0 0.2VDD V
+Cin(LSE) OSC32_IN 输入电容 5 pF
+DuCy(LSE) 占空比 50 %
+IL OSC32_IN 输入漏电流 ±1 uA
+图 4-4 外部提供低频时钟源电路
+表 4-11 使用一个晶体/陶瓷谐振器产生的高速外部时钟
+符号 参数 条件 最小值 典型值 最大值 单位
+FOSC_IN 谐振器频率 32(2) MHz
+RF 反馈电阻 250 kΩ
+C
+建议的负载电容与对应晶体
+串行阻抗 RS
+RS=60Ω
+(1) 30 pF
+I2 HSE 驱动电流 VDD = 3.3V，20p 负载 0.53 mA
+gm 振荡器的跨导 启动 17.5 mA/V
+tSU(HSE) 启动时间 VDD稳定，8M 晶体 2.5 ms
+注：1.25M 晶体 ESR 建议不超过 60 欧，低于 25M 可适当放宽；
+ 2.无需外部负载电容。
+电路参考设计及要求：
+晶体的负载电容以晶体厂商建议为准，通常情况 CL1=CL2。
+CH32V208x 芯片外接 32M 晶体，芯片内置了负载电容，外部电路可省。
+图 4-5 外接 32M 晶体典型电路
+OSC_IN
+OSC_OUT
+32MHz
+晶振
+CL1
+CL2
+CH32V208 数据手册 http://wch.cn
+V2.6 27
+表 4-12 使用一个晶体/陶瓷谐振器产生的低速外部时钟（fLSE=32.768KHz）
+符号 参数 条件 最小值 典型值 最大值 单位
+RF 反馈电阻 5 MΩ
+C
+建议的负载电容与对应晶体串
+行阻抗 RS
+RS<70kΩ 15 pF
+i2 LSE 驱动电流 VDD = 3.3V 0.35 uA
+gm 振荡器的跨导 启动 25.3 uA/V
+tSU(LSE) 启动时间 VDD 是稳定的 800 mS
+电路参考设计及要求：
+晶体的负载电容以晶体厂商建议为准，通常情况 CL1=CL2，可选 12pF 左右。
+图 4-6 外接 32.768K 晶体典型电路
+注：负载电容 CL由下式计算：CL = CL1 x CL2 / (CL1 + CL2) + Cstray，其中 Cstray是引脚的电容和 PCB 板或
+PCB 相关的电容，它的典型值是介于 2pF 至 7pF 之间。
+4.3.6 内部时钟源特性
+表 4-13 内部高速(HSI)RC 振荡器特性
+符号 参数 条件 最小值 典型值 最大值 单位
+FHSI 频率(校准后) 8 MHz
+DuCyHSI 占空比 45 50 55 %
+ACCHSI HSI 振荡器的精度（校准后） TA = 0℃～70℃ -1.0 1.6 %
+TA = -40℃～85℃ -2.2 2.2 %
+tSU(HSI) HSI 振荡器启动稳定时间 10 us
+IDD(HSI) HSI 振荡器功耗 120 180 270 uA
+表 4-14 内部低速(LSI)RC 振荡器特性
+符号 参数 条件 最小值 典型值 最大值 单位
+FLSI 频率 25 32 45 KHz
+DuCyLSI 占空比 45 50 55 %
+ACCLSI
+LSI 振荡器的精度
+（校准后）
+恒温±1℃内，建议 10s
+校准一次
+±500 ppm
+tSU(LSI) LSI 振荡器启动稳定时间 100 us
+IDD(LSI) LSI 振荡器功耗 0.6 uA
+4.3.7 PLL 特性
+表 4-15 PLL 特性
+符号 参数 条件 最小值 典型值 最大值 单位
+FPLL_IN PLL 输入时钟 4 8 25 MHz 
+CH32V208 数据手册 http://wch.cn
+V2.6 28
+PLL 输入时钟占空比 40 60 %
+FPLL_OUT PLL 倍频输出时钟 40 240(1) MHz
+tLOCK PLL 锁定时间 200 us
+注 1：须选择合适倍频，满足 PLL 输出频率范围。
+4.3.8 从低功耗模式唤醒的时间
+表 4-16 低功耗模式唤醒的时间
+(1)
+
+符号 参数 条件 典型值 单位
+twusleep 从睡眠模式唤醒 使用 HSI RC 时钟唤醒 2.6 us
+twustop
+从停止模式唤醒（调压器处于运行模式） HSI RC 时钟唤醒 23.1 us
+从停止模式唤醒（调压器为低功耗模式） 调压器从低功耗模式唤醒时间 +
+HSI RC 时钟唤醒
+299 us
+tWUSTDBY 从待机模式唤醒 LDO 稳定时间 + HSI RC 时钟唤醒 +
+代码加载时间
+(2)（举例 128K）
+5.0 ms
+注：1.以上为实测参数。
+ 2.代码加载时间以当前芯片配置 0 等待运行区域容量和加载配置时钟大小计算可得。
+4.3.9 存储器特性
+表 4-17 闪存存储器特性
+符号 参数 条件 最小值 典型值 最大值 单位
+Fprog 操作频率
+(1) TA = -40℃～85℃ 60 MHz
+tprog_page 页（256 字节）编程时间 TA = -40℃～85℃ 2 ms
+terase_page 页（256 字节）擦除时间 TA = -40℃～85℃ 16 ms
+terase_sec 扇区（4K 字节）擦除时间 TA = -40℃～85℃ 16 ms
+Vprog 编程电压 2.4 3.6 V
+注：1.flash 的操作频率包括读、编程、擦除，时钟来自于 HCLK。
+表 4-18 闪存存储器寿命和数据保存期限
+符号 参数 条件 最小值 典型值 最大值 单位
+NEND 擦写次数 TA = 25℃ 10K 80K(1) 次
+tRET 数据保存期限 20 年
+注：实测操作擦写次数，非担保。
+4.3.10 I/O 端口特性
+表 4-19 通用 I/O 静态特性
+符号 参数 条件 最小值 典型值 最大值 单位
+VIH
+标准 I/O 脚，输入高电平电压 0.41*(VDD1.8)+1.3
+VDD+0.3 V
+FT IO 引脚，输入高电平电压 0.42*(VDD1.8)+1
+5.5 V
+VIL
+标准 I/O 脚，输入低电平电压 -0.3
+0.28*(VDD1.8)+0.6
+V
+FT IO 引脚，输入低电平电压 -0.3 0.32*(VDD- V 
+CH32V208 数据手册 http://wch.cn
+V2.6 29
+1.8)+0.55
+Vhys
+标准 I/O 脚施密特触发器电压迟滞 150
+mV
+FT IO 引脚施密特触发器电压迟滞 90
+Ilkg 输入漏电流
+标准 IO 端口 1
+uA
+FT IO 端口 3
+RPU 弱上拉等效电阻 30 40 50 kΩ
+RPD 弱下拉等效电阻 30 40 50 kΩ
+CIO I/O 引脚电容 5 pF
+输出驱动电流特性
+GPIO(通用输入/输出端口)可以吸收或输出多达±8mA 电流，并且吸收或输出±20mA 电流(不严格
+达到 VOL/VOH)。在用户应用中，所有 IO 引脚驱动总电流不能超过 4.2 节给出的绝对最大额定值：
+表 4-20 输出电压特性
+符号 参数 条件 最小值 最大值 单位
+VOL 输出低电平，8 个引脚吸收电流 TTL 端口，IIO = +8mA
+2.7V< VDD <3.6V
+0.4
+V
+VOH 输出高电平，8 个引脚输出电流 VDD-0.4
+VOL 输出低电平，8 个引脚吸收电流 CMOS 端口，IIO = +8mA
+2.7V< VDD <3.6V
+0.4
+V
+VOH 输出高电平，8 个引脚输出电流 2.3
+VOL 输出低电平，8 个引脚吸收电流 IIO = +20mA
+2.7V< VDD <3.6V
+1.3
+V
+VOH 输出高电平，8 个引脚输出电流 VDD-1.3
+VOL 输出低电平，8 个引脚吸收电流 IIO = +6mA
+2.4V< VDD <2.7V
+0.4
+V
+VOH 输出高电平，8 个引脚输出电流 VDD-1.3
+注：以上条件中如果多个 IO 引脚同时驱动，电流总和不能超过表 4.2 节给出的绝对最大额定值。另外
+多个 IO 引脚同时驱动时，电源/地线点上的电流很大，会导致压降使内部 IO 的电压达不到表中电源电
+压，从而导致驱动电流小于标称值。
+表 4-21 输入输出交流特性
+MODEx[1:0]
+配置 符号 参数 条件 最小值 最大值 单位
+10
+（2MHz）
+Fmax(IO)out 最大频率 CL=50pF,VDD=2.7-3.6V 2 MHz
+tf(IO)out 输出高至低电平的下降时间
+CL=50pF,VDD=2.7-3.6V
+125 ns
+tr(IO)out 输出低至高电平的上升时间 125 ns
+01
+（10MHz）
+Fmax(IO)out 最大频率 CL=50pF,VDD=2.7-3.6V 10 MHz
+tf(IO)out 输出高至低电平的下降时间
+CL=50pF,VDD=2.7-3.6V
+25 ns
+tr(IO)out 输出低至高电平的上升时间 25 ns
+11
+（50MHz）
+Fmax(IO)out 最大频率
+CL=30pF,VDD=2.7-3.6V 50 MHz
+CL=50pF,VDD=2.7-3.6V 30 MHz
+tf(IO)out 输出高至低电平的下降时间
+CL=30pF,VDD=2.7-3.6V 20 ns
+CL=50pF,VDD=2.7-3.6V 5 ns
+tr(IO)out 输出低至高电平的上升时间
+CL=30pF,VDD=2.7-3.6V 8 ns
+CL=50pF,VDD=2.7-3.6V 12 ns
+tEXTIpw
+EXTI 控制器检测到外部信号
+的脉冲宽度
+10 ns 
+CH32V208 数据手册 http://wch.cn
+V2.6 30
+4.3.11 NRST 引脚特性
+表 4-22 外部复位引脚特性
+符号 参数 条件 最小值 典型值 最大值 单位
+VIL(NRST) NRST 输入低电平电压 -0.3 0.28*(VDD-1.8)+0.6 V
+VIH(NRST) NRST 输入高电平电压 0.41*(VDD-1.8)+1.3 VDD+0.3 V
+Vhys(NRST)
+NRST 施密特触发器电压
+迟滞
+150 mV
+RPU
+(1) 弱上拉等效电阻 30 40 50 kΩ
+VF(NRST) NRST 输入可被滤波脉宽 100 ns
+VNF(NRST) NRST 输入无法滤波脉宽 300 ns
+注：1.上拉电阻是一个真正的电阻串联一个可开关的 PMOS 实现。这个 PMOS/NMOS 开关的电阻很小(约
+占 10%)。
+电路参考设计及要求：
+图 4-7 外部复位引脚典型电路
+4.3.12 TIM 定时器特性
+表 4-23 TIMx 特性
+符号 参数 条件 最小值 最大值 单位
+tres(TIM) 定时器基准时钟 1 tTIMxCLK
+fTIMxCLK = 72MHz 13.9 ns
+FEXT CH1 至 CH4 的定时器外部时钟频率
+0 fTIMxCLK/2 MHz
+fTIMxCLK = 72MHz 0 36 MHz
+ResTIM 定时器分辨率 16 位
+tCOUNTER
+当选择了内部时钟时，16 位计数
+器时钟周期
+1 65536 tTIMxCLK
+fTIMxCLK = 72MHz 0.0139 910 us
+tMAX_COUNT 最大可能的计数 65535 tTIMxCLK
+fTIMxCLK = 72MHz 59.6 s 
+CH32V208 数据手册 http://wch.cn
+V2.6 31
+4.3.13 I2C 接口特性
+图 4-8 I2C 总线时序图
+SCL
+SDA
+tf(SDA)
+th(STA)
+tw(SCKL)
+tr(SDA)
+tw(SCKH)
+tSU(SDA)
+tr(SCL)
+tf(SCL)
+th(SDA)
+tSU(STO)
+tSU(STA)
+tw(STO:STA)
+开始条件
+停止条件
+重复开始条件
+表 4-24 I2C 接口特性
+符号 参数
+标准 I2C 快速 I2C 单位
+最小值 最大值 最小值 最大值
+tw(SCKL) SCL 时钟低电平时间 4.7 1.2 us
+tw(SCKH) SCL 时钟高电平时间 4.0 0.6 us
+tSU(SDA) SDA 数据建立时间 250 100 ns
+th(SDA) SDA 数据保持时间 0 0 900 ns
+tr(SDA)/tr(SCL) SDA 和 SCL 上升时间 1000 20 ns
+tf(SDA)/tf(SCL) SDA 和 SCL 下降时间 300 ns
+th(STA) 开始条件保持时间 4.0 0.6 us
+tSU(STA) 重复的开始条件建立时间 4.7 0.6 us
+tSU(STO) 停止条件建立时间 4.0 0.6 us
+tw(STO:STA) 停止条件至开始条件的时间（总线空闲） 4.7 1.2 us
+Cb 每条总线的容性负载 400 400 pF 
+CH32V208 数据手册 http://wch.cn
+V2.6 32
+4.3.14 SPI 接口特性
+图 4-9 SPI 主模式时序图
+CPHA=0
+CPOL=0
+CPHA=0
+CPOL=1
+CPHA=1
+CPOL=0
+CPHA=1
+CPOL=1
+MISO 输入
+MOSI输出
+输入最高位 输入6-1位 输入最低位
+输出最高位 输出6-1位 输出最低位
+tSCK tr(SCK)
+tf(SCK)
+tw(SCKH)
+tw(SCKL)
+tsu(MI)
+th(MI)
+tV
+th(MO) (MO)
+SCK输出
+SCK 输出
+图 4-10 SPI 从模式时序图（CPHA=0）
+CPHA=0
+CPOL=0
+CPHA=0
+CPOL=1
+MISO 输出
+MOSI 输入
+输出最高位 输出6-1位 输出最低位
+输入最高位 输入6-1位 输入最低位
+tSCK tr(SCK)
+tf(SCK) tsu(NSS)
+tsu(SI)
+SCK 输入
+NSS 输入
+th(NSS)
+th(SI)
+ta(SO)
+tdis(SO)
+tV(SO) th(SO)
+CH32V208 数据手册 http://wch.cn
+V2.6 33
+图 4-11 SPI 从模式时序图（CPHA=1）
+CPHA=1
+CPOL=0
+CPHA=1
+CPOL=1
+MISO 输出
+MOSI 输入
+输出最高位 输出6-1位 输出最低位
+输入最高位 输入6-1位 输入最低位
+tSCK tr(SCK)
+tf(SCK) tsu(NSS)
+tsu(SI)
+SCK 输入
+NSS 输入
+th(NSS)
+th(SI)
+ta(SO)
+tV(SO) t
+tdis(SO) h(SO)
+表 4-25 SPI 接口特性
+符号 参数 条件 最小值 最大值 单位
+fSCK/tSCK SPI 时钟频率
+主模式 36 MHz
+从模式 36 MHz
+tr(SCK)/tf(SCK) SPI 时钟上升和下降时间 负载电容：C = 30pF 20 ns
+tSU(NSS) NSS 建立时间 从模式 2tPCLK ns
+th(NSS) NSS 保持时间 从模式 2tPCLK ns
+tw(SCKH)/tw(SCKL) SCK 高电平和低电平时间
+主模式，fPCLK = 36MHz，预分频
+系数=4
+40 60 ns
+tSU(MI) 数据输入建立时间
+主模式 5 ns
+tSU(SI) 从模式 5 ns
+th(MI) 数据输入保持时间
+主模式 5 ns
+th(SI) 从模式 4 ns
+ta(SO) 数据输出访问时间 从模式，fPCLK = 20MHz 0 1tPCLK ns
+tdis(SO) 数据输出禁止时间 从模式 0 10 ns
+tV(SO) 数据输出有效时间
+从模式（使能边沿之后） 25 ns
+tV(MO) 主模式（使能边沿之后） 5 ns
+th(SO) 数据输出保持时间
+从模式（使能边沿之后） 15 ns
+th(MO) 主模式（使能边沿之后） 0 ns
+4.3.15 USB 接口特性
+表 4-26 USB 模块特性
+符号 参数 条件 最小值 最大值 单位
+VDD USB 操作电压 3.0 3.6 V
+VSE 单端接收器阈值 VDD = 3.3V 1.2 1.9 V
+VOL 静态输出低电平 0.3 V
+VOH 静态输出高电平 2.8 3.6 V 
+CH32V208 数据手册 http://wch.cn
+V2.6 34
+VHSSQ 高速压制信息检测阈值 100 150 mV
+VHSDSC 高速断开连接检测阈值 500 625 mV
+VHSOI 高速空闲电平 -10 10 mV
+VHSOH 高速数据高电平 360 440 mV
+VHSOL 高速数据低电平 -10 10 mV
+4.3.16 12 位 ADC 特性
+表 4-27 ADC 特性
+符号 参数 条件 最小值 典型值 最大值 单位
+VDDA 供电电压 2.4 3.6 V
+VREF+ 正参考电压 VREF+不能高于 VDDA 2.4 VDDA V
+IVREF 参考电流 160 220 uA
+IDDA 供电电流 480 530 uA
+fADC ADC 时钟频率 14 MHz
+fS 采样速率 0.05 1 MHz
+fTRIG 外部触发频率 16 1/fADC
+VAIN 转换电压范围 0 VREF+ V
+RAIN 外部输入阻抗 50 kΩ
+RADC 采样开关电阻 0.6 1 kΩ
+CADC 内部采样和保持电容 8 pF
+tCAL 校准时间 40 1/fADC
+tIat 注入触发转换时延 2 1/fADC
+tIatr 常规触发转换时延 2 1/fADC
+ts 采样时间 1.5 239.5 1/fADC
+tSTAB 上电时间 1 us
+tCONV 总的转换时间（包括采样时间） 14 252 1/fADC
+注：以上均为设计参数保证。
+公式：最大 RAIN
+上述公式用于决定最大的外部阻抗，使得误差可以小于 1/4 LSB。其中 N=12(表示 12 位分辨率)。
+表 4-28 fADC = 14MHz 时的最大 RAIN
+TS(周期) tS (us) 最大 RAIN(kΩ)
+1.5 0.11 0.4
+7.5 0.54 5.9
+13.5 0.96 11.4
+28.5 2.04 25.2
+41.5 2.96 37.2
+55.5 3.96 50
+71.5 5.11 无效
+239.5 17.1 无效
+CH32V208 数据手册 http://wch.cn
+V2.6 35
+表 4-29 ADC 误差
+符号 参数 条件 最小值 典型值 最大值 单位
+EO 偏移误差 fPCLK2 = 56 MHz,fADC =
+14 MHz,RAIN < 10
+kΩ,VDDA = 3.3V
+±2
+ED 微分非线性误差 ±0.5 ±3 LSB
+EL 积分非线性误差 ±1 ±4
+Cp表示 PCB 与焊盘上的寄生电容（大约 5pF），可能与焊盘和 PCB 布局质量有关。较大的 Cp数值将
+降低转换精度，解决办法是降低 fADC值。
+图 4-12 ADC 典型连接图
+图 4-13 模拟电源及退耦电路参考
+4.3.17 温度传感器特性
+表 4-30 温度传感器特性
+符号 参数 条件 最小值 典型值 最大值 单位
+RTS 温度传感器测量范围 -40 85 ℃
+ATSC 温度传感器的测量误差 ±12 ℃
+Avg_Slope 平均斜率（负温度系数） 3.8 4.3 4.8 mV/℃
+V25 在 25℃时的电压 1.34 1.40 1.46 V
+TS_temp 当读取温度时，ADC 采样时间 fADC = 14MHz 17.1 us
+4.3.18 OPA 特性
+表 4-31 OPA 特性
+符号 参数 条件 最小值 典型值 最大值 单位
+VDDA 供电电压 2.4 3.3 3.6 V
+CMIR 共模输入电压 0 VDDA-0.9 V
+VIOFFSET 输入失调电压 2.5 8 mV
+ILOAD 驱动电流 600 uA
+IDDOPAMP 消耗电流 无负载，静态模式 195 uA
+CMRR
+(1) 共模抑制比 @1KHz 96 dB
+PSRR
+(1) 电源抑制比 @1KHz 86 dB
+AV
+(1) 开环增益 CLOAD=5pF 136 dB 
+CH32V208 数据手册 http://wch.cn
+V2.6 36
+GBW
+(1) 单位增益带宽 CLOAD=5pF 19 MHz
+PM
+(1) 相位裕度 CLOAD=5pF 93
+SR
+(1) 压摆率 CLOAD=5pF 8 V/us
+tWAKU
+(1)
+P 关闭到唤醒建立时间，0.1% 输入VDDA/2,CLOAD=5pF,RLOAD=4kΩ 368 ns
+RLOAD 电阻性负载 4 kΩ
+CLOAD 电容性负载 50 pF
+VOHSAT
+(2) 高饱和输出电压 RLOAD=4kΩ,输入 VDDA VDDA-45
+mV
+RLOAD=20kΩ,输入 VDDA VDDA-10
+VOLSAT
+(2) 低饱和输出电压 RLOAD=4kΩ,输入 0 0.5
+mV
+RLOAD=20kΩ,输入 0 0.5
+EN(1) 等效输入电压噪声
+RLOAD=4kΩ,@1KHz 83
+nv
+RLOAD=4kΩ,@10KHz 42 Hz
+注：1.来源仿真非实测；
+2.负载电流会限制饱和输出电压。
+CH32V208 数据手册 http://wch.cn
+V2.6 37
+第 5 章 封装及订货信息
+芯片封装
+订货型号 封装形式 塑体宽度 引脚间距 封装说明 出货料盘
+CH32V208GBU6 QFN28X4 4*4mm 0.4mm 四边无引线 28 脚 托盘
+CH32V208CBU6 QFN48X5 5*5mm 0.35mm 四边无引线 48 脚 托盘
+CH32V208RBT6 LQFP64M 10*10mm 0.5mm LQFP64M（10*10）贴片 托盘
+CH32V208WBU6 QFN68X8 8*8mm 0.4mm 四边无引线 68 脚 托盘
+说明：1.QFP/QFN 一般默认为托盘。
+2.托盘尺寸：托盘大小一般为统一尺寸，322.6*135.9*7.62，不同封装类型限位孔尺寸有区别，
+塑管不同封装厂有区别，具体与厂家确认。
+CH32V208 数据手册 http://wch.cn
+V2.6 38
+说明：尺寸标注的单位是 mm（毫米），引脚中心间距总是标称值，没有误差，除此之外的尺寸误差不
+大于±0.2mm 或者±10%两者中的较大值。
+图 5-1 QFN28X4 封装
+图 5-2 QFN48X5 封装
+图 5-3 QFN68X8 封装
+CH32V208 数据手册 http://wch.cn
+V2.6 39
+图 5-4 LQFP64M 封装
+CH32V208 数据手册 http://wch.cn
+V2.6 40
+系列产品命名规则
+举例： CH32 V 3 03 R 8 T 6
+产品系列
+F = 基于 ARM 内核，通用 MCU
+V = 基于青稞 RISC-V 内核，通用 MCU
+L = 基于青稞 RISC-V 内核，低功耗 MCU
+X = 基于青稞 RISC-V 内核，专用架构或特殊 IO
+产品类型
+0 = 青稞 V2/V4 内核，主频@48M
+1 = M3/青稞 V3/V4 内核，主频@72M
+2 = M3/青稞 V4 非浮点内核，主频@144M
+3 = 青稞 V4F 浮点内核，主频@144M
+产品子系列
+03 = 通用型
+05 = 连接型（USB 高速、SDIO、双 CAN）
+07 = 互联型（USB 高速、双 CAN、以太网、SDIO、FSMC）
+08 = 无线型（蓝牙 BLE5.X、CAN、USB、以太网）
+35 = 连接型（USB、USB PD）
+引脚数目
+J = 8 脚 A = 16 脚 F = 20 脚
+G = 28 脚 K = 32 脚 T = 36 脚
+C = 48 脚 R = 64 脚 W = 68 脚
+V = 100 脚 Z = 144 脚
+闪存存储容量
+4 = 16K 闪存存储器
+6 = 32K 闪存存储器
+7 = 48K 闪存存储器
+8 = 64K 闪存存储器
+B = 128K 闪存存储器
+C = 256K 闪存存储器
+封装
+T = LQFP U = QFN R = QSOP P = TSSOP M = SOP
+温度范围
+6 = -40℃～85℃（工业级）
+7 = -40℃～105℃（汽车 2 级）
+3 = -40℃～125℃（汽车 1 级）
+D = -40℃～150℃（汽车 0 级）�������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������
