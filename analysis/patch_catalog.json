@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "target_hardware": "TSL6 (WCH CH32V208, RISC-V RV32IMAC)",
+  "reference_module_id": "535C62E239E339E31475FB10",
+  "stock_image": {
+    "transport_size_bytes": 73872,
+    "payload_size_bytes": 73728,
+    "page_count": 72,
+    "transport_page_size_bytes": 1026,
+    "payload_page_size_bytes": 1024,
+    "linked_code_base": "0x00008000",
+    "flash_alias_base": "0x08008000",
+    "transport_sha256": "b1b2a3aa5e71d88336719bccb5da822faffc05acf50b5b482e570f1981dabbd5",
+    "payload_sha256": "7adcb4622f017714a4896060522ce0076e8f0ff94511845d1b9d15b49dd677fd"
+  },
+  "safety_invariants": [
+    {
+      "name": "reset_vector_jump",
+      "payload_offset": "0x0000",
+      "expected_hex": "6ff0b009",
+      "expected_asm": "j 0xf89a",
+      "description": "TSL-BOOT (`boot.payload.bin` @ 0x002642) verifies `*(uint8_t*)0x08008000 == 0x6F` before jumping into runtime firmware."
+    },
+    {
+      "name": "startup_boot_flag_clear",
+      "payload_offset": "0x1e6a",
+      "expected_hex": "c147a304f100280023060100313f",
+      "expected_asm": "c.li a5, 0x10; sb a5, 9(sp); c.addi4spn a0, sp, 8; sb zero, 0xc(sp); c.jal 0x1d92",
+      "description": "Runtime startup routine 0x001E48 clears the boot/upgrade request byte at 0x08077B04 (`0xc(sp)`) via 0x001D92 so the module boots into runtime normally."
+    }
+  ],
+  "patches": [
+    {
+      "patch_id": "ignore_server_deauth_0xae",
+      "category": "authorization",
+      "title": "Ignore Remote Deauthorization Command (0xAE)",
+      "summary": "Prevents BLE command 0xAE from wiping the persistent 16-bit activation token at flash 0x08077B02 or scheduling the 1000 ms deauthorization lockout timer.",
+      "function_context": "0xAE sub-dispatcher at 0x00BD8A..0x00BDC0 (branched from 0x00BCD4)",
+      "rationale": "When the legacy WeChat Mini Program receives state:1 from iffrc.com, it sends BLE command 0xAE with the 14-byte UID. In stock firmware, 0x00BD8A validates the UID (0x12D4), checks 0x01A6, and if authorized (a0 != 0) calls 0x1E26(0) at 0x00BDAA to overwrite flash 0x08077B02 with 0x0000 and calls 0x5EF6 at 0x00BDAE to schedule deauthorization. Replacing `c.beqz a0, 0xc` (11c5) at 0x00BDA6 with `c.j 0xc` (31a0) unconditionally jumps to the 0x00BDB2 ACK reply builder (`0xAE 01`), preserving flash and RAM authorization state.",
+      "conflict_group": null,
+      "parameter_name": null,
+      "default_parameter_value": null,
+      "safety_notes": [
+        "2-byte RVC in-place branch replacement; no function size or stack change.",
+        "Eliminates unnecessary flash erase/write cycles on 0x08077B00 when 0xAE is received.",
+        "Preserves normal 0xAE [0x01] BLE acknowledgment so legacy apps do not hang."
+      ],
+      "sites": [
+        {
+          "payload_offset": "0xbda6",
+          "payload_offset_int": 48550,
+          "linked_address": "0x00013da6",
+          "flash_address": "0x08013da6",
+          "page_index": 47,
+          "intra_page_offset": "0x1a6",
+          "transport_offset": "0xbe06",
+          "transport_offset_int": 48646,
+          "size": 2,
+          "orig_hex": "11c5",
+          "patched_hex": "31a0",
+          "orig_asm": "c.beqz a0, 0xc ; -> 0x00bdb2",
+          "patched_asm": "c.j 0xc ; -> 0x00bdb2",
+          "description": "Unconditionally branch over `c.li a0, 0; jal 0x1e26; jal 0x5ef6` to the 0xAE ACK reply at 0x00BDB2."
+        }
+      ]
+    },
+    {
+      "patch_id": "bypass_auth_check_0x1380",
+      "category": "authorization",
+      "title": "Always Set Local Authorization Flag (0xd3(gp) = 1)",
+      "summary": "Forces the flash activation-token verifier at 0x001360 to write 1 into 0xd3(gp) on boot even if flash 0x08077B02 was previously erased/zeroed.",
+      "function_context": "Activation token verifier 0x001360..0x00138A (called at boot from 0x001E78)",
+      "rationale": "Function 0x001360 reads the stored 16-bit token at 0x08077B02 via 0x1DBA, compares it against the local CRC-16 token from 0x1316 (seed 0x5AA5, poly 0x1021), converts the equality result via `seqz a0, a0` at 0x001380, and writes `sb a0, 0xd3(gp)` at 0x001384. `0xd3(gp)` has only one reader (`0x0001A6: lbu a0, 0xd3(gp)`). Replacing `seqz a0, a0` (`13351500`) at 0x001380 with `addi a0, zero, 1` (`13051000`) ensures `0xd3(gp)` is always 1 without flash writes.",
+      "conflict_group": null,
+      "parameter_name": null,
+      "default_parameter_value": null,
+      "safety_notes": [
+        "4-byte RV32I instruction replacement; does not alter flash contents at 0x08077B00.",
+        "Safe companion to `ignore_server_deauth_0xae` for modules already deauthorized in flash."
+      ],
+      "sites": [
+        {
+          "payload_offset": "0x1380",
+          "payload_offset_int": 4992,
+          "linked_address": "0x00009380",
+          "flash_address": "0x08009380",
+          "page_index": 4,
+          "intra_page_offset": "0x380",
+          "transport_offset": "0x138a",
+          "transport_offset_int": 5002,
+          "size": 4,
+          "orig_hex": "13351500",
+          "patched_hex": "13051000",
+          "orig_asm": "seqz a0, a0",
+          "patched_asm": "addi a0, zero, 1",
+          "description": "Force authorization flag a0 = 1 prior to `sb a0, 0xd3(gp)` at 0x001384."
+        }
+      ]
+    },
+    {
+      "patch_id": "enable_0xa6_disable_cmd",
+      "category": "scheduler",
+      "title": "Make 0xA6 00 Cleanly Disable Media Pulse Scheduler & AP Auto-Restore",
+      "summary": "Routes the tail of the `0xA6 00` handler (`0x00C526`) into the `0xA1` scheduler disable path (`0x00C510`) after clearing `0x2000BEF1`, so `0xA6 00` stops both AP auto-restore and the `0xE4E4` autonomous media pulse timer.",
+      "function_context": "0xA6 handler (`0x00BFB4 -> 0x00C522..0x00C529`) and 0xA1 handler (`0x00C510..0x00C521`)",
+      "rationale": "In stock firmware, `0xA6` (`0x00BFB4`) loads `a5 = lbu 0(s0)` and branches on `a5 == 0` (`0x00BFB8`) to `0x00C522`. `0x00C522` calls `0x25F6` (which only clears the RAM flag `0x2000BEF1`) and at `0x00C526` jumps to `0x00BCBA` without stopping the `0xE4E4` media pulse scheduler (`0x18c(gp)`). Because `s0` is callee-saved and still points to the `0xA6 00` payload (`0(s0) == 0`), patching `0x00C526` from `j -0x86c` (`-> 0x00bcba`) to `j -0x16` (`-> 0x00c510`) chains `0x25F6` directly into `0x00C510` (`lbu a0, 0(s0); c.li a1, 1; snez a0, a0; jal 0x00e4e4; j 0x00bcba`), stopping timers 1 & 4 and persisting the disabled state.",
+      "conflict_group": null,
+      "parameter_name": null,
+      "default_parameter_value": null,
+      "safety_notes": [
+        "0x00BFB8 (`beqz a5, 0x56a -> 0x00c522`) is the sole branch targeting 0x00C522.",
+        "s0 is preserved across `jal 0x25f6` (`0x25F6` only touches caller-saved a0/a5/ra)."
+      ],
+      "sites": [
+        {
+          "payload_offset": "0xc526",
+          "payload_offset_int": 50470,
+          "linked_address": "0x00014526",
+          "flash_address": "0x08014526",
+          "page_index": 49,
+          "intra_page_offset": "0x126",
+          "transport_offset": "0xc58a",
+          "transport_offset_int": 50570,
+          "size": 4,
+          "orig_hex": "6ff04ff9",
+          "patched_hex": "6ff0bffe",
+          "orig_asm": "j -0x86c ; -> 0x00bcba",
+          "patched_asm": "j -0x16 ; -> 0x00c510",
+          "description": "After `jal 0x25f6` at 0x00C522, jump to 0x00C510 to invoke `0xE4E4(0, 1)` before exiting to 0x00BCBA."
+        }
+      ]
+    },
+    {
+      "patch_id": "pulse_timing_fast_1500ms",
+      "category": "scheduler",
+      "title": "Responsive Media Pulse Timing Preset (1500 ms Base + 0..500 ms Jitter)",
+      "summary": "Adjusts the mode 0/1 & AP/FSD (`0xF`) media pulse timing in `0x00E3E6` from 2000 ms + 0..1000 ms jitter down to 1500 ms + 0..500 ms jitter.",
+      "function_context": "Media pulse timing worker `0x00E3E6` (`0x00E424..0x00E43C`)",
+      "rationale": "In `0x00E3E6`, when `settings[3] & 0xF` is `0`, `1`, or `0xF` (AP/FSD-gated mode, mapped to `s0 = 1` at `0x00E414`), `0x00E424` loads the jitter modulus `0x3E9` (1001 ms -> 0..1000 ms) into `a5` and `0x00E42C` loads the base pulse interval `0x7D0` (2000 ms) into `s0`. Updating `0x00E424` to `0x1F5` (501 ms) and `0x00E42C` to `0x5DC` (1500 ms) provides a faster 1.5 s..2.0 s cadence.",
+      "conflict_group": "pulse_interval_preset",
+      "parameter_name": null,
+      "default_parameter_value": null,
+      "safety_notes": [
+        "Both constants fit in standard signed 12-bit RV32I `addi` immediates.",
+        "Downstream tick conversion (`(ms * 1000) / 625` at 0x00E44C..0x00E454) is unchanged."
+      ],
+      "sites": [
+        {
+          "payload_offset": "0xe424",
+          "payload_offset_int": 58404,
+          "linked_address": "0x00016424",
+          "flash_address": "0x08016424",
+          "page_index": 57,
+          "intra_page_offset": "0x024",
+          "transport_offset": "0xe498",
+          "transport_offset_int": 58520,
+          "size": 4,
+          "orig_hex": "9307903e",
+          "patched_hex": "9307501f",
+          "orig_asm": "addi a5, zero, 0x3e9",
+          "patched_asm": "addi a5, zero, 0x1f5",
+          "description": "Set random jitter modulus to 501 ms (0..500 ms) for mode 0/1/0xF."
+        },
+        {
+          "payload_offset": "0xe42c",
+          "payload_offset_int": 58412,
+          "linked_address": "0x0001642c",
+          "flash_address": "0x0801642c",
+          "page_index": 57,
+          "intra_page_offset": "0x02c",
+          "transport_offset": "0xe4a0",
+          "transport_offset_int": 58528,
+          "size": 4,
+          "orig_hex": "1304007d",
+          "patched_hex": "1304c05d",
+          "orig_asm": "addi s0, zero, 0x7d0",
+          "patched_asm": "addi s0, zero, 0x5dc",
+          "description": "Set base pulse interval to 1500 ms (1.5 s) for mode 0/1/0xF."
+        }
+      ]
+    },
+    {
+      "patch_id": "pulse_timing_gentle_1000ms",
+      "category": "scheduler",
+      "title": "Compact Media Pulse Timing Preset (1000 ms Base + 0..250 ms Jitter)",
+      "summary": "Adjusts the mode 0/1 & AP/FSD (`0xF`) media pulse timing in `0x00E3E6` from 2000 ms + 0..1000 ms jitter to 1000 ms + 0..250 ms jitter.",
+      "function_context": "Media pulse timing worker `0x00E3E6` (`0x00E424..0x00E43C`)",
+      "rationale": "Sets the `0x00E424` jitter modulus to `0xFB` (251 ms -> 0..250 ms) and the `0x00E42C` base interval to `0x3E8` (1000 ms) for a tight 1.0 s..1.25 s window.",
+      "conflict_group": "pulse_interval_preset",
+      "parameter_name": null,
+      "default_parameter_value": null,
+      "safety_notes": [
+        "Mutually exclusive with `pulse_timing_fast_1500ms` (conflict_group: pulse_interval_preset)."
+      ],
+      "sites": [
+        {
+          "payload_offset": "0xe424",
+          "payload_offset_int": 58404,
+          "linked_address": "0x00016424",
+          "flash_address": "0x08016424",
+          "page_index": 57,
+          "intra_page_offset": "0x024",
+          "transport_offset": "0xe498",
+          "transport_offset_int": 58520,
+          "size": 4,
+          "orig_hex": "9307903e",
+          "patched_hex": "9307b00f",
+          "orig_asm": "addi a5, zero, 0x3e9",
+          "patched_asm": "addi a5, zero, 0xfb",
+          "description": "Set random jitter modulus to 251 ms (0..250 ms) for mode 0/1/0xF."
+        },
+        {
+          "payload_offset": "0xe42c",
+          "payload_offset_int": 58412,
+          "linked_address": "0x0001642c",
+          "flash_address": "0x0801642c",
+          "page_index": 57,
+          "intra_page_offset": "0x02c",
+          "transport_offset": "0xe4a0",
+          "transport_offset_int": 58528,
+          "size": 4,
+          "orig_hex": "1304007d",
+          "patched_hex": "1304803e",
+          "orig_asm": "addi s0, zero, 0x7d0",
+          "patched_asm": "addi s0, zero, 0x3e8",
+          "description": "Set base pulse interval to 1000 ms (1.0 s) for mode 0/1/0xF."
+        }
+      ]
+    },
+    {
+      "patch_id": "pulse_hold_short_25ms",
+      "category": "scheduler",
+      "title": "Shorten Scroll-Wheel Timer-4 Followup Delay (50 ms -> 25 ms)",
+      "summary": "Reduces the timer-4 scroll-wheel pulse followup delay at `0x00E468` from 80 ticks (`0x50` = 50 ms) to 40 ticks (`0x28` = 25 ms).",
+      "function_context": "Media pulse timing worker `0x00E3E6` tail (`0x00E464..0x00E470`)",
+      "rationale": "At the end of `0x00E3E6`, timer 4 (`a1 = 4`) is armed with `a2 = 0x50` (80 BLE OS ticks at 0.625 ms/tick = 50 ms). Replacing `addi a2, zero, 0x50` (`13060005`) with `addi a2, zero, 0x28` (`13068002`) halves the timer-4 delay to 25 ms.",
+      "conflict_group": null,
+      "parameter_name": null,
+      "default_parameter_value": null,
+      "safety_notes": [
+        "Independent of `pulse_interval_preset`; can be combined with any interval preset."
+      ],
+      "sites": [
+        {
+          "payload_offset": "0xe468",
+          "payload_offset_int": 58472,
+          "linked_address": "0x00016468",
+          "flash_address": "0x08016468",
+          "page_index": 57,
+          "intra_page_offset": "0x068",
+          "transport_offset": "0xe4dc",
+          "transport_offset_int": 58588,
+          "size": 4,
+          "orig_hex": "13060005",
+          "patched_hex": "13068002",
+          "orig_asm": "addi a2, zero, 0x50",
+          "patched_asm": "addi a2, zero, 0x28",
+          "description": "Arm timer 4 with 40 ticks (25 ms) instead of 80 ticks (50 ms)."
+        }
+      ]
+    },
+    {
+      "patch_id": "custom_fw_version_tag",
+      "category": "version",
+      "title": "Custom 0xA0 Firmware Version Tag (0x16 / V1.6.00)",
+      "summary": "Populates `status[2]` (`firmwareVersion`) in the `0xA0` status response builder (`0x00AF6C`) with `0x16` (`V1.6.00`) instead of reading `0x10` (`V1.0.00`) from flash `0x08077B01`.",
+      "function_context": "0xA0 76-byte status response builder `0x00AF6C` (`0x00AFB2..0x00AFC8`)",
+      "rationale": "Although the vendor cloud metadata labeled the archived runtime `fw_ver_new=5376` (`0x1500` = `V1.5.00`), the binary's startup routine at `0x001E5A`/`0x001E6A` writes `0x10` (`V1.0.00`) to `0x08077B01`, and `0x00AF6C` loads that byte via `0x00AFB6: lbu a5, 0xd(sp)` (`8347d100`) before storing `status[2]` at `0x00AFC4: sb a5, 0x16(sp)`. Replacing the 4-byte `lbu a5, 0xd(sp)` at `0x00AFB6` with `addi a5, zero, 0x16` (`93076001`) makes `0xA0` report `0x16` (`V1.6.00`) without modifying `0x001E48` or triggering an extra flash erase/write to `0x08077B00` on boot.",
+      "conflict_group": null,
+      "parameter_name": "fw_version",
+      "default_parameter_value": "0x16",
+      "safety_notes": [
+        "Leaves startup flash-init routine `0x001E48..0x001E7C` untouched, avoiding extra flash wear.",
+        "Supports any version byte 0x01..0x7F (e.g., 0x15 -> V1.5.00, 0x16 -> V1.6.00)."
+      ],
+      "sites": [
+        {
+          "payload_offset": "0xafb6",
+          "payload_offset_int": 44982,
+          "linked_address": "0x00012fb6",
+          "flash_address": "0x08012fb6",
+          "page_index": 43,
+          "intra_page_offset": "0x3b6",
+          "transport_offset": "0xb00e",
+          "transport_offset_int": 45070,
+          "size": 4,
+          "orig_hex": "8347d100",
+          "patched_hex": "93076001",
+          "orig_asm": "lbu a5, 0xd(sp)",
+          "patched_asm": "addi a5, zero, 0x16",
+          "description": "Load immediate firmware version byte 0x16 (V1.6.00) into a5 for `sb a5, 0x16(sp)`."
+        }
+      ]
+    }
+  ]
+}
