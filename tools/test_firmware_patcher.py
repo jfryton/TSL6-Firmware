@@ -129,6 +129,7 @@ class FirmwarePatcherTest(unittest.TestCase):
             "pulse_timing_fast_1500ms",
             "pulse_hold_short_25ms",
             "custom_fw_version_tag",
+            "unlock_steering_triggers_all_gears_0x8100",
         ]
         patched_transport, report = apply_patches(
             self.transport_bytes,
@@ -136,7 +137,7 @@ class FirmwarePatcherTest(unittest.TestCase):
             fw_version=0x16,
         )
         self.assertEqual(report["enabled_patches"], bundle)
-        self.assertEqual(report["modified_pages"], [4, 43, 47, 49, 57])
+        self.assertEqual(report["modified_pages"], [4, 32, 43, 47, 49, 57])
 
         inspected = inspect_firmware_bytes(patched_transport)
         self.assertEqual(set(inspected["applied_patches"]), set(bundle))

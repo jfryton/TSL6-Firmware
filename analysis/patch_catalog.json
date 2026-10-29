@@ -291,6 +291,40 @@
           "description": "Load immediate firmware version byte 0x16 (V1.6.00) into a5 for `sb a5, 0x16(sp)`."
         }
       ]
+    },
+    {
+      "patch_id": "unlock_steering_triggers_all_gears_0x8100",
+      "category": "automation",
+      "title": "Allow Steering-Wheel Angle Triggers (0xAA..0xB0) in All Gears When AP Is Inactive",
+      "summary": "Nops the Drive-gear-only branch (`0x008100: bne a0, a5, 0x16`) in `0x0080EC` so offline CAN `0x129` steering-wheel angle triggers (`0xAA..0xB0`) can fire in Park, Reverse, Neutral, and Drive while retaining the Autopilot-inactive safety gate.",
+      "function_context": "Steering-wheel trigger gate `0x0080EC..0x00811C` (called from `0x00811E`)",
+      "rationale": "In stock firmware, `0x00811E` decodes CAN `0x129` (`ID129SteeringAngle`) and dispatches triggers `0xAA` (return to center `[-6.0 deg, +6.0 deg]`), `0xAB..0xAD` (left turn `>20 deg`, `>45 deg`, `>90 deg`), and `0xAE..0xB0` (right turn `>20 deg`, `>45 deg`, `>90 deg`) through `0x0080EC(trigger_id)`. `0x0080EC` checks `0x0272()` (vehicle awake), then checks `0x4D14() == 4` (Drive gear) via `0x008100: bne a0, a5, 0x16` (`631bf500`), and then checks `0x2AA8() == 0` (Autopilot inactive) before jumping to `0xE310(trigger_id)`. Because of `0x008100`, offline steering-angle rules are blocked in Park (`1`), Reverse (`2`), and Neutral (`3`). Replacing `631bf500` at `0x008100` with `13000000` (`nop`) enables steering-angle automations in Park/Reverse/Neutral/Drive while preserving both the vehicle-awake gate (`0x0080F4`) and the Autopilot-inactive gate (`0x008104: jal 0x2aa8; c.bnez a0, 0xe`).",
+      "conflict_group": null,
+      "parameter_name": null,
+      "default_parameter_value": null,
+      "safety_notes": [
+        "4-byte RV32I in-place instruction replacement (`bne` -> `nop`); no stack or size change.",
+        "Retains `0x008104: jal 0x2aa8; c.bnez a0, 0xe` so steering triggers remain suppressed whenever Autopilot/Autosteer is active.",
+        "Retains `0x0080F4: jal 0x0272; c.beqz a0, 0x1e` so triggers do not fire when the vehicle is asleep."
+      ],
+      "sites": [
+        {
+          "payload_offset": "0x8100",
+          "payload_offset_int": 33024,
+          "linked_address": "0x00010100",
+          "flash_address": "0x08010100",
+          "page_index": 32,
+          "intra_page_offset": "0x100",
+          "transport_offset": "0x8142",
+          "transport_offset_int": 33090,
+          "size": 4,
+          "orig_hex": "631bf500",
+          "patched_hex": "13000000",
+          "orig_asm": "bne a0, a5, 0x16 ; -> 0x008116",
+          "patched_asm": "nop",
+          "description": "Bypass `gear != 4` branch in `0x0080EC` while keeping `0x0272` (awake) and `0x2AA8` (AP inactive) checks intact."
+        }
+      ]
     }
   ]
 }
