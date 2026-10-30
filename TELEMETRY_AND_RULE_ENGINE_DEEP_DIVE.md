@@ -4,7 +4,7 @@
 1. `/root/projects/TSL6-Firmware/work/runtime.payload.bin` (offsets `0x0000..0x11FFC`, linked at `0x00008000` / flash alias `0x08008000`, `gp = 0x20004000`) — Stripped CH583 RISC-V (`rv32imac`) runtime payload containing the BLE command dispatcher, `0xB0`/`0xD0` packet builders, CAN decoders, and the `0xAB`/`0xAE`/`0xAC` rule/shortcut engine.
 2. `/root/projects/TSL6-Firmware/FIRMWARE_INTERNALS.md` (lines 1–274) — Baseline memory map, BLE command table, and CAN/telemetry architectural notes.
 3. `/root/projects/TSL6-Firmware/CLEAN_ROOM_SPEC.md` (lines 1–415) — Clean-room protocol specification for `TSL Cmd`, `0xB0` telemetry layout, and `0xAB`/`0xAC`/`0xAE` rule persistence.
-4. `/root/projects/TSL6-Firmware/AUTOMATIC_VOLUME.md` (lines 1–128) — Analysis of the `0x25b0` automatic volume & anti-nag periodic scheduler and `0x45a2` (`0x4672`) stalk/wiper CAN `0x249` handler.
+4. `/root/projects/TSL6-Firmware/AUTOMATIC_VOLUME.md` (lines 1–128) — Analysis of the `0x25b0` automatic volume & media pulse periodic scheduler and `0x45a2` (`0x4672`) stalk/wiper CAN `0x249` handler.
 5. `/root/projects/TSL6-Firmware/analysis/telemetry.json` (lines 1–171) — Initial `0xB0` telemetry bitfield extraction notes.
 6. `/root/projects/TSL6-Firmware/analysis/rule_engine.json` (lines 1–120) & `/root/projects/TSL6-Firmware/analysis/rule_triggers.json` (lines 1–150) — Initial rule engine and trigger cross-reference data.
 7. `/root/projects/TSL6-Firmware/analysis/action_table.json` (lines 1–260) — Jump table targets for `0xd16e` (`0x11710`).
@@ -160,11 +160,9 @@ By tracing all 33 direct call sites to `0xe310` and the 5 self-relative jump tab
 | `0x91..0xA2` | `0x111f8` / `0x11344` (`events 0x53..0x57`) | Seat / Lumbar / Console Physical Buttons (`0x8538..0x8848`): Single, Double, Triple, Long Press (`0x91..0xA2`) and Hold-Release (`0xB1..0xB5` via `0x1136c`). |
 | `0xA3 / 0xA4` | `0x570e` / `0x56a8` (`0x5556` door helper) | **Front Trunk (Frunk)** Open (`0xA3`) / Close (`0xA4`). |
 | `0xA5 / 0xA6` | `0x570e` / `0x56a8` (`0x5556` door helper) | **Rear Trunk** Open (`0xA5`) / Close (`0xA6`). |
-| `0xA7 / 0xA8` | `0x57b0` / `0x58a2` (`CAN 0x102/0x103`) | **Vehicle Lock / Unlock** state transitions (`0xA7` / `0xA8`). |
-| `0xA9 / 0xAC` | `0x2a6c` (`CAN 0x39d` blindspot) | **Blind-Spot Warning + Turn Signal Active**: Left (`0xA9`) / Right (`0xAC`). |
-| `0xAA / 0xAD` | `0x8192` / `0x81bc` (`0x80ec` Drive/AP guard) | **Autopilot / Lane / Speed Limit Warning** triggers (`0xAA` / `0xAD`, guarded by `0x80ec`: only fires in Drive when AP state matches `*(gp+0x74)+1` config). |
-| `0xAB / 0xAE` | `0x2c28` (`CAN 0x39d` / `0x2b6`) | **Autopilot Engaged (`0xAB`) / Disengaged (`0xAE`)** (or AP Hands-On Nag stages). |
-| `0xAF / 0xB0` | `0x5022` (`CAN 0x312/0x333` BMS) | **Battery Preconditioning / Heater Started (`0xAF`) / Stopped (`0xB0`)**. |
+| `0xA7` | `0x57b0` (`CAN 0x102/0x103`) | **Vehicle Lock** transition (`0xA7`). |
+| `0xA8 / 0xA9` | `0x293e..0x29b4` (`CAN 0x39d` `DAS_handsOnState`) | **Hands-On Reminder Warning Active (`0xA8`, stages 1–3) / Cleared (`0xA9`)** (see [OFFLINE_AUTOMATIONS_AND_AP_DETECTION.md](OFFLINE_AUTOMATIONS_AND_AP_DETECTION.md) for full `0x2856..0x2D38` & `0x80EC..0x8230` disassembly). |
+| `0xAA..0xB0` | `0x811e..0x8230` (`CAN 0x129` `ID129SteeringAngle` via `0x80ec`) | **Steering-Wheel Angle Hysteresis Triggers**: Centered `-6°..+6°` (`0xAA`), Left `< -20°/-45°/-90°` (`0xAB..0xAD`), Right `> +20°/+45°/+90°` (`0xAE..0xB0`). |
 | `0xB1..0xB5` | `0x1136c` (`events 0x53..0x57`, `a2=4`) | Seat / Console Button **Long-Press Release** (`0xB1..0xB5`). |
 | `0xB6..0xB9` | `0x26ea..0x2818` (`CAN 0x3f5` lights) | **Turn Signal / High-Beam / Lighting** transitions: Left Turn (`0xB6`), Right Turn (`0xB7`), Hazard/High-Beam On (`0xB8`), Off (`0xB9`). |
 | `0xBA / 0xBB` | `0x5300` (`CAN 0x33a` charging) | **Charging Started (`0xBA`) / Charging Stopped (`0xBB`)**. |
@@ -203,7 +201,7 @@ Cross-referencing all 253 entries in `0x11710` reveals the exact handler groups 
 | `0xB4..0xC0` (180–192) | `0x1436`, `0x14ea..0x171e` | **Passenger / Driver Seat Easy-Entry & Co-Pilot Seat Move Actions**. |
 | **`0xC8..0xD1` (200–209)** | **`0xf450(0..9)` (UNDOCUMENTED)** | **10-Slot Custom Seat Memory Recall**: `0xC8..0xCC` (slots `0..4`) recall Driver Seat presets; `0xCD..0xD1` (slots `5..9`) recall Passenger Seat presets! Each slot reads an 8-byte target position from `*(gp+0x74) + (slot+2)*8` (written by BLE command `0xAA`) and drives the seat motors until raw CAN slot `0x10`/`0x11` matches! |
 | **`0xE1..0xF5`, `0xF7..0xF9` (225–249)** | **`0x0e6c` -> `0x05d2` (UNDOCUMENTED)** | **BLE Peripheral Sub-Beacon Broadcast**: Writes command code (`0x00`, `0xFC`, `0xFD`, `0xFF`, `0x00..0x11`, `0xC8..0xCA`) to `0xbd(gp)` and triggers TMOS task `0xbc(gp)` (`0x05d2`), which temporarily switches the CH583's BLE advertising payload (`GAPROLE_ADVERT_DATA`) for 500ms to a 26-byte manufacturer-specific broadcast (`Company ID 0x4554`, `"TSL"`, rolling counter `0xb8(gp)`, command byte `0xbd(gp)`) to control wireless sub-peripherals (external ambient light controllers, wireless buttons, power frunk/trunk boxes)! |
-| **`0xFA..0xFC` (250–252)** | **`0xd0d0` (UNDOCUMENTED)** | **Auto-Volume / Anti-Nag Feature Control**: Toggles (`0xFA`), Enables (`0xFB`), or Disables (`0xFC`) bit 3 (`0x08`) of `*(gp+0x74)+4` and saves to flash! |
+| **`0xFA..0xFC` (250–252)** | **`0xd0d0` (UNDOCUMENTED)** | **Auto-Volume Scheduler Control**: Toggles (`0xFA`), Enables (`0xFB`), or Disables (`0xFC`) bit 3 (`0x08`) of `*(gp+0x74)+4` and saves to flash! |
 | **`0xFD` (253)** | **`0xdef0` (`0x1684` + timer `0xd9b8`)** | **Timed Co-Pilot Seat Return / Reset Macro** (1000ms timer). |
 
 ---
@@ -220,7 +218,7 @@ Because `TSL Cmd` receives the live `0xB0` stream (and can send `0xA1`/`0xA2`/`0
 3. **10-Slot Custom Seat Memory Manager (`0xAA` BLE Command + Actions `0xC8..0xD1`)**:
    - Expose the undocumented 10-slot seat memory subsystem (`0xC8..0xCC` Driver slots 0–4, `0xCD..0xD1` Passenger slots 5–9) in `TSL Cmd`, allowing users to snapshot current seat positions (or write presets via `0xAA`) and trigger them from door/gear/button shortcuts (e.g., Passenger Nap Mode or Kid Car-Seat Clearance).
 4. **Shortcut Toggle & Auto-Volume Gesture Binding (Actions `0x12..0x14` & `0xFA..0xFC`)**:
-   - Let users bind a steering wheel gesture (e.g., Right Scroll Triple Press `0x02` or Long Press `0x03`) to Action `0x14` (Toggle All Shortcuts — Valet/Service Mode) or Action `0xFA` (Toggle Auto-Volume/Anti-Nag).
+   - Let users bind a steering wheel gesture (e.g., Right Scroll Triple Press `0x02` or Long Press `0x03`) to Action `0x14` (Toggle All Shortcuts — Valet/Service Mode) or Action `0xFA` (Toggle Auto-Volume Scheduler).
 5. **Thermal & Charging Dashboard Alerts (`buf[2] bit 1`, `buf[3]`, `buf[27..30]`, `buf[21..22]`)**:
    - Use `battery_heater_on` (`buf[2] bit 1`), `bms_max_temp` (`buf[27]`), `bms_min_temp` (`buf[28]`), `cell_voltage_max_mv` (`buf[29..30]`), and `brake_temp_metric` (`buf[21..22]`) in `TSL Cmd` to provide real-time preconditioning notifications ("Battery ready for fast charging") and brake/battery thermal warnings.
 
@@ -258,7 +256,7 @@ CAN Bus Frames (0x102, 0x118, 0x20c, 0x249, 0x257, 0x2e1, 0x312, 0x333, 0x33a, 0
           │           ├─► Vehicle CAN Actions (0x01..0xC0)
           │           ├─► 0xf450: 10-Slot Seat Memory Presets (0xC8..0xD1, config via 0xAA)
           │           ├─► 0x0e6c -> 0x05d2: BLE Sub-Beacon Broadcast (0xE1..0xF9)
-          │           └─► 0xd0d0: Auto-Volume / Anti-Nag Toggle/On/Off (0xFA..0xFC)
+          │           └─► 0xd0d0: Auto-Volume Scheduler Toggle/On/Off (0xFA..0xFC)
           └─► Scans 36 Secondary/Tertiary Rules @ *(gp+0x84) [0xAE] & *(gp+0x88) [0xAC]
                 └─► Calls 0xebfa / 0xeaec (Ambient Lighting & Parameterized Rules)
 ```

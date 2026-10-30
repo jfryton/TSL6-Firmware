@@ -45,8 +45,8 @@ def s32(d, o):
     return struct.unpack_from("<i", d, o)[0]
 
 
-def resolve_gp(data):
-    """Emulate the auipc/addi pair that loads gp, plus sp, from runtime start."""
+def resolve_gp(data, linked_base=0):
+    """Emulate the startup AUIPC/ADDI pairs that load gp and sp."""
     # follow reset jump
     m = md()
     insns = list(m.disasm(data[0:8], 0))
@@ -64,11 +64,9 @@ def resolve_gp(data):
         mn, ops = ins.mnemonic, ins.op_str.replace(",", "").split()
         if mn == "auipc" and len(ops) == 2:
             rd, imm = ops[0], int(ops[1], 0)
-            regs[rd] = (ins.address + (imm << 12)) & 0xFFFFFFFF
+            regs[rd] = (linked_base + ins.address + (imm << 12)) & 0xFFFFFFFF
         elif mn in ("addi", "c.addi") and len(ops) == 3 and ops[1] in regs:
             regs[ops[0]] = (regs[ops[1]] + int(ops[2], 0)) & 0xFFFFFFFF
-        elif mn in ("addi",) and len(ops) == 3 and ops[0] == ops[1] and ops[0] in regs:
-            regs[ops[0]] = (regs[ops[0]] + int(ops[2], 0)) & 0xFFFFFFFF
         if "gp" in regs and "sp" in regs and ins.address > target + 0x20:
             break
     out["gp"] = regs.get("gp")
@@ -139,7 +137,9 @@ def main():
     data = open(sys.argv[1], "rb").read()
     cmd = sys.argv[2]
     if cmd == "gp":
-        r = resolve_gp(data)
+        linked_base = 0x8000 if len(data) == 0x12000 else (
+            0x1000 if len(data) == 0x3000 else 0)
+        r = resolve_gp(data, linked_base)
         for k, v in r.items():
             print(f"{k}: {v:#x}" if isinstance(v, int) else f"{k}: {v}")
     elif cmd == "strings":

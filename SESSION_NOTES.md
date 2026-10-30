@@ -1,15 +1,15 @@
 # Firmware Session Notes
 
-Date: 2026-10-28
+Date: 2026-10-29
 
-## Latest Session Summary (2026-10-28)
+## Latest Session Summary (2026-10-29)
 
-1. **Poisoned OTA Forensics (`poisoned-ota-2026-10-28-535C62E239E339E31475FB10/`)**:
-   - Captured and archived the 96-page `0xFF`-filled (`0xFF * 98,304`) payload served by `https://www.iffrc.com/ffkj/user/ble.php` (`fun=update`) on 2026-10-28, which caused `TSL-BOOT` (`boot.payload.bin @ 0x001642`, linked `0x002642`) to remain in recovery mode because `*(uint8_t*)0x08008000 == 0xFF != 0x6F`.
+1. **Invalid OTA Payload Analysis (`poisoned-ota-2026-10-28-535C62E239E339E31475FB10/`)**:
+   - Captured and archived the non-executable payload served by `https://www.iffrc.com/ffkj/user/ble.php` (`fun=update`) on 2026-10-28, which caused `TSL-BOOT` (`boot.payload.bin @ 0x001642`, linked `0x002642`) to remain in recovery mode because `*(uint8_t*)0x08008000 != 0x6F`.
 2. **Community Firmware Patcher & Verified Catalog (`tools/firmware_patcher.py`, `analysis/patch_catalog.json`, `COMMUNITY_FIRMWARE_MODS.md`)**:
-   - Built a deterministic Python + Capstone patcher and validator with 8 verified binary patches (`ignore_server_deauth_0xae`, `bypass_auth_check_0x1380`, `enable_0xa6_disable_cmd`, `pulse_timing_fast_1500ms`, `pulse_timing_gentle_1000ms`, `pulse_hold_short_25ms`, `custom_fw_version_tag`, and `unlock_steering_triggers_all_gears_0x8100`) and 11 unit/disassembly tests (`tools/test_firmware_patcher.py`).
-3. **Complete Telemetry, CAN `0x39d`/`0x129` AP/Hands-On Detection & Offline Multi-Step Automation Disassembly (`TELEMETRY_AND_RULE_ENGINE_DEEP_DIVE.md`, `OFFLINE_AUTOMATIONS_AND_AP_DETECTION.md`)**:
-   - Mapped all 33 bytes of `0xB0` (`0xAE26`), all 75 bytes of `0xA0` (`0xAF6C`), CAN `0x39d` (`ID39DDAS_status` @ `0x2856..0x2D38`: `0x4E/0x4F` AP Engaged/Disengaged, `0xA8/0xA9` Hands-On Warning Active/Cleared + `0x2B34` reactive dismissal handler, `0x50/0x51` Takeover Alert, `0x96/0x97` Activation Failure), CAN `0x129` (`ID129SteeringAngle` @ `0x80EC..0x8230`: `0xAA..0xB0`), and the 4 offline automation/memory tables (`0xAB` @ `0xE310`, `0xAE` @ `0xEBFA`, `0xAC` @ `0xEAEC`, and `0xAA` 10-slot closed-loop seat memory @ `0xC34C`/`0xF450`).
+   - Built a deterministic Python + Capstone patcher and validator with 10 verified binary patches (`ignore_server_deauth_0xae`, `bypass_auth_check_0x1380`, `enable_0xa6_disable_cmd`, `pulse_timing_fast_1500ms`, `pulse_timing_gentle_1000ms`, `pulse_hold_short_25ms`, `custom_fw_version_tag`, `unlock_steering_triggers_all_gears_0x8100`, `gate_media_pulse_on_ap_0x2242`, and `fix_hands_on_reminder_detection`) plus custom FSD keycode remapping and 11 unit/disassembly tests (`tools/test_firmware_patcher.py`).
+3. **Complete Telemetry, CAN `0x39d`/`0x129`/`0x3FD`/`0x3DF` AP/Hands-On Detection & Offline Multi-Step Automation Disassembly (`TELEMETRY_AND_RULE_ENGINE_DEEP_DIVE.md`, `OFFLINE_AUTOMATIONS_AND_AP_DETECTION.md`)**:
+   - Mapped all 33 bytes of `0xB0` (`0xAE26`), all 75 bytes of `0xA0` (`0xAF6C`), CAN `0x39d` (`ID39DDAS_status` @ `0x2856..0x2D38`: `0x4E/0x4F` AP Engaged/Disengaged, `0xA8/0xA9` Hands-On Warning Active/Cleared + `0x2B34` reactive handler, `0x50/0x51` Takeover Alert, `0x96/0x97` Activation Failure), CAN `0x129` (`ID129SteeringAngle` @ `0x80EC..0x8230`: `0xAA..0xB0`), Bus 0 `0xC0` CAN sniffer handlers (`0x00C2EE..0x00C4F8`, `0x00A5F8..0x00A772`), and the 4 offline automation/memory tables (`0xAB` @ `0xE310`, `0xAE` @ `0xEBFA`, `0xAC` @ `0xEAEC`, and `0xAA` 10-slot closed-loop seat memory @ `0xC34C`/`0xF450`).
 
 ---
 

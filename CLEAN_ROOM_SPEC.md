@@ -1,7 +1,7 @@
 # TSL6 Clean-Room Firmware Compatibility Specification
 
 Status: work in progress  
-Updated: 2026-06-12
+Updated: 2026-07-17
 
 This document records behavior needed to build an independently implemented
 TSL6-compatible firmware. It does not authorize flashing a production module
@@ -25,14 +25,21 @@ Confidence labels:
 | Endianness | Confirmed | Little-endian executable data |
 | Runtime payload | Confirmed | 73,728 bytes, exactly 72 KiB |
 | Boot payload | Confirmed | 12,288 bytes, exactly 12 KiB |
+| Runtime linked / flash-alias base | Confirmed | `0x00008000` / `0x08008000` |
+| Boot linked / flash-alias base | Confirmed | `0x00001000` / `0x08001000` |
+| Accepted runtime / boot slots | Confirmed | `0x18000` / `0x7000` bytes |
 | Runtime reset jump | Confirmed | Payload offset `0x0000` jumps to `0xF89A` |
 | Boot reset jump | Confirmed | Payload offset `0x0000` jumps to `0x1C28` |
+| `gp` / `sp` (both images) | Confirmed | `0x20004000` / `0x20010000` |
+| Resident BLE library / jump table | Confirmed/Unknown | `0x00040000` / `0x00040034`; physical backing and remap are Unknown |
 | Exact MCU part | Unknown | PCB marking or debug ID required |
 | Oscillator and clock tree | Unknown | Must be measured or recovered |
 | GPIO/CAN transceiver mapping | Unknown | Requires PCB tracing or live probing |
 
-The binaries contain direct references into the standard CH32V peripheral
-region around `0x40000000` and RAM references around `0x20000000`.
+The resident ABI around `0x00040000` is distinct from the standard CH32V
+peripheral region at `0x40000000`. The binaries also reference RAM around
+`0x20000000`. A physical dump is still needed to confirm the complete flash
+layout and what backs the low execution views.
 
 ## 2. Server Transport Versus Flash Payload
 
@@ -68,8 +75,8 @@ payload_offset = page * 1024 + within_page - 2
 
 Offsets `0` and `1` of each transport page are not executable payload.
 
-All firmware offsets in this specification refer to the stripped payload
-unless explicitly labeled `transport`.
+All code offsets in this specification refer to the stripped payload unless
+explicitly labeled `linked`, `flash alias`, or `transport`.
 
 ## 3. BLE Service and Packet Framing
 
@@ -107,6 +114,10 @@ sum(command, length high, length low, every payload byte) mod 256
 Frames may be split across BLE writes/notifications. The receiver resets its
 parser if at least 500 ms passes between received chunks. Maximum accepted
 payload length in the recovered Mini App parser is 4096 bytes.
+
+Runtime payload `0x0D02` builds and enqueues these outbound frames. Payload
+`0x110A` is instead a 15-slot delayed-callback scheduler that converts
+millisecond delays to 625-us ticks.
 
 ## 4. Firmware Update Transport
 
@@ -151,12 +162,41 @@ target: 1 byte
 The Mini App retries writes every 1200 ms, with a maximum of ten attempts. It
 retries reads every 1000 ms, with a maximum of five attempts.
 
-**Unknown and safety-critical:**
+### Confirmed writer behavior
 
-- Actual flash destination for boot and runtime payloads.
-- Erase granularity and atomicity.
+The update workers are complementary rather than a single general slot writer:
+
+| Running image / worker | Accepted start target | Destination | Accepted pages |
+|---|---:|---:|---:|
+| Runtime payload `0x1BC8` | `0` (boot) | `0x08001000` | `0..27` |
+| Boot payload `0x121C` | `1` (runtime) | `0x08008000` | `0..95` |
+
+Each worker accepts a 1026-byte transport page, invokes a local 256-byte fast
+erase/program wrapper four times for its 1 KiB executable payload, then
+compares all 1 KiB against flash word-by-word. Both local implementations access the flash controller at
+`0x40022000`. The boot helper offsets are
+`0x2032`/`0x203A`/`0x2058`/`0x2066`/`0x2094`; runtime contains copies at
+`0x10010`/`0x10018`/`0x10036`/`0x10044`/`0x10072`.
+
+Before each 256-byte cycle the wrapper temporarily sets RCC `CFGR0` at
+`0x40021004` to HPRE divide-by-2 (`0x80`) or divide-by-4 (`0x90`), selected by
+comparison with 144 MHz. This register is clock configuration, not flash
+control. The flash helpers poll busy state without a timeout, do not inspect
+the documented flash error/completion bits, and provide no status return.
+
+Runtime prepare target `1` schedules callbacks at payload `0x0E1A` after
+200 ms and `0x1E16` after 400 ms through the 15-slot delayed-callback scheduler
+at `0x110A`, transferring toward the boot-mode writer for the runtime slot.
+
+**Unknown and safety-critical despite the recovered static layout:**
+
+- Physical confirmation of both flash aliases and what occupies the unused
+  portions of the statically accepted slots.
+- Exact low-address remap/vector mechanism and resident backing near
+  `0x00040000`.
 - Boot-selection flags and rollback behavior.
 - Bootloader image validation beyond page transport checks.
+- Option bytes, protection settings, and power-loss/brown-out atomicity.
 - Whether a failed runtime update leaves a recoverable bootloader.
 - Whether bootloader replacement can remove the only BLE recovery route.
 
@@ -186,9 +226,13 @@ The runtime's main BLE command dispatcher starts near payload `0xBDEA`.
 | `0xBB` | Execute/test one shortcut action | Confirmed |
 | `0xC0` | CAN debug transport | Confirmed |
 | `0xC1` | Vehicle type query | Confirmed |
+| `0xD2` | Return an 8-byte view derived from raw 12-byte record slot 4; record meaning Unknown | Confirmed structure |
 
 The complete payload schemas for several commands remain incomplete. They
 should be captured as versioned structures rather than duplicated ad hoc.
+For D2, resident `tmos_memset` slot `0x40048` only zeroes the response buffer;
+local helper `0x28E` copies the selected raw 12-byte record through
+`tmos_memcpy` slot `0x4004C`. The record producer and meaning are Unknown.
 
 ## 6. Shortcut Rule Storage
 
@@ -238,9 +282,9 @@ jump target
 The corrected payload table base is `0x11710`. Removing server page headers
 resolves the earlier apparent handler-alignment contradiction.
 
-Selected confirmed table targets:
+Selected confirmed table targets with correlated backend catalog labels:
 
-| Action | Catalog meaning | Handler |
+| Action | Catalog label | Handler |
 |---:|---|---:|
 | 137 | AP speed +5 | `0xDB54` |
 | 138 | AP speed -5 | `0xDB64` |
@@ -256,13 +300,15 @@ Selected confirmed table targets:
 | 148 | Following distance +1 | `0xDC12` |
 | 149 | Following distance -1 | `0xDC22` |
 
-Action 139's stub restores the dispatcher frame and tail-calls a shared
-routine without loading an immediate parameter. This distinguishes it from
-neighboring parameterized media and AP actions, but its complete CAN-side
-behavior still needs live correlation.
+Action 139's stub tail-calls payload `0x3A30`, which writes 12 to RAM
+`0x2000BF2D`. Branch `0x3CDC` reads that counter; while it is nonzero, it
+decrements it and replaces bits 6:5 of the current object's byte 3 with
+`0b10`. The branch cadence and the vehicle-side meaning (including any
+hold/release interpretation) remain Unknown.
 
-Trigger IDs and action IDs are separate namespaces. Trigger 139 means speed
-5-10; action 139 means left-scroll hold.
+Trigger IDs and action IDs are separate namespaces. The backend catalogs
+trigger 139 as speed 5-10 and action 139 as left-scroll hold; these labels do
+not prove vehicle-side effects.
 
 ## 8. Dashboard Telemetry Contract
 
@@ -354,8 +400,10 @@ Execution must be non-blocking. Every macro should have:
 
 ### Boot validation
 
-- Recover flash layout and linker origins.
-- Determine vector relocation and runtime image destination.
+- Confirm the statically recovered aliases, linker origins, and accepted slot
+  bounds against a full physical dump.
+- Determine the low-address remap and vector relocation mechanism, including
+  what backs resident execution around `0x00040000`.
 - Determine boot flags, update-in-progress markers, and rollback behavior.
 - Identify all CRC/signature/version checks.
 - Document brownout behavior during erase/write.

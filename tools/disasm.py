@@ -2,8 +2,8 @@
 """RISC-V (RV32 + compressed) disassembly window over a stripped payload image.
 
 The TSL6 firmware is WCH CH32V20x (QingKe RV32IMAC) code, little-endian, with
-compressed (RVC) instructions. Image base is treated as 0; payload offset
-equals virtual address in the downloaded representation.
+compressed (RVC) instructions. Primary addresses are payload offsets. For a
+branch outside a known image, the linked execution target is also shown.
 
 Usage:
     disasm.py PAYLOAD.bin --start 0xBDEA --count 160
@@ -22,6 +22,7 @@ def make_md() -> Cs:
 
 BRANCH = {"beq", "bne", "blt", "bge", "bltu", "bgeu",
           "c.beqz", "c.bnez", "j", "c.j", "jal", "c.jal"}
+LINKED_BASE_BY_SIZE = {0x12000: 0x8000, 0x3000: 0x1000}
 
 
 def _abs_target(addr: int, mn: str, ops: str):
@@ -57,6 +58,7 @@ def main() -> int:
     ap.add_argument("--end", default=None, help="stop offset (overrides count length)")
     args = ap.parse_args()
     data = open(args.payload, "rb").read()
+    linked_base = LINKED_BASE_BY_SIZE.get(len(data))
     start = int(args.start, 0)
     if args.end is not None:
         end = int(args.end, 0)
@@ -68,7 +70,11 @@ def main() -> int:
         if tgt is not None:
             ann = f"   ; -> {tgt:#08x}"
             if tgt >= len(data):
-                ann += " [resident/out-of-image]"
+                ann += " [resident/out-of-image"
+                if linked_base is not None:
+                    linked_target = (linked_base + tgt) & 0xFFFFFFFF
+                    ann += f"; linked -> {linked_target:#08x}"
+                ann += "]"
         print(f"{addr:#08x}: {raw:<8} {mn:<8} {ops}{ann}")
         n += 1
         if args.end is None and n >= args.count:

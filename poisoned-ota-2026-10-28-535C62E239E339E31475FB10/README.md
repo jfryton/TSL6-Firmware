@@ -1,18 +1,18 @@
-# Poisoned OTA Payload Archive (`2026-10-28` · Module `535C62E239E339E31475FB10`)
+# Non-Executable OTA Payload Archive (`2026-10-28` · Module `535C62E239E339E31475FB10`)
 
 ## Summary
 
-On `2026-10-28`, querying the official WeChat Mini Program backend (`https://www.iffrc.com/ffkj/user/ble.php`) for module `535C62E239E339E31475FB10` revealed that the server is serving a **67-page UTF-8 Chinese text copy of the WCH CH32V208 datasheet** (`" CH32V208 数据手册 V2.6..."`) disguised as a valid OTA firmware package for both `isapp=1` (runtime) and `isapp=0` (bootloader).
+On `2026-10-28`, querying the official WeChat Mini Program backend (`https://www.iffrc.com/ffkj/user/ble.php`) for module `535C62E239E339E31475FB10` revealed that the server is serving a **67-page UTF-8 Chinese text copy of the WCH CH32V208 datasheet** (`" CH32V208 数据手册 V2.6..."`) in place of a valid OTA firmware package for both `isapp=1` (runtime) and `isapp=0` (bootloader).
 
 Because every 1,026-byte transport page has a valid 2-byte big-endian page index (`0x0000..0x0042`) and a matching 16-bit checksum in `CheckCode`, the official WeChat Mini Program passes all download checks and flashes the datasheet text into the module's runtime flash slot (`0x08008000`).
 
 When the bootloader (`TSL-BOOT`, `boot.payload.bin`) finishes the update (`0x45`) and attempts to boot `0x08008000`:
 - At `0x00263c..0x00264c`, the bootloader checks `*(uint8_t*)0x08077B04 != 2` and verifies that the first byte at `0x08008000` is `0x6F` (the RISC-V `j` / `jal` opcode).
-- Because byte 0 of the flashed datasheet payload is `0x20` (ASCII space `' '`), the bootloader refuses to jump to runtime and remains stuck advertising as `TSL-BOOT`.
+- Because byte 0 of the flashed datasheet payload is `0x20` (ASCII space `' '`), the bootloader refuses to jump to runtime and remains in `TSL-BOOT` recovery mode.
 
-## Forensic Evidence of Intentional Server-Side Poisoning
+## Evidence of Non-Executable Server Payload
 
-1. **Spoofed `fw_ver_new: 16640` (`0x4100` / `V4.1.00`) in `fun=getinfo`**:
+1. **Reported `fw_ver_new: 16640` (`0x4100` / `V4.1.00`) in `fun=getinfo`**:
    - `getinfo.json` returns:
      ```json
      {
@@ -28,12 +28,12 @@ When the bootloader (`TSL-BOOT`, `boot.payload.bin`) finishes the update (`0x45`
        "msg": ""
      }
      ```
-   - Whereas the genuine TSL6 runtime version is `5376` (`0x1500` / `V1.5.00`), the server reports `fw_ver_new = 16640` (`0x4100` / `V4.1.00`), forcing the WeChat Mini Program to prompt the user to upgrade whenever a real `V1.5.00` (or `V0.0.00` bootloader) module connects.
+   - Whereas the genuine TSL6 runtime version is `5376` (`0x1500` / `V1.5.00`), the server reports `fw_ver_new = 16640` (`0x4100` / `V4.1.00`), causing the WeChat Mini Program to prompt the user to upgrade whenever a `V1.5.00` (or `V0.0.00` bootloader) module connects.
 2. **Identical Payload for Both `isapp=1` (Runtime) and `isapp=0` (Bootloader)**:
    - Both `fun=update&isapp=1` and `fun=update&isapp=0` return the exact same 67-page (`68,742`-byte) transport stream (`SHA-256: e5946fe50422653e2bc70efdf2592e2e5e6f71b94fb65a315ca9c92bdc28df83`).
-3. **Packaged Specifically With the Vendor's OTA Framing Tool**:
-   - The payload is not random corruption or an HTTP error page; it is the plain-text extraction of the **WCH CH32V208 datasheet (`V2.6`)**—the exact RISC-V MCU used inside the TSL6 module—padded with `0xFF` on the final page (`page 66`) to 1,024 bytes, prefixed with 2-byte big-endian page numbers `0x0000..0x0042`, and accompanied by precomputed 16-bit `CheckCode` page sums.
-   - Unregistered module IDs (e.g. `...FB11`) receive `{"success": false, "data": "", "msg": "固件下载失败\r\n\r\n设备未授权"}`, confirming that this decoy/poisoned package is specifically served to authorized/flagged module records.
+3. **Packaged With the Vendor's OTA Framing Format**:
+   - The payload is the plain-text extraction of the **WCH CH32V208 datasheet (`V2.6`)**—the RISC-V MCU used inside the TSL6 module—padded with `0xFF` on the final page (`page 66`) to 1,024 bytes, prefixed with 2-byte big-endian page numbers `0x0000..0x0042`, and accompanied by precomputed 16-bit `CheckCode` page sums.
+   - Unregistered module IDs (e.g. `...FB11`) receive `{"success": false, "data": "", "msg": "固件下载失败\r\n\r\n设备未授权"}`, confirming that this placeholder package is served specifically to registered module records.
 
 ## Archived Artifacts
 

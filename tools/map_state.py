@@ -2,7 +2,7 @@
 """Map the gp-relative state block of the TSL6 runtime image.
 
 The runtime keeps its mutable BLE/rule/telemetry state in a single block based
-at the global pointer (gp=0x1fffc000). Accesses appear in two forms:
+at the global pointer (gp=0x20004000). Accesses appear in two forms:
 
   1. Direct:        lw/lh/lb/sw/sh/sb  rD, IMM(gp)
   2. Address-taken: addi rX, gp, IMM   (then later load/store via rX, or the
@@ -157,7 +157,7 @@ def main():
     addr_only = [r for r in rows if not (r["direct_reads"] or r["direct_writes"])]
     doc = {
         "image": "runtime",
-        "global_pointer_gp": "0x1fffc000",
+        "global_pointer_gp": "0x20004000",
         "model": (
             "Single gp-based state block. 'direct' offsets are touched by "
             "lw/lh/lb/sw/sh/sb with (gp) base; 'address_taken' offsets are the "

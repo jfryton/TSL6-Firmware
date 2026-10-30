@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """Map the absolute-addressed RAM signal cache of the TSL6 runtime image.
 
-Distinct from the gp-relative state block (see map_state.py), the runtime also
-keeps a block of decoded vehicle signals in high RAM (~0x20003f00). These are
-reached with PC-relative `auipc rX, HI` followed by a load/store using `LO(rX)`
-rather than gp. The telemetry getters (analysis/telemetry.json) read from here,
-so this block is the CAN-decode output cache that the dashboard packet samples.
+Distinct from the gp-relative state block (see map_state.py), the runtime keeps
+decoded vehicle signals in high RAM (~0x2000bf00). They are reached with
+PC-relative `auipc rX, HI` followed by a load/store using `LO(rX)` rather than
+gp. The telemetry getters (analysis/telemetry.json) confirm ten such slots.
 
 This tool pairs each `auipc` with the next load/store that uses the same
 register, resolves the absolute target, and tabulates read/write/width per
-address. Only RAM targets (0x20000000..0x20010000) are reported.
+address. The broad linear scan also crosses embedded data, so only the
+telemetry-landmarked rows should be treated as confirmed without disassembly
+review. Only RAM targets (0x20000000..0x20010000) are reported. The runtime
+linked code base 0x8000 is included in every AUIPC calculation.
 
 Usage:
     map_ramcache.py work/runtime.payload.bin analysis/ram_cache.json
@@ -23,6 +25,7 @@ LOAD_W = {"lw": 4, "lh": 2, "lhu": 2, "lb": 1, "lbu": 1}
 STORE_W = {"sw": 4, "sh": 2, "sb": 1}
 RAM_LO = 0x20000000
 RAM_HI = 0x20010000
+LINKED_CODE_BASE = 0x8000
 
 # Telemetry getter -> field label (from analysis/telemetry.json) lets us name
 # the cache slots each getter reads.
@@ -88,7 +91,8 @@ def scan(data):
         parts = ops.replace(",", " ").split()
         if mn == "auipc" and len(parts) == 2:
             try:
-                hi = (ins.address + (int(parts[1], 0) << 12)) & 0xFFFFFFFF
+                hi = (LINKED_CODE_BASE + ins.address
+                      + (int(parts[1], 0) << 12)) & 0xFFFFFFFF
             except ValueError:
                 continue
             pending[parts[0]] = hi
@@ -141,7 +145,8 @@ def scan_getters(data):
         for ins in m.disasm(data[g:g + 0x40], g):
             parts = ins.op_str.replace(",", " ").split()
             if ins.mnemonic == "auipc" and len(parts) == 2:
-                pend[parts[0]] = (ins.address + (int(parts[1], 0) << 12)) & 0xFFFFFFFF
+                pend[parts[0]] = (LINKED_CODE_BASE + ins.address
+                                  + (int(parts[1], 0) << 12)) & 0xFFFFFFFF
             elif ins.mnemonic in LOAD_W:
                 pm = parse_mem(ins.op_str)
                 if pm and pm[1] in pend:
@@ -161,16 +166,35 @@ def main():
     out = sys.argv[2] if len(sys.argv) > 2 else None
     rows = scan(data)
     getters = scan_getters(data)
+    assert len(data) == 0x12000
+    expected_getters = {
+        "0x2000be5c": ("inverter power", 2),
+        "0x2000bef6": ("turn signals", 1),
+        "0x2000bf00": ("autopilot state", 1),
+        "0x2000bf38": ("flag bit", 1),
+        "0x2000bf60": ("gear", 1),
+        "0x2000bf80": ("battery heating", 1),
+        "0x2000bf81": ("state of charge", 1),
+        "0x2000bf84": ("appearance (light/dark)", 1),
+        "0x2000bf85": ("flag bit", 1),
+        "0x2000bf86": ("door state", 1),
+    }
+    assert {
+        addr: (items[0]["label"], items[0]["width"])
+        for addr, items in getters.items()
+    } == expected_getters
     # annotate cache rows touched by a known getter
     for r in rows:
         if r["addr_hex"] in getters:
             r["telemetry"] = getters[r["addr_hex"]]
     doc = {
         "image": "runtime",
+        "linked_code_base": hex(LINKED_CODE_BASE),
         "model": (
-            "Absolute-addressed RAM signal cache (CAN-decode output). Reached "
-            "via auipc+load/store rather than gp. Telemetry getters sample "
-            "these slots into the 0xB0 dashboard packet."),
+            "Candidate absolute-addressed RAM references recovered by a broad "
+            "linear AUIPC scan. The telemetry-mapped landmarks are confirmed "
+            "signal-cache slots; other rows remain heuristic because code and "
+            "data are swept together."),
         "ram_window": "0x20000000-0x20010000",
         "distinct_addresses": len(rows),
         "telemetry_slots": getters,

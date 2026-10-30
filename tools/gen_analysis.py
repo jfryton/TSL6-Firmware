@@ -22,6 +22,13 @@ from capstone import Cs, CS_ARCH_RISCV, CS_MODE_RISCV32, CS_MODE_RISCVC
 
 # --- landmarks confirmed by disassembly (see FIRMWARE_INTERNALS.md) ---
 RESET_TARGET = 0xF89A
+LINKED_CODE_BASE = 0x8000
+FLASH_ALIAS_BASE = 0x08008000
+RUNTIME_SLOT_SIZE = 0x18000
+BOOT_FLASH_ALIAS_BASE = 0x08001000
+RESIDENT_LIBRARY_BASE = 0x40000
+RESIDENT_JUMP_TABLE_BASE = 0x40034
+BLE_LIBRARY_VERSION = b"CH32V20x_BLE_LIB_V1.3"
 MAIN_DISPATCH = 0xBDEA
 MAIN_DISPATCH_END = 0xC120
 UPDATE_DISPATCH = 0xBC76
@@ -70,7 +77,8 @@ def resolve_constants(data):
         mn = ins.mnemonic
         ops = ins.op_str.replace(",", " ").split()
         if mn == "auipc" and len(ops) == 2:
-            regs[ops[0]] = (ins.address + (int(ops[1], 0) << 12)) & 0xFFFFFFFF
+            regs[ops[0]] = (LINKED_CODE_BASE + ins.address
+                            + (int(ops[1], 0) << 12)) & 0xFFFFFFFF
         elif mn in ("addi", "c.addi") and len(ops) == 3 and ops[1] in regs:
             regs[ops[0]] = (regs[ops[1]] + int(ops[2], 0)) & 0xFFFFFFFF
         elif mn in ("addi", "c.addi") and len(ops) == 3 and ops[0] in regs \
@@ -82,6 +90,27 @@ def resolve_constants(data):
     out["gp"] = regs.get("gp")
     out["sp"] = regs.get("sp")
     return out
+
+
+def assert_landmarks(data, consts):
+    """Keep linked-base and updater claims tied to this archived image."""
+    assert len(data) == 0x12000
+    assert data[:4] == bytes.fromhex("6ff0b009")
+    assert data[RESET_TARGET:RESET_TARGET + 8] == bytes.fromhex(
+        "97c1fe1f93816176")
+    assert consts == {"gp": 0x20004000, "sp": 0x20010000}
+    assert data[0x11B38:0x11B38 + len(BLE_LIBRARY_VERSION)] == \
+        BLE_LIBRARY_VERSION
+    assert data[0x28E:0x296] == bytes.fromhex("b707040003a3c704")
+    assert data[0x1C22:0x1C4C] == bytes.fromhex(
+        "37f7fff7a207c18f13948700a1835d8c4204b7070200910741803e942a04"
+        "9d672297938707f0e3e2e7fa")
+    assert data[0x1D24:0x1D30] == bytes.fromhex(
+        "8347060085e38547a38af10c")
+    assert (0x20004 << 10) == BOOT_FLASH_ALIAS_BASE
+    assert ((0xF7FFF000 + BOOT_FLASH_ALIAS_BASE) & 0xFFFFFFFF) == 0
+    assert (((0x20004 + 27) << 10) + 0xF7FFF000) & 0xFFFFFFFF == 0x6C00
+    assert (((0x20004 + 28) << 10) + 0xF7FFF000) & 0xFFFFFFFF == 0x7000
 
 
 def decode_stub(data, addr, limit=0x40):
@@ -196,20 +225,30 @@ def main():
     os.makedirs(outdir, exist_ok=True)
 
     consts = resolve_constants(data)
+    assert_landmarks(data, consts)
     memory_map = {
         "image": "runtime",
         "payload_size": len(data),
-        "image_base": "0x0 (downloaded representation; not final flash offset)",
+        "payload_offset_base": "0x0 (all analysis code addresses are offsets)",
+        "linked_code_base": hex(LINKED_CODE_BASE),
+        "flash_alias_base": "0x%08x" % FLASH_ALIAS_BASE,
+        "slot_size_bytes": RUNTIME_SLOT_SIZE,
         "reset_jump_target": hex(RESET_TARGET),
         "global_pointer_gp": hex(consts["gp"]) if consts["gp"] else None,
         "stack_pointer_sp": hex(consts["sp"]) if consts["sp"] else None,
         "ram_base": "0x20000000",
+        "ram_top": "0x20010000",
         "peripheral_base": "0x40000000",
+        "resident_library_base": hex(RESIDENT_LIBRARY_BASE),
+        "resident_jump_table_base": hex(RESIDENT_JUMP_TABLE_BASE),
         "notes": [
-            "Application code is self-contained within the 0x0-0x12000 payload.",
-            "Hardware/BLE-stack entry points referenced from startup live in a "
-            "resident region above the downloadable image; the server image is "
-            "the updatable application/runtime slot only.",
+            "Payload offsets remain base-zero in analysis, but AUIPC absolute "
+            "addresses must use the linked code base 0x8000.",
+            "The boot updater programs this image at flash alias 0x08008000; "
+            "the statically accepted slot is 0x18000 bytes (96 KiB).",
+            "Startup transfers to a resident BLE library at 0x00040000; its "
+            "jump table begins at 0x00040034. Its backing storage is not "
+            "present in the downloaded image.",
             "gp-relative addressing (gp=%s) is used for the BLE state block, "
             "including the 256-byte shortcut table at gp+0x80." % (
                 hex(consts["gp"]) if consts["gp"] else "?"),
@@ -226,11 +265,11 @@ def main():
             "target=table_base + s32(table_base+index*4)"),
         "shared_workers": {
             "0x33e2": "keycode/button primitive (validates 1..18, stores RAM "
-                      "state byte 0x20003f2c); used by media/AP/steering actions",
+                      "state byte 0x2000bf2c); used by media/AP/steering actions",
             "0x3a30": "action 139 latch: writes 0x0C to countdown byte "
-                      "0x20003f2d; decremented by periodic handler at 0x3ce0, "
-                      "which sets a state bit when it expires (timed "
-                      "steering-wheel hold/release)",
+                      "0x2000bf2d; handler branch 0x3cdc decrements it and "
+                      "sets bits 6:5 of the current object to 0b10 whenever "
+                      "the counter is nonzero; cadence/effect unknown",
             "0xf296": "one-hot bitfield control worker (actions 1-8)",
         },
         "entries": rows,
@@ -244,24 +283,75 @@ def main():
         "update_dispatcher": hex(UPDATE_DISPATCH),
         "a2_handler": hex(A2_HANDLER),
         "shared_helpers": {
-            "0x110a": "async BLE TX framer/enqueue; 15-slot, 12-byte queue at "
-                      "RAM 0x20003e28; dispatches via resident notify pointer "
-                      "0x40000050",
-            "0xb76c": "command reply builder; allocates via resident pointer "
-                      "0x40000070, then enqueues through 0x110a",
+            "0xd02": "BLE frame builder/enqueue; emits 55 7f header and "
+                     "checksum, then wakes the resident event loop",
+            "0x110a": "15-slot delayed-callback/event scheduler; 12-byte "
+                      "entries at RAM 0x2000be28; converts milliseconds to "
+                      "625-us scheduler ticks",
+            "0xb76c": "command reply builder; allocates via "
+                      "tmos_msg_allocate (0x40070), copies through "
+                      "tmos_memcpy (0x4004c), frames via 0xd02, then "
+                      "releases through tmos_msg_deallocate (0x40068)",
             "0xb7c6": "module status reply builder",
             "0xb86e": "dashboard telemetry producer (35-byte 0xB0 packet, "
                       "rate-limited via gp+0x178 timestamp)",
             "0xbdb8": "command-reply tail used by 0xA2/0xBB handlers",
         },
-        "ble_stack_vtable": {
-            "base": "0x40000000",
-            "note": "Resident BLE-stack function pointers loaded via lui 0x40 "
-                    "+ offset and called indirectly (jr/jalr). Not in image.",
-            "known_slots": {
-                "0x40000050": "BLE notify/send entry (used by TX framer 0x110a)",
-                "0x40000070": "buffer allocator (used by reply builder 0xb76c)",
+        "resident_abi_table": {
+            "library_base": hex(RESIDENT_LIBRARY_BASE),
+            "jump_table_base": hex(RESIDENT_JUMP_TABLE_BASE),
+            "note": "Resident function pointers are loaded from the BLE "
+                    "library jump table at 0x00040034 and called indirectly. "
+                    "The library base 0x00040000 is not the CH32V peripheral "
+                    "region at 0x40000000.",
+            "source": {
+                "embedded_version": "CH32V20x_BLE_LIB_V1.3",
+                "runtime_string_offset": "0x11b38",
+                "openwch_commit":
+                    "64be9554615df522899579633530fd234d685682",
+                "header": "EVT/EXAM/BLE/LIB/wchble_rom.h",
+                "base_macros": "LIB_FLASH_BASE_ADDRESSS=0x00040000; "
+                               "FUNCITON_BASE_ADDRESSS="
+                               "LIB_FLASH_BASE_ADDRESSS+0x34",
             },
+            "known_slots": {
+                "0x4003c": "tmos_memcmp(src1, src2, len); returns TRUE "
+                           "when buffers are equal",
+                "0x40040": "tmos_isbufset(buf, value, len); returns TRUE "
+                           "when every byte equals value",
+                "0x40048": "tmos_memset(dst, value, len)",
+                "0x4004c": "tmos_memcpy(dst, src, len)",
+                "0x40050": "tmos_set_event(task_id, event)",
+                "0x40068": "tmos_msg_deallocate(msg_ptr)",
+                "0x40070": "tmos_msg_allocate(len)",
+                "0x4017c": "GAPRole_TerminateLink(conn_handle)",
+            },
+        },
+        "update_writer": {
+            "worker": "0x1bc8",
+            "writes_image": "boot",
+            "accepted_start_target": 0,
+            "in_progress_flag": "gp+0xd5",
+            "flash_alias_base": "0x%08x" % BOOT_FLASH_ALIAS_BASE,
+            "slot_size_bytes": 0x7000,
+            "valid_page_indices": "0..27",
+            "page_transport_bytes": 0x402,
+            "page_payload_bytes": 0x400,
+            "flash_write_fn": "0x1b5e",
+            "flash_granularity_bytes": 0x100,
+            "flash_functions": {
+                "status_clear": "0x10010",
+                "unlock_fast": "0x10018",
+                "lock_fast": "0x10036",
+                "erase_256": "0x10044",
+                "program_256": "0x10072",
+            },
+            "prepare_transition": "0x55 target 1 schedules callbacks at "
+                                  "0xe1a (200 ms) and 0x1e16 (400 ms) to "
+                                  "transfer runtime-target updates to boot mode",
+            "verify": "1024-byte word-by-word read-back comparison",
+            "error_handling": "polls flash busy flags without timeout; does "
+                              "not test flash error bits",
         },
         "handlers": map_dispatch(data),
     }

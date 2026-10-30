@@ -12,7 +12,7 @@ single, de-duplicated address->label table, then emits two outputs:
 Sources merged:
   - functions.json        every recovered function entry (sub_XXXX, or a better
                           name when a landmark matches the entry).
-  - command_dispatch.json BLE command handlers + shared helpers + vtable slots.
+  - command_dispatch.json BLE command handlers + in-image shared helpers.
   - action_table.json     shared action workers + the action dispatcher/table.
   - telemetry.json        the packer and each per-signal getter.
   - can_map.json          the CAN-ID dispatcher + each per-ID decoder.
@@ -106,7 +106,8 @@ def main():
         for off, desc in (cd.get("shared_helpers") or {}).items():
             a = parse_addr(off)
             label = {
-                "0x110a": "ble_tx_framer", "0xb76c": "cmd_reply_builder",
+                "0xd02": "ble_frame_enqueue", "0x110a": "delayed_scheduler",
+                "0xb76c": "cmd_reply_builder",
                 "0xb7c6": "status_reply_builder",
                 "0xb86e": "telemetry_producer",
                 "0xbdb8": "cmd_reply_tail",
@@ -130,12 +131,6 @@ def main():
                 "0xf296": "onehot_bitfield_worker",
             }.get(off, "worker_%s" % norm(off))
             add(a, label, "f", "action_table", force=True)
-        for e in at.get("entries", []):
-            w = parse_addr(e.get("worker"))
-            if w is not None and w < (fns["function_count"] and 0x12000):
-                # name action workers that live in-image
-                pass  # workers already covered by shared_workers / functions
-
     # 4. telemetry
     tel = load(adir, "telemetry.json")
     if tel:
@@ -257,6 +252,10 @@ def build_boot(adir, add):
             force=True)
         add(parse_addr(wp.get("flash_program_fn")), "flash_program", "f",
             "boot", force=True)
+        for name, off in (b.get("flash_controller") or {}).get(
+                "functions", {}).items():
+            add(parse_addr(off), "flash_%s" % norm(name), "f", "boot",
+                force=True)
         # update_commands keys are command bytes, not addresses; skip.
 
 

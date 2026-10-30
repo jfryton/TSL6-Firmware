@@ -72,6 +72,15 @@ The map files record both transport and stripped-payload structure.
   verify update flow (safety-critical).
 - [CLEAN_ROOM_SPEC.md](CLEAN_ROOM_SPEC.md): compatibility requirements for an
   independent replacement firmware.
+- [COMMUNITY_FIRMWARE_MODS.md](COMMUNITY_FIRMWARE_MODS.md): verified binary
+  modifications, safety invariants, and `tools/firmware_patcher.py` usage.
+- [OFFLINE_AUTOMATIONS_AND_AP_DETECTION.md](OFFLINE_AUTOMATIONS_AND_AP_DETECTION.md):
+  CAN `0x39D`/`0x129` Autopilot & hands-on reminder state machines and offline
+  multi-step automation tables (`0xAB`, `0xAE`, `0xAC`, `0xAA`).
+- [TELEMETRY_AND_RULE_ENGINE_DEEP_DIVE.md](TELEMETRY_AND_RULE_ENGINE_DEEP_DIVE.md):
+  complete `0xB0` / `0xA0` telemetry packer and `0xE310` rule engine analysis.
+- [AUTOMATIC_VOLUME.md](AUTOMATIC_VOLUME.md): persistent automatic volume and
+  media scheduler settings and safe `0xA3` writes.
 - [ANALYSIS_WORKFLOW.md](ANALYSIS_WORKFLOW.md): reproducible extraction and
   disassembly process.
 - [REVERSE_ENGINEERING.md](REVERSE_ENGINEERING.md): chronological findings and
@@ -80,12 +89,14 @@ The map files record both transport and stripped-payload structure.
 
 ## Tooling and Generated Analysis
 
-- [tools/](tools/): reproducible RISC-V analysis tooling (payload extraction,
-  RV32+RVC disassembler, dispatcher/action-table decoders, artifact generator).
+- [tools/](tools/): reproducible RISC-V analysis and binary patching tooling
+  (payload extraction, RV32+RVC disassembler, dispatcher/action-table decoders,
+  deterministic firmware patcher `firmware_patcher.py`, and unit test suite).
   Only dependency is Capstone. See [tools/README.md](tools/README.md).
 - [analysis/](analysis/): committed machine-readable analysis of the runtime
-  image (`memory_map.json`, `command_dispatch.json`, `action_table.json`,
-  `rule_engine.json`), regenerable from the archived binaries.
+  and boot images (`memory_map.json`, `command_dispatch.json`,
+  `action_table.json`, `rule_engine.json`, `patch_catalog.json`), regenerable
+  from the archived binaries.
 
 ## Backend Endpoint
 

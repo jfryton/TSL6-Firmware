@@ -1,6 +1,6 @@
 {
   "image": "runtime",
-  "note": "Hand-curated decode of the 0xF0 configuration/provisioning worker 0xa39a and its 7-entry sub-dispatch. Offsets are payload offsets (image base 0). Confidence: Confirmed (from disassembly) unless marked Correlated.",
+  "note": "Hand-curated decode of the 0xF0 configuration/provisioning worker 0xa39a and its 7-entry sub-dispatch. Code addresses are payload offsets; AUIPC-derived absolute addresses include the linked base 0x8000. ABI names come from OpenWCH commit 64be9554615df522899579633530fd234d685682, EVT/EXAM/BLE/LIB/wchble_rom.h, matching the embedded CH32V20x_BLE_LIB_V1.3 string. Confidence: Confirmed unless marked Correlated.",
   "entry": "0xa39a",
   "reached_from": "BLE command 0xF0 handler 0xc0ee (after 14-byte credential validate 0x12d4)",
   "dispatch": {
@@ -9,30 +9,33 @@
     "jump_table_base": "0x115bc",
     "jump_table_stride": 4,
     "jump_table_kind": "signed self-relative (target = base + s32(base + idx*4))",
-    "stored_handle": "0xa39e: sh a0 -> RAM (16-bit request/handle latched before dispatch)"
+    "stored_handle": "0xa39e: sh a0 -> 0x2000bff6 (16-bit request/handle latched before dispatch)"
   },
   "shared_primitives": {
-    "0x8a54": "config-store commit/flush: walks a config object (state base ~0x1fffbfec, slot 8), invokes resident slot 0x4000017c then 0x40000068 (NVS/flash-backed bond or settings persist).",
-    "0x8f46": "send 4-byte ack/result via resident notify slot 0x40000050 (a1=4, status byte from 0x...a0).",
-    "0x8dec": "long config/bond builder: allocates via resident slot 0x40000070, populates a multi-field record (large stack frame, many callee-saved regs).",
-    "0x40000040": "resident 6-byte compare (BLE MAC memcmp) used during bond-table scans.",
-    "0x40000068": "resident config persist entry.",
-    "0x4000017c": "resident config lookup/handle entry."
+    "0x8a54": "If the pointer at 0x2000bff8 is nonzero, calls GAPRole_TerminateLink at resident slot 0x4017c with the object's 16-bit connection handle at +0x20, deallocates the object through slot 0x40068, then clears 0x2000bff8.",
+    "0x8f46": "Tail-calls tmos_set_event at resident slot 0x40050 with task ID from 0x2000bff0 and event bit 4.",
+    "0x8dec": "Allocates 0x88 bytes via tmos_msg_allocate at resident slot 0x40070, populates and passes the message to 0xbab8, then deallocates it through slot 0x40068.",
+    "0x4003c": "tmos_memcmp(src1, src2, 6), whose Boolean result is TRUE when the six-byte fields are equal.",
+    "0x40040": "tmos_isbufset(record+3, 0, 6), used during three-record table scans.",
+    "0x40050": "tmos_set_event(task_id, event), called by local helper 0x8f46.",
+    "0x40068": "tmos_msg_deallocate, called with an object or buffer pointer by 0x8a54 and 0x8dec.",
+    "0x40070": "tmos_msg_allocate, called with length 0x88 by 0x8dec.",
+    "0x4017c": "GAPRole_TerminateLink, called with a 16-bit connection handle by 0x8a54 and selector 7."
   },
   "sub_handlers": [
     {
       "selector": 1,
       "target": "0xa3e2",
-      "confidence": "Correlated",
-      "summary": "Commit current config and set enabled flag. Calls 0x8a54 (config commit), then writes 1 to a RAM enable byte and returns.",
-      "evidence": ["0xa3e2: jal 0x8a54", "0xa3e8: sb 1 -> RAM (enable flag)"]
+      "confidence": "Confirmed",
+      "summary": "Calls 0x8a54 to terminate/deallocate any object at 0x2000bff8, writes 1 to RAM bytes 0x2000bff4 and 0x2000bffc, then tail-jumps to 0x8ac0.",
+      "evidence": ["0xa3e2: jal 0x8a54", "0xa3e8/0xa402: sb 1 -> 0x2000bff4/0x2000bffc", "0xa408: j 0x8ac0"]
     },
     {
       "selector": 2,
       "target": "0xa40c",
-      "confidence": "Correlated",
-      "summary": "Reset/clear two config bytes then rebuild and notify. Calls 0x8a54, zeroes two RAM config bytes, then 0x8f46 (4-byte ack).",
-      "evidence": ["0xa40c: jal 0x8a54", "0xa414/0xa418: sb zero (two config bytes)", "0xa420: jal 0x8f46"]
+      "confidence": "Confirmed",
+      "summary": "Calls 0x8a54, clears RAM bytes 0x2000bff4 and 0x2000bffc, then 0x8f46 sets event bit 4 for the task ID at 0x2000bff0.",
+      "evidence": ["0xa40c: jal 0x8a54", "0xa414/0xa418: sb zero -> 0x2000bff4/0x2000bffc", "0xa420: jal 0x8f46"]
     },
     {
       "selector": 3,
@@ -44,20 +47,20 @@
     {
       "selector": 4,
       "target": "0xa424",
-      "confidence": "Correlated",
-      "summary": "Tail-call into config builder 0x8dec after epilogue (apply a new config record).",
+      "confidence": "Confirmed",
+      "summary": "Restores the stack frame and tail-jumps to 0x8dec, which allocates, populates, passes, and deallocates a 0x88-byte message. The higher-level effect remains unresolved.",
       "evidence": ["0xa424: register restores", "0xa434: j 0x8dec"]
     },
     {
       "selector": 5,
       "target": "0xa438",
       "confidence": "Correlated",
-      "summary": "Bond-table operation gated on selector-arg == 0x1F. Clears a RAM byte, then iterates the connection/bond array at gp+0x7c (stride 0x2B = 43 bytes, up to index 0x81) comparing 6-byte MAC addresses via resident slot 0x40000040.",
+      "summary": "Three-record table scan gated on selector-arg == 0x1F. Clears RAM byte 0x2000bff4, then scans the array whose pointer is stored at gp+0x7c using 43-byte entries; tmos_isbufset at resident slot 0x40040 tests whether each 6-byte field at entry+3 is all zero.",
       "evidence": [
-        "0xa438: jal 0x8a54; sb zero",
+        "0xa438: jal 0x8a54; sb zero -> 0x2000bff4",
         "0xa44a: bne s1,0x1F -> 0xa5c4 (require arg 0x1F)",
-        "0xa450: addi s5,gp,0x7c (bond table base)",
-        "0xa45c..0xa474: lw slot; resident 6-byte memcmp (slot 0x40); stride 0x2B; limit 0x81"
+        "0xa450: addi s5,gp,0x7c (address of array-pointer slot)",
+        "0xa45c..0xa474: load array pointer from gp+0x7c; call tmos_isbufset(entry+3,0,6); stride 0x2B; exclusive offset limit 0x81"
       ]
     },
     {
@@ -71,20 +74,22 @@
       "selector": 7,
       "target": "0xa4e8",
       "confidence": "Correlated",
-      "summary": "Second bond-table operation gated on selector-arg == 7. Advances the payload pointer by 2, clears a RAM byte, then iterates the gp+0x7c bond array (stride/limit as selector 5) — pair/unpair a specific peer.",
+      "summary": "Second three-record table operation gated on selector-arg == 7. Advances the payload pointer by 2, clears RAM byte 0x2000bff4, then compares six payload bytes against entry+3 through tmos_memcmp at resident slot 0x4003c. The path also calls GAPRole_TerminateLink for matching connection records; its complete mutation/report behavior is not yet resolved.",
       "evidence": [
-        "0xa4e8: jal 0x8a54; sb zero",
+        "0xa4e8: jal 0x8a54; sb zero -> 0x2000bff4",
         "0xa4fa: bne s1,7 -> 0xa5c4 (require arg 7)",
-        "0xa502: addi s4,gp,0x7c (bond table base)"
+        "0xa502: addi s4,gp,0x7c (address of array-pointer slot)",
+        "0xa50e..0xa51e: load array pointer; call resident slot 0x4003c with a0=entry+3,a1=payload+2,a2=6"
       ]
     }
   ],
-  "bond_table": {
-    "base": "gp+0x7c",
+  "three_record_table": {
+    "pointer_slot": "gp+0x7c = 0x2000407c (gp=0x20004000)",
     "entry_stride_bytes": 43,
-    "key": "6-byte BLE MAC at entry+3",
-    "max_index": "0x81",
-    "compare": "resident slot 0x40000040 (memcmp)",
-    "note": "Correlated: this is the paired-peer/bond record array managed by F0 subcodes 5 and 7 and read during HID name binding (section 10)."
+    "entry_count": 3,
+    "compared_field": "6 bytes at entry+3",
+    "scan_offsets": ["0x0", "0x2b", "0x56"],
+    "operations": "selector 5 calls tmos_isbufset(entry+3,0,6); selector 7 compares entry+3 with payload+2 via tmos_memcmp",
+    "note": "The table's peer/bond interpretation is Correlated only; the field meaning, full record layout, and complete selector 5/7 effects remain unresolved."
   }
 }

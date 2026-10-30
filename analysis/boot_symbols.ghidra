@@ -53,11 +53,11 @@ sub_1fe6 0x1fe6 f
 sub_2006 0x2006 f
 sub_2010 0x2010 f
 sub_2028 0x2028 f
-sub_2032 0x2032 f
-sub_203a 0x203a f
-sub_2058 0x2058 f
-sub_2066 0x2066 f
-sub_2094 0x2094 f
+flash_status_clear 0x2032 f
+flash_unlock_fast 0x203a f
+flash_lock_fast 0x2058 f
+flash_erase_256 0x2066 f
+flash_program_256 0x2094 f
 sub_20f8 0x20f8 f
 sub_212a 0x212a f
 sub_21ec 0x21ec f

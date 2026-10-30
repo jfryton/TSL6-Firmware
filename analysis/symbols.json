@@ -2,7 +2,7 @@
   "image": "runtime",
   "image_base": "0x0 (rebase to program image base in Ghidra)",
   "symbol_count": 474,
-  "named_count": 86,
+  "named_count": 87,
   "kinds": {
     "f": "function entry",
     "l": "code label"
@@ -112,9 +112,9 @@
     },
     {
       "address": "0xd02",
-      "name": "sub_0d02",
+      "name": "ble_frame_enqueue",
       "kind": "f",
-      "source": "functions"
+      "source": "command_dispatch"
     },
     {
       "address": "0xe8a",
@@ -136,7 +136,7 @@
     },
     {
       "address": "0x110a",
-      "name": "ble_tx_framer",
+      "name": "delayed_scheduler",
       "kind": "f",
       "source": "command_dispatch"
     },

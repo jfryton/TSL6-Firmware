@@ -1,32 +1,57 @@
 {
   "image": "boot",
   "payload_size": 12288,
+  "payload_offset_base": "0x0 (all analysis code addresses are offsets)",
+  "linked_code_base": "0x1000",
+  "flash_alias_base": "0x08001000",
+  "slot_size_bytes": 28672,
+  "resident_library_base": "0x40000",
+  "resident_jump_table_base": "0x40034",
   "reset_jump_target": "0x1c28",
-  "global_pointer_gp": "0x20003000",
-  "stack_pointer_sp": "0x2000f000",
+  "global_pointer_gp": "0x20004000",
+  "stack_pointer_sp": "0x20010000",
   "update_dispatcher": "0x121c",
   "update_commands": {
-    "0x55": "prepare/select update target; clears in-progress flag at gp+0xaf, validates target via 0xc9a",
-    "0x53": "begin selected target; sets in-progress flag gp+0xaf, selects boot(0)/runtime(1) slot",
+    "0x55": "prepare runtime-image update; clears gp+0xaf and validates the trailing 14-byte value via 0xc9a",
+    "0x53": "begin runtime-image update; accepts only target byte 1 after 14-byte validation, then sets gp+0xaf",
     "0x57": "write one 1026-byte transport page",
     "0x45": "finalize/report completion"
   },
   "write_page_flow": {
     "handler": "0x121c",
     "page_size_check": "0x402 (1026) validated before accepting a page",
-    "page_index": "2-byte big-endian prefix parsed to compute flash destination",
+    "page_index": "2-byte big-endian index; destination = 0x08008000 + index*0x400",
+    "flash_alias_base": "0x08008000",
+    "slot_size_bytes": 98304,
+    "valid_page_indices": "0..95 (destinations 0x08008000..0x0801fc00)",
     "flash_program_fn": "0x110c",
-    "erase": "resident flash erase pointer at 0x4000004c, granularity 0x400 (1 KiB page)",
-    "program": "1024-byte payload written in 0x100-byte (256) chunks",
+    "resident_copy_slot": "0x4004c tmos_memcpy; used only when payload+2 is not word-aligned",
+    "erase": "0x110c calls local 0x2066 for one 0x100-byte fast erase; the page handler invokes it four times per 1 KiB page",
+    "program": "0x110c calls local 0x2094 for one 0x100-byte fast program; invoked at offsets 0,0x100,0x200,0x300",
     "verify": "word-by-word read-back compare; mismatch aborts the page"
   },
   "flash_controller": {
-    "control_register": "0x40021004 (read-modify-write, OR with 0x80 or 0x90)",
-    "note": "CH32V20x flash/option programming region; exact register semantics not yet fully decoded",
-    "size_variant_detect": "compares gp+0x80 size word against 0x8954400 to pick control bit 0x80 vs 0x90"
+    "base": "0x40022000",
+    "registers": {
+      "KEYR": "0x40022004",
+      "STATR": "0x4002200c",
+      "CTLR": "0x40022010",
+      "ADDR": "0x40022014",
+      "MODEKEYR": "0x40022024"
+    },
+    "functions": {
+      "status_clear": "0x2032",
+      "unlock_fast": "0x203a",
+      "lock_fast": "0x2058",
+      "erase_256": "0x2066",
+      "program_256": "0x2094"
+    },
+    "clock_setup": "0x110c compares gp+0x80 to 144000000 Hz; it ORs RCC CFGR0 at 0x40021004 with HPRE DIV2 (0x80) or DIV4 (0x90), then clears those bits afterward",
+    "error_handling": "polls BSY/WR_BSY without timeout; does not test PGERR, WRPRTERR, or EOP; wrapper has no status return"
   },
   "notes": [
-    "The bootloader, not the runtime, performs the actual flash erase/program/verify. The runtime update dispatcher relays pages to it.",
+    "This boot image programs only the runtime slot. The runtime image contains a complementary updater for the boot slot.",
+    "Both images use low linked/execution views distinct from their 0x08000000 flash aliases; the mapping mechanism remains unknown.",
     "This is the safety-critical mapping: do not exercise 0x55/0x53/0x57/0x52/0x45 without a hardware recovery path."
   ]
 }

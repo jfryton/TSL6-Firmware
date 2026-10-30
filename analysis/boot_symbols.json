@@ -2,7 +2,7 @@
   "image": "boot",
   "image_base": "0x0 (rebase to program image base in Ghidra)",
   "symbol_count": 85,
-  "named_count": 3,
+  "named_count": 8,
   "kinds": {
     "f": "function entry",
     "l": "code label"
@@ -322,33 +322,33 @@
     },
     {
       "address": "0x2032",
-      "name": "sub_2032",
+      "name": "flash_status_clear",
       "kind": "f",
-      "source": "boot_functions"
+      "source": "boot"
     },
     {
       "address": "0x203a",
-      "name": "sub_203a",
+      "name": "flash_unlock_fast",
       "kind": "f",
-      "source": "boot_functions"
+      "source": "boot"
     },
     {
       "address": "0x2058",
-      "name": "sub_2058",
+      "name": "flash_lock_fast",
       "kind": "f",
-      "source": "boot_functions"
+      "source": "boot"
     },
     {
       "address": "0x2066",
-      "name": "sub_2066",
+      "name": "flash_erase_256",
       "kind": "f",
-      "source": "boot_functions"
+      "source": "boot"
     },
     {
       "address": "0x2094",
-      "name": "sub_2094",
+      "name": "flash_program_256",
       "kind": "f",
-      "source": "boot_functions"
+      "source": "boot"
     },
     {
       "address": "0x20f8",

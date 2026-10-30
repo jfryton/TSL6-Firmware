@@ -1,15 +1,22 @@
 {
   "image": "runtime",
   "payload_size": 73728,
-  "image_base": "0x0 (downloaded representation; not final flash offset)",
+  "payload_offset_base": "0x0 (all analysis code addresses are offsets)",
+  "linked_code_base": "0x8000",
+  "flash_alias_base": "0x08008000",
+  "slot_size_bytes": 98304,
   "reset_jump_target": "0xf89a",
-  "global_pointer_gp": "0x1fffc000",
-  "stack_pointer_sp": "0x20008000",
+  "global_pointer_gp": "0x20004000",
+  "stack_pointer_sp": "0x20010000",
   "ram_base": "0x20000000",
+  "ram_top": "0x20010000",
   "peripheral_base": "0x40000000",
+  "resident_library_base": "0x40000",
+  "resident_jump_table_base": "0x40034",
   "notes": [
-    "Application code is self-contained within the 0x0-0x12000 payload.",
-    "Hardware/BLE-stack entry points referenced from startup live in a resident region above the downloadable image; the server image is the updatable application/runtime slot only.",
-    "gp-relative addressing (gp=0x1fffc000) is used for the BLE state block, including the 256-byte shortcut table at gp+0x80."
+    "Payload offsets remain base-zero in analysis, but AUIPC absolute addresses must use the linked code base 0x8000.",
+    "The boot updater programs this image at flash alias 0x08008000; the statically accepted slot is 0x18000 bytes (96 KiB).",
+    "Startup transfers to a resident BLE library at 0x00040000; its jump table begins at 0x00040034. Its backing storage is not present in the downloaded image.",
+    "gp-relative addressing (gp=0x20004000) is used for the BLE state block, including the 256-byte shortcut table at gp+0x80."
   ]
 }

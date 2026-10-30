@@ -5,19 +5,57 @@
   "update_dispatcher": "0xbc76",
   "a2_handler": "0xc53c",
   "shared_helpers": {
-    "0x110a": "async BLE TX framer/enqueue; 15-slot, 12-byte queue at RAM 0x20003e28; dispatches via resident notify pointer 0x40000050",
-    "0xb76c": "command reply builder; allocates via resident pointer 0x40000070, then enqueues through 0x110a",
+    "0xd02": "BLE frame builder/enqueue; emits 55 7f header and checksum, then wakes the resident event loop",
+    "0x110a": "15-slot delayed-callback/event scheduler; 12-byte entries at RAM 0x2000be28; converts milliseconds to 625-us scheduler ticks",
+    "0xb76c": "command reply builder; allocates via tmos_msg_allocate (0x40070), copies through tmos_memcpy (0x4004c), frames via 0xd02, then releases through tmos_msg_deallocate (0x40068)",
     "0xb7c6": "module status reply builder",
     "0xb86e": "dashboard telemetry producer (35-byte 0xB0 packet, rate-limited via gp+0x178 timestamp)",
     "0xbdb8": "command-reply tail used by 0xA2/0xBB handlers"
   },
-  "ble_stack_vtable": {
-    "base": "0x40000000",
-    "note": "Resident BLE-stack function pointers loaded via lui 0x40 + offset and called indirectly (jr/jalr). Not in image.",
+  "resident_abi_table": {
+    "library_base": "0x40000",
+    "jump_table_base": "0x40034",
+    "note": "Resident function pointers are loaded from the BLE library jump table at 0x00040034 and called indirectly. The library base 0x00040000 is not the CH32V peripheral region at 0x40000000.",
+    "source": {
+      "embedded_version": "CH32V20x_BLE_LIB_V1.3",
+      "runtime_string_offset": "0x11b38",
+      "openwch_commit": "64be9554615df522899579633530fd234d685682",
+      "header": "EVT/EXAM/BLE/LIB/wchble_rom.h",
+      "base_macros": "LIB_FLASH_BASE_ADDRESSS=0x00040000; FUNCITON_BASE_ADDRESSS=LIB_FLASH_BASE_ADDRESSS+0x34"
+    },
     "known_slots": {
-      "0x40000050": "BLE notify/send entry (used by TX framer 0x110a)",
-      "0x40000070": "buffer allocator (used by reply builder 0xb76c)"
+      "0x4003c": "tmos_memcmp(src1, src2, len); returns TRUE when buffers are equal",
+      "0x40040": "tmos_isbufset(buf, value, len); returns TRUE when every byte equals value",
+      "0x40048": "tmos_memset(dst, value, len)",
+      "0x4004c": "tmos_memcpy(dst, src, len)",
+      "0x40050": "tmos_set_event(task_id, event)",
+      "0x40068": "tmos_msg_deallocate(msg_ptr)",
+      "0x40070": "tmos_msg_allocate(len)",
+      "0x4017c": "GAPRole_TerminateLink(conn_handle)"
     }
+  },
+  "update_writer": {
+    "worker": "0x1bc8",
+    "writes_image": "boot",
+    "accepted_start_target": 0,
+    "in_progress_flag": "gp+0xd5",
+    "flash_alias_base": "0x08001000",
+    "slot_size_bytes": 28672,
+    "valid_page_indices": "0..27",
+    "page_transport_bytes": 1026,
+    "page_payload_bytes": 1024,
+    "flash_write_fn": "0x1b5e",
+    "flash_granularity_bytes": 256,
+    "flash_functions": {
+      "status_clear": "0x10010",
+      "unlock_fast": "0x10018",
+      "lock_fast": "0x10036",
+      "erase_256": "0x10044",
+      "program_256": "0x10072"
+    },
+    "prepare_transition": "0x55 target 1 schedules callbacks at 0xe1a (200 ms) and 0x1e16 (400 ms) to transfer runtime-target updates to boot mode",
+    "verify": "1024-byte word-by-word read-back comparison",
+    "error_handling": "polls flash busy flags without timeout; does not test flash error bits"
   },
   "handlers": [
     {

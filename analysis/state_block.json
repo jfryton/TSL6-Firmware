@@ -1,6 +1,6 @@
 {
   "image": "runtime",
-  "global_pointer_gp": "0x1fffc000",
+  "global_pointer_gp": "0x20004000",
   "model": "Single gp-based state block. 'direct' offsets are touched by lw/lh/lb/sw/sh/sb with (gp) base; 'address_taken' offsets are the base of sub-structures/arrays passed by pointer (e.g. the rule tables). Widths and write counts indicate scalar fields vs. structure bases.",
   "distinct_offsets": 163,
   "directly_accessed": 121,

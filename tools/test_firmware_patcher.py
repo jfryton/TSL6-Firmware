@@ -223,18 +223,18 @@ class FirmwarePatcherTest(unittest.TestCase):
             for site in spec.sites:
                 orig_insns = list(md.disasm(site.orig_bytes, site.payload_offset))
                 patched_insns = list(md.disasm(site.patched_bytes, site.payload_offset))
-                self.assertEqual(
+                self.assertGreaterEqual(
                     len(orig_insns),
                     1,
-                    f"Expected 1 instruction for {patch_id} orig at {site.payload_offset:#x}",
+                    f"Expected >= 1 instruction for {patch_id} orig at {site.payload_offset:#x}",
                 )
-                self.assertEqual(
+                self.assertGreaterEqual(
                     len(patched_insns),
                     1,
-                    f"Expected 1 instruction for {patch_id} patched at {site.payload_offset:#x}",
+                    f"Expected >= 1 instruction for {patch_id} patched at {site.payload_offset:#x}",
                 )
-                orig_text = f"{orig_insns[0].mnemonic} {orig_insns[0].op_str}".strip()
-                patched_text = f"{patched_insns[0].mnemonic} {patched_insns[0].op_str}".strip()
+                orig_text = "; ".join(f"{i.mnemonic} {i.op_str}".strip() for i in orig_insns)
+                patched_text = "; ".join(f"{i.mnemonic} {i.op_str}".strip() for i in patched_insns)
                 self.assertTrue(
                     site.orig_asm.startswith(orig_text),
                     f"{patch_id}: {site.orig_asm!r} does not start with {orig_text!r}",

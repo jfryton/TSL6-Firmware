@@ -483,7 +483,7 @@ def build_patch_spec(patch_id: str, fw_version: int = DEFAULT_CUSTOM_FW_VERSION)
                     orig_asm="bne a0, a5, 0x16 ; -> 0x008116",
                     patched_asm="nop",
                     description=(
-                        "Bypass `gear != 4` branch in `0x0080EC` while keeping `0x0272` (awake) "
+                        "Skip `gear != 4` branch in `0x0080EC` while keeping `0x0272` (awake) "
                         "and `0x2AA8` (AP inactive) checks intact."
                     ),
                 ),
@@ -495,6 +495,94 @@ def build_patch_spec(patch_id: str, fw_version: int = DEFAULT_CUSTOM_FW_VERSION)
             ),
         )
 
+    if patch_id == "gate_media_pulse_on_ap_0x2242":
+        return PatchSpec(
+            patch_id="gate_media_pulse_on_ap_0x2242",
+            category="scheduler",
+            title="Only Pulse Volume While Autopilot / FSD Is Engaged",
+            summary=(
+                "Redirects the autonomous media pulse worker `0x00222E` from the dummy stub "
+                "`0x0001DA` (`c.li a0, 1; c.jr ra`) at `0x002242` to the CAN `0x39D` "
+                "Autopilot-active getter `0x002AA8`, suppressing pulses whenever AP/FSD is off."
+            ),
+            function_context="Autonomous media pulse worker `0x00222E` (`0x00223E..0x002245`)",
+            rationale=(
+                "In stock firmware V1.5.00, `0x00222E` (called by TMOS Timer 1 handler `0x00E57E`) "
+                "calls a dummy stub `0x0001DA` (`c.li a0, 1; c.jr ra`, `efd09ff9`) at `0x002242` "
+                "instead of the CAN `0x39D` Autopilot-active getter `0x002AA8` (`*(0x2000BF02)`), "
+                "causing the module to keep pulsing volume every 2-3 seconds even when FSD/Autopilot "
+                "is OFF. Redirecting `0x002242` to `jal 0x002aa8` (`ef007006`) and updating `0x00223E` "
+                "to branch to the clean epilogue `0x00225E` (`6310f502`) ensures the module only "
+                "pulses when Autopilot/FSD is engaged."
+            ),
+            sites=(
+                PatchSite(
+                    payload_offset=0x00223E,
+                    orig_bytes=bytes.fromhex("631df506"),
+                    patched_bytes=bytes.fromhex("6310f502"),
+                    orig_asm="bne a0, a5, 0x7a ; -> 0x0022b8",
+                    patched_asm="bne a0, a5, 0x20 ; -> 0x00225e",
+                    description="Branch to clean epilogue `0x00225E` when vehicle is not awake.",
+                ),
+                PatchSite(
+                    payload_offset=0x002242,
+                    orig_bytes=bytes.fromhex("efd09ff9"),
+                    patched_bytes=bytes.fromhex("ef007006"),
+                    orig_asm="jal -0x2068 ; -> 0x0001da (stub returning 1)",
+                    patched_asm="jal 0x866 ; -> 0x002aa8 (CAN 0x39D Autopilot-active getter)",
+                    description="Call `0x002AA8()` so `0x00222E` only pulses while Autopilot/FSD is active.",
+                ),
+            ),
+            safety_notes=(
+                "Two 4-byte RV32I instruction replacements inside `0x00222E`; preserves all stack and register invariants.",
+            ),
+        )
+
+    if patch_id == "fix_hands_on_reminder_detection":
+        return PatchSpec(
+            patch_id="fix_hands_on_reminder_detection",
+            category="telemetry",
+            title="Fix Hands-On Steering Reminder Detection (CAN 0x39D -> 0xB0 Byte 17 Bit 7)",
+            summary=(
+                "Fixes the stock firmware bug where `0x0001E8` reads dead RAM `0x20003F09` "
+                "(never written anywhere) instead of `0x20003EF5` (CAN `0x39D` hands-on warning "
+                "stage `0..6`), restoring `handsOn` in `0xB0` live telemetry."
+            ),
+            function_context="Hands-on state getter `0x0001E8` and `0xB0` telemetry packer `0x00B5E4`",
+            rationale=(
+                "Stock CAN `0x39D` parser `0x0028EC` extracts the 4-bit hands-on warning stage "
+                "(`((byte3 & 3) << 2) | (byte2 >> 6)`) and writes `0` (no warning) or `1..6` "
+                "(active hands-on warning stages) to RAM `0x20003EF5` (`-0x6f3(a5)` via `0x002922`). "
+                "However, `0x0001E8` (called by `0x00B5E4` to populate `0xB0` byte 17 bit 7 `handsOn`) "
+                "erroneously loads `-0x6df(a5)` (`0x20003F09`), which is never written anywhere in the "
+                "firmware, and `0x00B5EC` masks `(a0 << 15) & 0x8000` (which drops even warning stages "
+                "`2, 4, 6`). Patching `0x0001EC` (`034515d2` -> `0345d5d0`) reads `0x20003EF5`, and "
+                "patching `0x00B5EC` (`3e05c164c607c583` -> `3335a0003e05c164`) normalizes any non-zero "
+                "warning stage `1..6` via `snez a0, a0` before shifting into bit 15."
+            ),
+            sites=(
+                PatchSite(
+                    payload_offset=0x0001EC,
+                    orig_bytes=bytes.fromhex("034515d2"),
+                    patched_bytes=bytes.fromhex("0345d5d0"),
+                    orig_asm="lbu a0, -0x2df(a0) ; 0x20003F09 (never written)",
+                    patched_asm="lbu a0, -0x2f3(a0) ; 0x20003EF5 (CAN 0x39D hands-on warning stage)",
+                    description="Redirect `0x0001E8` getter from dead RAM `0x20003F09` to `0x20003EF5`.",
+                ),
+                PatchSite(
+                    payload_offset=0x00B5EC,
+                    orig_bytes=bytes.fromhex("3e05c164c607c583"),
+                    patched_bytes=bytes.fromhex("3335a0003e05c164"),
+                    orig_asm="c.slli a0, 0xf; c.lui s1, 0x10; c.slli a5, 0x11; c.srli a5, 0x11",
+                    patched_asm="snez a0, a0; c.slli a0, 0xf; c.lui s1, 0x10",
+                    description="Normalize non-zero warning stage (1..6) via `snez a0, a0` before `c.slli a0, 15`.",
+                ),
+            ),
+            safety_notes=(
+                "Fixes both live dashboard hands-on indicator and phone-side FSD volume pulse trigger.",
+            ),
+        )
+
     raise KeyError(f"Unknown patch_id: {patch_id!r}")
 
 
@@ -502,6 +590,8 @@ PATCH_IDS: Tuple[str, ...] = (
     "ignore_server_deauth_0xae",
     "bypass_auth_check_0x1380",
     "enable_0xa6_disable_cmd",
+    "gate_media_pulse_on_ap_0x2242",
+    "fix_hands_on_reminder_detection",
     "pulse_timing_fast_1500ms",
     "pulse_timing_gentle_1000ms",
     "pulse_hold_short_25ms",

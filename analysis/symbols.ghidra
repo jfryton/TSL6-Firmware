@@ -18,11 +18,11 @@ sub_0376 0x376 f
 sub_042a 0x42a f
 sub_0508 0x508 f
 sub_05b0 0x5b0 f
-sub_0d02 0xd02 f
+ble_frame_enqueue 0xd02 f
 sub_0e8a 0xe8a f
 sub_1060 0x1060 f
 sub_1096 0x1096 f
-ble_tx_framer 0x110a f
+delayed_scheduler 0x110a f
 sub_1236 0x1236 f
 sub_1272 0x1272 f
 sub_129c 0x129c f

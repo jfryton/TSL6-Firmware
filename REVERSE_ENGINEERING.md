@@ -1,6 +1,6 @@
 # Offline Firmware Reverse Engineering Notes
 
-Date: 2026-06-12
+Last updated: 2026-07-17
 
 Artifacts analyzed:
 
@@ -48,11 +48,18 @@ Stripped-payload SHA-256:
 The runtime payload begins with a jump to `0xF89A`. The boot payload begins
 with a jump to `0x1C28`. Executable support code begins around `0x180`.
 
-The runtime jump/vector table contains many function-like addresses in the
-`0x000178xx` range, which are inside the runtime file. That suggests the server
-firmware blob is linked as an image starting at address `0x00000000` or uses
-relative/bootloader-remapped addressing, rather than being directly linked at
-the final flash offset in the downloaded representation.
+Base-zero addresses in this document are payload offsets, not linked or
+physical addresses. The runtime is linked at `0x00008000` and its updater slot
+has flash alias `0x08008000`; boot is linked at `0x00001000` with flash alias
+`0x08001000`. The accepted slot sizes are `0x18000` bytes for runtime and
+`0x7000` for boot. Both startups resolve `gp=0x20004000` and
+`sp=0x20010000`. The mechanism that remaps the flash aliases into the linked
+base-zero execution view remains unknown.
+
+Startup also transfers toward a resident BLE library at `0x00040000`. Its
+function-pointer jump table begins at `0x00040034`. This low address comes from
+`lui ...,0x40`; it must not be confused with the CH32V peripheral region at
+`0x40000000`.
 
 ### Identifying Strings
 
@@ -113,6 +120,25 @@ Confirmed paths include:
 The dispatcher also contains explicit branches for `0xA1` through `0xA9`,
 `0xAD` through `0xAF`, `0xB9`, `0xBA`, `0xC0`, `0xD0` through `0xD2`, and
 other internal commands.
+
+### BLE framing and resident ABI
+
+Payload `0x0d02` is the outbound BLE frame builder/enqueue routine: it emits
+the `55 7f` header and checksum, queues the frame, and wakes the resident event
+loop. Payload `0x110a` is instead a 15-slot delayed-callback scheduler, not the
+TX framer. It stores 12-byte entries at `0x2000be28` and converts milliseconds
+to 625-microsecond ticks.
+
+The exact OpenWCH `CH32V20x_BLE_LIB_V1.3` ABI names the confirmed slots:
+`0x4003c` `tmos_memcmp`, `0x40040` `tmos_isbufset`, `0x40048` `tmos_memset`,
+`0x4004c` `tmos_memcpy`, `0x40050` `tmos_set_event`, `0x40068`
+`tmos_msg_deallocate`, `0x40070` `tmos_msg_allocate`, and `0x4017c`
+`GAPRole_TerminateLink`. The matching source is OpenWCH commit
+`64be9554615df522899579633530fd234d685682`, header
+`EVT/EXAM/BLE/LIB/wchble_rom.h`. In particular, D2's `tmos_memset` call only
+zeroes its stack buffer; it does not fetch a resident diagnostic record. Local
+helper `0x28e` copies a raw-record slot into a fixed 12-byte buffer through
+`tmos_memcpy`.
 
 ### Shortcut Rule Engine
 
@@ -216,9 +242,10 @@ Corrected selected handlers:
 | 145 | `0xDBD2` |
 
 Action 139 restores the dispatcher frame and tail-calls a shared routine at
-payload `0x3A30`. That routine writes value `0x0C` to a RAM state byte and
-returns. This is consistent with scheduling or latching a steering-wheel
-operation, but the later consumer of that state byte still needs tracing.
+payload `0x3A30`. That routine writes value `0x0C` to RAM byte `0x2000bf2d`
+and returns. Branch `0x3cdc` decrements the byte and changes bits 6:5 of the
+current object whenever the byte is nonzero. Its cadence, whether this models
+release, and the resulting vehicle-side effect remain unproven.
 
 #### Command `0xA2`
 
@@ -253,18 +280,20 @@ need all of the following:
 6. Preserve registers, stack, watchdog servicing, BLE timing, and CAN task
    timing expected by the original firmware.
 
-A blocking busy-wait is not acceptable without proving the scheduler and
-watchdog behavior. A safe implementation probably needs the firmware's own
-timer/work-queue mechanism, which has not yet been identified.
+A blocking busy-wait is not acceptable without proving scheduler and watchdog
+behavior. Payload `0x110a` is now confirmed as a 15-slot delayed-callback
+scheduler: it converts milliseconds to 625-microsecond ticks and stores 12-byte
+entries at `0x2000be28`. Its existence supplies a candidate non-blocking
+mechanism, but its ownership, callback context, cancellation behavior, and
+failure cases must be proven before reuse.
 
 There is now enough understanding to describe a credible patch architecture,
 but not enough to produce firmware that is safe to flash. The current blockers
 are:
 
-- Resolve the action jump-table alignment/control-flow discrepancy.
 - Confirm action 139 by observing or tracing its actual vehicle-side effect.
 - Identify separate press, release, and select primitives.
-- Identify a non-blocking timer primitive and its calling convention.
+- Complete the delayed-scheduler calling convention and lifecycle.
 - Find verified executable free space or a relocatable code region.
 - Determine all image checksum, version, signature, and bootloader validation
   requirements.
@@ -281,11 +310,32 @@ Other application areas contain clustered constants such as:
 
 ### Update Dispatcher
 
-A separate updater dispatcher is visible around payload offset `0xBC76`. It
-explicitly accepts `0x45`, `0x53`, `0x55`, and `0x57`, while another update
-path selects `0x52` or `0x57` based on state. This further supports treating
-`0x52` as an update-flow read/verify operation rather than a safe normal-mode
-full-flash backup API.
+A separate updater dispatcher is visible around runtime payload offset
+`0xBC76`. The two downloaded images contain complementary writers:
+
+- Runtime worker `0x1bc8` accepts start target `0` and writes the boot slot at
+  flash alias `0x08001000`, with valid page indices `0..27`.
+- Boot worker `0x121c` accepts start target `1` and writes the runtime slot at
+  `0x08008000`, with valid page indices `0..95`.
+- Runtime prepare target `1` schedules callbacks at `0xe1a` after 200 ms and
+  `0x1e16` after 400 ms, transferring control toward boot-mode runtime update.
+
+Both images perform flash operations locally. Boot helpers are at `0x2032`,
+`0x203a`, `0x2058`, `0x2066`, and `0x2094`; runtime copies are at `0x10010`,
+`0x10018`, `0x10036`, `0x10044`, and `0x10072`. They access the flash
+controller at `0x40022000` and erase/program 256 bytes at a time, four cycles
+per 1 KiB page. Resident slot `0x4004c` is `tmos_memcpy` and merely handles an
+unaligned source in the boot page path; it is not a flash-erase entry.
+
+`0x40021004` is RCC `CFGR0`, not flash control. The updater temporarily ORs
+HPRE divide-by-2 (`0x80`) or divide-by-4 (`0x90`) according to comparison with
+144 MHz, then clears those bits. The flash helpers poll busy flags without a
+timeout and do not check flash error bits, an important compatibility and
+recovery risk.
+
+The dispatchers explicitly handle update commands including `0x45`, `0x53`,
+`0x55`, and `0x57`; related flow selects `0x52` for read/verify. This continues
+to rule out treating `0x52` as a safe normal-mode full-flash backup API.
 
 ## Why Confident Modification Is Not Ready
 
@@ -294,10 +344,11 @@ enough to safely modify behavior.
 
 Missing pieces:
 
-- Exact chip variant and flash/RAM map.
-- Exact payload-to-flash mapping.
-- Reset/boot vectors after bootloader remapping.
-- Symbol recovery for BLE stack vs application code.
+- Exact chip variant, option bytes, and protection state.
+- Physical confirmation of the statically recovered payload-to-flash mapping.
+- Exact reset/remap mechanism and complete resident image/ABI.
+- Symbol and contract recovery for the BLE stack, drivers, interrupts, clocks,
+  watchdog, CAN, and nonvolatile storage.
 - Action-handler side effects and low-level button primitives.
 - The consumer and timing semantics of the RAM action-state byte written by
   the action 139 routine.
@@ -306,51 +357,32 @@ Missing pieces:
 - A hardware recovery path, such as SWD/WCH-Link access and a full physical
   flash dump.
 
-Because the hardware is vehicle-adjacent and because update-mode semantics are
-not fully proven, patching and flashing modified firmware to a working TSL6 is
-not recommended.
+Because the hardware is vehicle-adjacent and update/recovery semantics are not
+fully proven, patching and flashing modified firmware to a working TSL6 is not
+recommended.
 
-## Useful Local Analysis Files
+## Reproducible Local Analysis
 
-Generated offline alongside the archived images. Not all generated files are
-committed because full disassembly output is noisy.
-
-Useful generated files:
-
-- `boot/boot.analysis.json`
-- `boot/boot.disasm.txt`
-- `runtime/runtime.analysis.json`
-- `runtime/runtime.base0.analysis.json`
-- `runtime/runtime.base0.seeded.disasm.txt`
-- `runtime/runtime.seeded.disasm.txt`
-
-Tooling is maintained in the Android repository
-([TSL-Cmd](https://github.com/jfryton/TSL-Cmd), `tools/analyze_firmware.py`).
-
-It uses Capstone in a local virtual environment to disassemble RISC-V/RVC.
-It can also emit a targeted disassembly window:
-
-```sh
-tools/.venv-re/bin/python tools/analyze_firmware.py \
-  /path/to/runtime.bin --base 0 --start 0xBE40 --count 120
-```
-
-The JSON report now includes decoded instruction-immediate hits for known
-protocol command values. Raw byte hits alone are noisy because command values
-also occur inside unrelated instruction encodings and data.
+The maintained analyzers and committed artifacts now live in this repository:
+see [tools/README.md](tools/README.md), [analysis/README.md](analysis/README.md),
+and [ANALYSIS_WORKFLOW.md](ANALYSIS_WORKFLOW.md). `tools/disasm.py` emits
+targeted RV32/RVC windows using payload offsets; out-of-image transfers also
+carry an inferred linked-target annotation. Raw byte hits for command values
+remain noisy because the same values occur inside unrelated instructions and
+data.
 
 ## Suggested Next Steps
 
-1. Confirm exact MCU marking on the TSL6 PCB.
-2. Obtain or create a physical full-flash dump with WCH-Link/SWD before any
-   firmware experimentation.
-3. Import the runtime image into Ghidra using RISC-V 32-bit little-endian with
-   compressed instructions enabled.
-4. Use the known strings and updater command constants to label functions.
-5. Label each `0xAB` read/write branch and identify the exact nonvolatile
-   storage routines used for the 256-byte rule table.
-6. Map action IDs from the backend catalog to branches in the action jump table.
-7. Determine whether any existing action already performs a multi-step
-   hold/select sequence internally.
-8. Only after full recovery capability exists, consider testing a non-critical
-   proof-of-concept patch on spare hardware.
+1. Obtain a read-only physical full-flash dump plus option-byte/protection
+   snapshot with WCH-Link/SWD before any firmware experimentation.
+2. Compare physical flash at `0x08001000` and `0x08008000` byte-for-byte with
+   the stripped boot and runtime payloads; recover the resident region and
+   establish how it is mapped near `0x00040000`.
+3. Confirm the exact MCU marking and compare its documented memory/remap model
+   with the dump and startup state.
+4. Finish the delayed scheduler and action 139 call/consumer contracts, then
+   confirm their effects with passive traces and controlled vehicle-side tests.
+5. Map every resident ABI slot and the interrupt, clock, watchdog, CAN, BLE,
+   and nonvolatile-storage dependencies needed by a replacement image.
+6. Test WCH-Link recovery and interrupted-update behavior on a sacrificial
+   module before considering any non-critical proof-of-concept patch.
